@@ -14,12 +14,20 @@
     "lint:fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
-    "decentraland-ecs": "^6.6.1-20201023214357.commit-c97988e"
+    "decentraland-ecs": "^6.11.6"
   },
   "dependencies": {
-    "@dcl/crypto-utils": "^1.0.12",
-    "@dcl/ui-utils": "^1.5.0",
-    "decentraland-ecs-utils": "^1.1.7",
-    "eth-connect": "^4.0.2"
-  }
+    "@dcl/crypto-scene-utils": "^1.1.1",
+    "@dcl/ecs-scene-utils": "^1.7.5",
+    "@dcl/npc-scene-utils": "^1.4.0",
+    "@dcl/ui-scene-utils": "^1.8.4",
+    "eth-connect": "^6.0.3"
+  },
+  "bundledDependencies": [
+    "@dcl/crypto-scene-utils",
+    "@dcl/ecs-scene-utils",
+    "@dcl/npc-scene-utils",
+    "@dcl/ui-scene-utils",
+    "eth-connect"
+  ]
 }

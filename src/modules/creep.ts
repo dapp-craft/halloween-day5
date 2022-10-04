@@ -1,6 +1,6 @@
 import { player } from "./player";
 import { creep } from "../finalHuntdown"
-import { NPC } from '../NPC/npc'
+import { NPC } from '@dcl/npc-scene-utils'
 import { creepDialog1 ,creepDialog2, creepDialog3, creepDialog4, creepDialogShort} from "../NPC/dialog";
 //let treeShape = new GLTFShape('models/hide_tree.glb')
 let treeColliderShape = new GLTFShape('models/tree_collider.glb')

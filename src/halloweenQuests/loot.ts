@@ -1,5 +1,6 @@
-import utils from '../../node_modules/decentraland-ecs-utils/index'
-import * as ui from '../../node_modules/@dcl/ui-utils/index'
+import * as utils from '@dcl/ecs-scene-utils'
+import * as ui from '@dcl/ui-scene-utils'
+
 import {
   fireBaseServer,
   playerRealm,
@@ -13,11 +14,7 @@ import { IN_PREVIEW } from '../config'
 
 import { getProvider } from '@decentraland/web3-provider'
 
-import * as eth from '../../node_modules/eth-connect/esm'
-import {
-  ButtonStyles,
-  PromptStyles,
-} from '../../node_modules/@dcl/ui-utils/utils/types'
+import * as eth from 'eth-connect'
 
 let particleGLTF = new GLTFShape('models/Particles.glb')
 let starGLTF = new GLTFShape('models/star.glb')
@@ -481,10 +478,10 @@ export function openClaimUI(
   PlayOpenSound()
 
   if (claimUI && claimUI.background.visible) {
-    claimUI.close()
+    claimUI.hide()
   }
 
-  claimUI = new ui.CustomPrompt(PromptStyles.DARKLARGE)
+  claimUI = new ui.CustomPrompt(ui.PromptStyles.DARKLARGE)
   claimUI.addText(
     failedTransaction
       ? 'Retry failed transaction'
@@ -537,12 +534,12 @@ export function openClaimUI(
     -100,
     -130,
     () => {
-      claimUI.close()
+      claimUI.hide()
       PlayCloseSound()
       representation.runOnFinished()
       representation.openUi = false
     },
-    ButtonStyles.F
+    ui.ButtonStyles.F
   )
   rejectButton.label.positionX = 40
 
@@ -551,7 +548,7 @@ export function openClaimUI(
     100,
     -130,
     async () => {
-      claimUI.close()
+      claimUI.hide()
       representation.openUi = false
 
       let claimData = await makeClaim(stage, testUser ? testUser : null)
@@ -563,7 +560,7 @@ export function openClaimUI(
         makeTransaction(claimData)
       }
     },
-    ButtonStyles.E
+    ui.ButtonStyles.E
   )
 
   if (data.length > 1) {

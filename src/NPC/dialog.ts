@@ -1,4 +1,4 @@
-import { Dialog } from '../../node_modules/@dcl/ui-utils/utils/types'
+import { Dialog } from '@dcl/npc-scene-utils'
 import * as UI from '../modules/ui'
 import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/ghostBoss";
 import {  cultLeader, ghost, farmer, girlCult, catLover, ghostBlaster, cultist1  } from "../finalHuntdown";

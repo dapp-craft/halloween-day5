@@ -1,10 +1,10 @@
 import {  cultistPositions  } from "../finalHuntdown";
-import { NPC } from "../NPC/npc";
+import { NPC } from '@dcl/npc-scene-utils'
 import {  scene  } from "./scene";
 
-let ghostSmallShape =  new GLTFShape("models/NPCs/ghosts-bence.glb")
-let starsShape =  new GLTFShape("models/stars.glb")
-let electricShape =  new GLTFShape("models/ghost_electric.glb")
+let ghostSmallShape:string =  "models/NPCs/ghosts-bence.glb"
+let starsShape:GLTFShape  =  new GLTFShape("models/stars.glb")
+let electricShape:GLTFShape =  new GLTFShape("models/ghost_electric.glb")
 let colliderShape = new BoxShape()
 colliderShape.visible = false
 @Component("GhostCollider")
@@ -87,11 +87,14 @@ export function spawnGhostSmall(_wp1:Vector3, _wp2:Vector3, _level:number, _spaw
         () => {
           ghostEnemy.playAnimation('idle')
         },
-        { path: 'images/radio3.png', height: 128, width: 128 },
-        20,
-        `idle`,
-        false,
-        true
+        {
+            portrait:{ path: 'images/radio3.png', height: 128, width: 128 },
+            reactDistance:20,
+            idleAnim:`idle`,
+            faceUser:false,
+            onlyETrigger:true
+        },
+
       )
 
     //ghostEnemy.addComponent(new Transform({position: _spawn, scale: new Vector3(1,1,1)}))

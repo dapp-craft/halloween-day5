@@ -11,9 +11,9 @@ import {
   TESTQUESTSTATE,
 } from '../config'
 import { HalloweenState, initialQuestUI, quest } from './quest'
-import * as ui from '../../node_modules/@dcl/ui-utils/index'
-import utils from '../../node_modules/decentraland-ecs-utils/index'
-import { PlayCloseSound } from '../../node_modules/@dcl/ui-utils/utils/default-ui-components'
+import * as ui from '@dcl/ui-scene-utils'
+import * as utils from '@dcl/ecs-scene-utils'
+//import { PlayCloseSound } from '../../node_modules/@dcl/ui-utils/utils/default-ui-components'
 
 export let progression: HalloweenState
 
@@ -127,7 +127,7 @@ export async function nextDay(nextDay: number) {
             'We ran out of POAP tokens for this event, sorry.',
             () => {
               p.close()
-              PlayCloseSound()
+              //PlayCloseSound()
             },
             'Ok',
             true
@@ -137,7 +137,7 @@ export async function nextDay(nextDay: number) {
             "A POAP token for today's event will arrive to your account very soon!",
             () => {
               p.close()
-              PlayCloseSound()
+              //PlayCloseSound()
             },
             'Ok',
             true

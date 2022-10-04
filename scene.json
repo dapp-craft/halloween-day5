@@ -53,7 +53,8 @@
     "blacklist": []
   },
   "requiredPermissions": [
-    "ALLOW_TO_MOVE_PLAYER_INSIDE_SCENE"
+    "ALLOW_TO_MOVE_PLAYER_INSIDE_SCENE",
+      "USE_FETCH"  
   ],
   "main": "bin/game.js",
   "tags": [],

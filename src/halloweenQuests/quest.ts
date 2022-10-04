@@ -1,4 +1,4 @@
-import { canvas, SFFont } from '../../node_modules/@dcl/ui-utils/index'
+import { canvas, SFFont } from '@dcl/ui-scene-utils'
 
 import resources, { setSection } from './resources'
 
@@ -150,8 +150,8 @@ export class QuestUI extends Entity {
       false,
       checked ? checked : null,
       teleportLocation &&
-      teleportLocation != this.currentCoords &&
-      teleportLocation != Coords.Secret
+        teleportLocation != this.currentCoords &&
+        teleportLocation != Coords.Secret
         ? teleportLocation
         : null
     )
@@ -237,7 +237,7 @@ export class QuestUI extends Entity {
     return this.visibleElements[index].checked
   }
 
-  public removeCheckbox(index) {}
+  public removeCheckbox(index) { }
 }
 
 export class QuestCheckBox extends Entity {
@@ -453,8 +453,8 @@ export function initialQuestUI(
 ) {
   /// limit max day w call to api
 
-  if(data.w5Found) return
-  
+  if (data.w5Found) return
+
   if (data.w4Found && day >= 5) {
     // day 5
     quest = new QuestUI(
@@ -488,7 +488,7 @@ export function initialQuestUI(
           checked: data.w5Found,
           visible: data.ghostDefeated,
           coords: Coords.MansionCoords,
-        },        
+        },
       ],
       5,
       currentCoords

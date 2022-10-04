@@ -1,4 +1,4 @@
-import { canvas, SFFont } from '../../node_modules/@dcl/ui-utils/index'
+import { canvas, SFFont } from '@dcl/ui-scene-utils'
 
 //const canvas = new UICanvas()
 
@@ -31,14 +31,14 @@ ghostHealthTitle.width = "100%"
 
 
 
-export function showGhostHealthUI(_visible:boolean){
+export function showGhostHealthUI(_visible: boolean) {
   ghostHealthContainer.visible = _visible
 }
 
-export function setGhostHealth(_hp:number){
-    if(_hp > 0 && _hp < 100){
-        ghostHealthBar.width = ( Math.floor(_hp).toString() + "%")
-    }
+export function setGhostHealth(_hp: number) {
+  if (_hp > 0 && _hp < 100) {
+    ghostHealthBar.width = (Math.floor(_hp).toString() + "%")
+  }
 }
 
 export const CursorMessageContainer = new UIContainerRect(canvas)
@@ -47,7 +47,7 @@ CursorMessageContainer.width = '30%'
 CursorMessageContainer.height = '15%'
 CursorMessageContainer.vAlign = 'center'
 CursorMessageContainer.hAlign = 'center'
-CursorMessageContainer.positionY= '15%'
+CursorMessageContainer.positionY = '15%'
 CursorMessageContainer.color = Color4.FromHexString(`#000000bb`)
 
 export const CursorMessageTitle = new UIText(CursorMessageContainer)
@@ -77,31 +77,31 @@ CursorMessage.outlineColor = Color4.Yellow()
 CursorMessage.outlineWidth = 0.2
 
 
-export function setCursorMessage(_title:string, _msg:string){
-    
-    if(!CursorMessageContainer.visible){
-        engine.addSystem(new CursorMessageTimeout(3))
-    }
-    CursorMessageTitle.value = _title
-    CursorMessage.value = _msg
-    CursorMessageContainer.visible = true
+export function setCursorMessage(_title: string, _msg: string) {
+
+  if (!CursorMessageContainer.visible) {
+    engine.addSystem(new CursorMessageTimeout(3))
+  }
+  CursorMessageTitle.value = _title
+  CursorMessage.value = _msg
+  CursorMessageContainer.visible = true
 }
 
-class CursorMessageTimeout{  
-    timer = 0
-    duration = 3
-  
-    constructor(time?:number){
-      this.duration = time
-    }
-    update(dt: number){
-      if(this.timer < this.duration){
-        this.timer += dt
-      }
-      else{
-        CursorMessageContainer.visible = false
-        engine.removeSystem(this)
-      }
-    }
-  
+class CursorMessageTimeout {
+  timer = 0
+  duration = 3
+
+  constructor(time?: number) {
+    this.duration = time
   }
+  update(dt: number) {
+    if (this.timer < this.duration) {
+      this.timer += dt
+    }
+    else {
+      CursorMessageContainer.visible = false
+      engine.removeSystem(this)
+    }
+  }
+
+}
