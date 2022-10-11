@@ -9,6 +9,8 @@ import { scene } from "./scene";
 import * as UI from "./ui";
 import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../NPC/dialog'
+import { mansionInTransform, mansionOutTransform } from './mansion';
+import { blocks, upperDoor } from './ghostBoss';
 
 
 
@@ -51,24 +53,25 @@ export async function checkWearables(): Promise<boolean> {
 
   let count = 0
 
-  if (equiped != null) {
-    for (let item of equiped) {
-      for (let allowedItem of dressList) {
-        if (item === allowedItem) {
-          count++
-          log('found ' + count + ' matching wearables! ', item)
+  // if (equiped != null) {
+  //   for (let item of equiped) {
+  //     for (let allowedItem of dressList) {
+  //       if (item === allowedItem) {
+  //         count++
+  //         log('found ' + count + ' matching wearables! ', item)
 
-        }
-      }
-    }
-  }
+  //       }
+  //     }
+  //   }
+  // }
 
-  if (count > 0) {
-    return true
-  }
+  // if (count > 0) {
+  //   return true
+  // }
 
-  log('no cultist clothes found! ')
-  return false
+  // log('no cultist clothes found! ')
+  // return false
+  return true
 
 
 }
@@ -86,7 +89,8 @@ teleportOutside.getComponent(BoxShape).visible = false
 teleportOutside.addComponent(new Transform({ position: scene.teleportOutsidePos, scale: scene.teleportScale }))
 
 
-let triggerBox = new utils.TriggerBoxShape(scene.teleportScale, Vector3.Zero())
+let triggerBoxOutside = new utils.TriggerBoxShape(scene.teleportScale, new Vector3(7, 7, 0))
+let triggerBoxInside = new utils.TriggerBoxShape(scene.teleportScale, Vector3.Zero())
 
 let firstTimeEntry = true
 
@@ -121,7 +125,7 @@ async function isPlayerAllowedIn(): Promise<boolean> {
 
 //create trigger for entity
 teleportOutside.addComponent(new utils.TriggerComponent(
-  triggerBox, //shape
+  triggerBoxOutside, //shape
   {
     layer: 0,
     onCameraEnter: async () => {
@@ -129,8 +133,10 @@ teleportOutside.addComponent(new utils.TriggerComponent(
         let allowed = await isPlayerAllowedIn()
 
         if (allowed) {
+          swapMansion('in')
           cultLeader.onActivate()
           movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
+
           firstTimeEntry = false
           SOUNDS.outsideAmbienceSource.playing = false
           SOUNDS.musicSource.loop = true
@@ -138,10 +144,12 @@ teleportOutside.addComponent(new utils.TriggerComponent(
         }
       } else {
         setGunUseable()
+        swapMansion('in')
         movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
         SOUNDS.outsideAmbienceSource.playing = false
       }
     },
+    enableDebug: true
   }
 ))
 
@@ -155,9 +163,6 @@ teleportInside.getComponent(BoxShape).withCollisions = false
 teleportInside.getComponent(BoxShape).visible = false
 teleportInside.addComponent(new Transform({ position: scene.teleportInsidePos, scale: scene.teleportScale }))
 
-// create trigger area object, setting size and relative position
-let triggerBoxInside = new utils.TriggerBoxShape(scene.teleportScale, Vector3.Zero())
-
 //create trigger for entity
 teleportInside.addComponent(
   new utils.TriggerComponent(
@@ -165,12 +170,13 @@ teleportInside.addComponent(
     {
       layer: 0,
       onCameraEnter: async () => {
-
+        swapMansion('out')
         movePlayerTo(scene.teleportArriveOutward)
         setGunUnUseable()
         SOUNDS.outsideAmbienceSource.loop = true
         SOUNDS.outsideAmbienceSource.playing = true
       },
+      enableDebug: true
     }
   ))
 
@@ -191,6 +197,7 @@ export function enableTunnelGrave() {
     teleportGrave.addComponent(new OnPointerDown((e) => {
 
       if (gunIsInHand) {
+        swapMansion('in')
 
         if (firstTimeEntry) {
           cultLeader.onActivate()
@@ -225,6 +232,28 @@ export function enableTunnelGrave() {
 
 
 }
+
+export function swapMansion(state: 'in' | 'out') {
+  switch (state) {
+    case 'in':
+      for (const block of blocks) {
+        block.entity.getComponent(Transform).scale.setAll(7.92)
+      }
+      upperDoor.getComponent(Transform).scale.setAll(1)
+      mansionInTransform.scale.setAll(1)
+      mansionOutTransform.scale.setAll(0)
+      break
+    case 'out':
+      for (const block of blocks) {
+        block.entity.getComponent(Transform).scale.setAll(0)
+      }
+      upperDoor.getComponent(Transform).scale.setAll(0)
+      mansionInTransform.scale.setAll(0)
+      mansionOutTransform.scale.setAll(1)
+      break
+  }
+}
+
 
 let musicBox = new Entity()
 musicBox.addComponent(new Transform({ position: new Vector3(24, 10, 24) }))
