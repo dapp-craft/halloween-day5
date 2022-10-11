@@ -149,7 +149,7 @@ teleportOutside.addComponent(new utils.TriggerComponent(
         SOUNDS.outsideAmbienceSource.playing = false
       }
     },
-    enableDebug: true
+    //enableDebug: true
   }
 ))
 
@@ -176,7 +176,7 @@ teleportInside.addComponent(
         SOUNDS.outsideAmbienceSource.loop = true
         SOUNDS.outsideAmbienceSource.playing = true
       },
-      enableDebug: true
+      //enableDebug: true
     }
   ))
 
