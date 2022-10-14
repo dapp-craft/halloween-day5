@@ -1,6 +1,6 @@
 import { HalloweenState } from './halloweenQuests/quest'
 
-export const TESTDATA_ENABLED = true
+export const TESTDATA_ENABLED = false
 export let IN_PREVIEW: boolean = false
 
 export function setInPreview(val: boolean) {
