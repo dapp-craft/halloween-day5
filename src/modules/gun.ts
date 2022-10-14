@@ -4,7 +4,7 @@ import * as SOUNDS from "./sounds";
 import { Ghost, ghostState } from "./ghostBoss";
 import { GhostCollider, GhostSmall } from "./ghostEnemies";
 import { ghost } from "../finalHuntdown";
-import { ghostBossDialog } from "../NPC/dialog";
+import { ghostBossDialog } from "../resources/dialog";
 import { Shootable } from "./shootables";
 
 

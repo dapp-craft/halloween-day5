@@ -8,7 +8,7 @@ import { spawnGhosts  } from "../modules/ghostEnemies";
 import { PlayerTrap } from "../modules/trap";
 import { scene } from "../modules/scene";
 
-import { enableTunnelGrave, teleportGrave } from '../../src/modules/allowPlayerIn'
+import { enableTunnelGrave, teleportGrave } from '../modules/allowPlayerIn'
 import { giveGunToPlayer } from "../modules/gun";
 
 

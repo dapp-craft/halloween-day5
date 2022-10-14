@@ -8,7 +8,7 @@ import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as UI from "./ui";
 import * as SOUNDS from "./sounds";
-import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../NPC/dialog'
+import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform } from './mansion';
 import { blocks, upperDoor } from './ghostBoss';
 

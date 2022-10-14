@@ -5,7 +5,7 @@ import {
   ghostBossDialog,
   cultLeaderDialog,
   ghostBlasterDialogOutroShort
-} from './NPC/dialog'
+} from './resources/dialog'
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
 import { halloweenTheme } from './halloweenQuests/quest'
 import * as ui from '@dcl/ui-scene-utils'
