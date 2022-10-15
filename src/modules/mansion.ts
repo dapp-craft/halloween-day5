@@ -1,5 +1,7 @@
 import { scene } from '../modules/scene';
 import { Shootable } from '../modules/shootables';
+import { createChannel } from './padlock/builder-scripts/channel';
+import PadLock from './padlock/item';
 
 let mansionShape = new GLTFShape('models/mansion.glb')
 let citadelShape = new GLTFShape('models/citadel.glb')
@@ -9,7 +11,7 @@ let pictureShape = new GLTFShape('models/picture.glb')
 let picture2Shape = new GLTFShape('models/picture2.glb')
 let gardenShape = new GLTFShape('models/fence.glb')
 let fireShape = new GLTFShape('models/fire.glb')
-let mainDoorShape =  new GLTFShape("models/main_door.glb")
+let mainDoorShape =  new GLTFShape('models/main_door.glb')
 
 let portalAlpha = new Texture('textures/portal_alpha.png', { samplingMode: 1, wrap: 1 })
 //let portalNormalmap2 = new Texture('textures/portal_normal22222.png.png', {samplingMode: 1, wrap:1})
@@ -48,6 +50,22 @@ engine.addEntity(mainDoor)
 export function openMainDoor(){
   mainDoor.getComponent(Transform).rotation = Quaternion.Euler(0,125,0)
 }
+
+
+const padlockRomanNumber = new Entity('padlockRomanNumber')
+engine.addEntity(padlockRomanNumber)
+padlockRomanNumber.addComponentOrReplace(new Transform({
+    position: new Vector3(32, 1.63, 40),
+    rotation: new Quaternion(0, 0, 0, 1),
+    scale: new Vector3(5, 5, 5)
+}))
+const channelId = Math.random().toString(16).slice(2)
+const channelBus = new MessageBus()
+const padLock = new PadLock(openMainDoor)
+padLock.init()
+padLock.spawn(padlockRomanNumber, { 'combination': 11111, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
+
+
 
 let ground = new Entity()
 ground.addComponent(new Transform({ position: new Vector3(24, -0.1, 24), scale: new Vector3(48, 0.22, 48), rotation: Quaternion.Euler(0, 0, 0) }))
