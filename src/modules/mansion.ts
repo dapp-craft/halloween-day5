@@ -55,8 +55,8 @@ export function openMainDoor(){
 const padlockRomanNumber = new Entity('padlockRomanNumber')
 engine.addEntity(padlockRomanNumber)
 padlockRomanNumber.addComponentOrReplace(new Transform({
-    position: new Vector3(32, 1.63, 40),
-    rotation: new Quaternion(0, 0, 0, 1),
+    position: new Vector3(36, 1.63, 32),
+    rotation:  Quaternion.Euler(0, -90, 90),
     scale: new Vector3(5, 5, 5)
 }))
 const channelId = Math.random().toString(16).slice(2)
