@@ -81,7 +81,7 @@ export class GhostSmall {
 //dummy ghost
 let dummyGhost = spawnGhostSmall(new Vector3(scene.mansionCenter.x + 1, -10, scene.mansionCenter.z + 1), new Vector3(scene.mansionCenter.x + 1, -10, scene.mansionCenter.z + 1), 5 + 1, new Vector3(scene.mansionCenter.x, -10, scene.mansionCenter.z))
 
-let smallGhosts: NPC[] = []
+export let smallGhosts: NPC[] = []
 
 export function spawnGhostSmall(_wp1: Vector3, _wp2: Vector3, _level: number, _spawn: Vector3): NPC {
 

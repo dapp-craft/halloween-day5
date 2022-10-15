@@ -3,7 +3,7 @@ import { IN_PREVIEW } from '../config'
 
 import * as utils from '@dcl/ecs-scene-utils'
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-import { cultLeader, ghostBlaster } from "../finalHuntdown";
+import { cultLeader, ghost, ghostBlaster } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as UI from "./ui";
@@ -11,6 +11,7 @@ import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform } from './mansion';
 import { blocks, upperDoor } from './ghostBoss';
+import { smallGhosts } from './ghostEnemies';
 
 
 
@@ -135,7 +136,7 @@ teleportOutside.addComponent(new utils.TriggerComponent(
         if (allowed) {
           swapMansion('in')
           cultLeader.onActivate()
-          movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
+          movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
 
           firstTimeEntry = false
           SOUNDS.outsideAmbienceSource.playing = false
@@ -145,7 +146,7 @@ teleportOutside.addComponent(new utils.TriggerComponent(
       } else {
         setGunUseable()
         swapMansion('in')
-        movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
+        movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
         SOUNDS.outsideAmbienceSource.playing = false
       }
     },
@@ -238,7 +239,12 @@ export function swapMansion(state: 'in' | 'out') {
     case 'in':
       for (const block of blocks) {
         block.entity.getComponent(Transform).scale.setAll(7.92)
+        block.transpEntity.getComponent(Transform).scale.setAll(7.92)
       }
+      for (const bat of smallGhosts){
+        bat.getComponent(Transform).scale.setAll(1)
+      }
+      ghost.getComponent(Transform).scale.setAll(4)
       upperDoor.getComponent(Transform).scale.setAll(1)
       mansionInTransform.scale.setAll(1)
       mansionOutTransform.scale.setAll(0)
@@ -246,7 +252,12 @@ export function swapMansion(state: 'in' | 'out') {
     case 'out':
       for (const block of blocks) {
         block.entity.getComponent(Transform).scale.setAll(0)
+        block.transpEntity.getComponent(Transform).scale.setAll(0)
       }
+      for (const bat of smallGhosts){
+        bat.getComponent(Transform).scale.setAll(0)
+      }
+      ghost.getComponent(Transform).scale.setAll(0)
       upperDoor.getComponent(Transform).scale.setAll(0)
       mansionInTransform.scale.setAll(0)
       mansionOutTransform.scale.setAll(1)

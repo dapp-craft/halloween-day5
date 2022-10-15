@@ -21,7 +21,7 @@ export class Scene {
   teleportOutsidePos: Vector3 = new Vector3(this.mansionCenter.x - 18.5, 0, this.mansionCenter.z)
   teleportArriveInward: Vector3 = new Vector3(this.mansionCenter.x - 16, 0, this.mansionCenter.z)
   teleportInsidePos: Vector3 = new Vector3(this.mansionCenter.x - 17.5, 0, this.mansionCenter.z)
-  teleportArriveOutward: Vector3 = new Vector3(this.mansionCenter.x - 21, 0, this.mansionCenter.z)
+  teleportArriveOutward: Vector3 = new Vector3(35, 0, 39)
   teleportScale: Vector3 = new Vector3(1, 4, 1.5)
   constructor() {
 
