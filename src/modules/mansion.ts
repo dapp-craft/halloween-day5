@@ -1,3 +1,5 @@
+import { cards_transforms } from 'src/resources/locators/card_locators';
+import { cards_models } from 'src/resources/model_paths';
 import { scene } from '../modules/scene';
 import { Shootable } from '../modules/shootables';
 import { createChannel } from './padlock/builder-scripts/channel';
@@ -11,11 +13,11 @@ let pictureShape = new GLTFShape('models/picture.glb')
 let picture2Shape = new GLTFShape('models/picture2.glb')
 let gardenShape = new GLTFShape('models/fence.glb')
 let fireShape = new GLTFShape('models/fire.glb')
-let mainDoorShape =  new GLTFShape('models/main_door.glb')
+let mainDoorShape = new GLTFShape('models/main_door.glb')
 
 let portalAlpha = new Texture('textures/portal_alpha.png', { samplingMode: 1, wrap: 1 })
 //let portalNormalmap2 = new Texture('textures/portal_normal22222.png.png', {samplingMode: 1, wrap:1})
-log(new Vector3(scene.mansionCenter.x-50, 0, scene.mansionCenter.z-50))
+log(new Vector3(scene.mansionCenter.x - 50, 0, scene.mansionCenter.z - 50))
 let mansionOutside = new Entity()
 mansionOutside.addComponent(new Transform(
   {
@@ -44,20 +46,41 @@ garden.addComponent(gardenShape)
 engine.addEntity(garden)
 
 let mainDoor = new Entity()
-mainDoor.addComponent(new Transform({position: scene.mainDoorPos}))
+mainDoor.addComponent(new Transform({ position: scene.mainDoorPos }))
 mainDoor.addComponent(mainDoorShape)
 engine.addEntity(mainDoor)
-export function openMainDoor(){
-  mainDoor.getComponent(Transform).rotation = Quaternion.Euler(0,125,0)
+export function openMainDoor() {
+  mainDoor.getComponent(Transform).rotation = Quaternion.Euler(0, 125, 0)
+}
+
+//cards randomizer
+let variations: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+const models: string[] = [
+  cards_models.card1,
+  cards_models.card2,
+  cards_models.card3,
+  cards_models.card3,
+  cards_models.card4,
+  cards_models.card5
+]
+for (let i = 0; i < 5; i++) {
+  
+  let rnd = Math.floor(Math.random() * variations.length)
+  const card = new Entity()
+  card.addComponentOrReplace(new GLTFShape(models[i]))
+  card.addComponentOrReplace(cards_transforms[variations[rnd]])
+  engine.addEntity(card)
+
+  variations.splice(variations[rnd], 1)
 }
 
 
 const padlockRomanNumber = new Entity('padlockRomanNumber')
 engine.addEntity(padlockRomanNumber)
 padlockRomanNumber.addComponentOrReplace(new Transform({
-    position: new Vector3(36, 1.63, 32),
-    rotation:  Quaternion.Euler(0, -90, 90),
-    scale: new Vector3(5, 5, 5)
+  position: new Vector3(36, 1.63, 32),
+  rotation: Quaternion.Euler(0, -90, 90),
+  scale: new Vector3(5, 5, 5)
 }))
 const channelId = Math.random().toString(16).slice(2)
 const channelBus = new MessageBus()

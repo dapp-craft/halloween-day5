@@ -8,15 +8,10 @@ import { cultLeader, ghost, ghostBlaster, farmer, catLover, girlCult } from "../
 import { grid } from "../modules/grid";
 import { scene } from "../modules/scene";
 import { setGunUnUseable, setGunUseable } from "../modules/gun";
+import { boss_models } from "src/resources/model_paths";
 
 
-let blockShape = new GLTFShape("models/board_block.glb")
-let blockTranspShape = new GLTFShape("models/board_block_transp.glb")
-let roomLockShape = new GLTFShape("models/room_lock_box.glb")
-let ghostShape = new GLTFShape("models/ghost_boss.glb")
-let pentaLightsShape = new GLTFShape("models/penta_lights.glb")
-let bigFlameShape = new GLTFShape("models/BigFlame.glb")
-let upperDoorShape = new GLTFShape("models/upper_door.glb")
+
 
 
 
@@ -79,7 +74,7 @@ class Block {
 
 
         this.entity = new Entity()
-        this.entity.addComponent(blockShape)
+        this.entity.addComponent(new GLTFShape(boss_models.ghostBoss))
         this.entity.addComponent(SOUNDS.woodExplodeSource)
         this.entity.addComponent(new Transform({
             position: new Vector3(this.centerPos.x, this.centerPos.y, this.centerPos.z),
@@ -96,7 +91,7 @@ class Block {
         engine.addEntity(this.entity)
 
         this.transpEntity = new Entity()
-        this.transpEntity.addComponent(blockTranspShape)
+        this.transpEntity.addComponent(new GLTFShape(boss_models.transparentBlock))
         this.transpEntity.addComponent(new Transform({
             position: new Vector3(this.centerPos.x, -20, this.centerPos.z),
             scale: new Vector3(this.sizeX, this.sizeX, this.sizeZ),
@@ -122,7 +117,7 @@ class Block {
 
 export let upperDoor = new Entity()
 upperDoor.addComponent(new Transform({ position: scene.upperDoorPos }))
-upperDoor.addComponent(upperDoorShape)
+upperDoor.addComponent(new GLTFShape(boss_models.upperDoor))
 engine.addEntity(upperDoor)
 upperDoor.addComponent(new OnPointerDown((e) => {
     resetAllBlocks()
@@ -148,7 +143,7 @@ pentaLights.addComponent(new Transform({
     position: scene.pentagramPos,
     scale: new Vector3(1, 0, 1)
 }))
-pentaLights.addComponent(pentaLightsShape)
+pentaLights.addComponent(new GLTFShape(boss_models.pentaLight))
 engine.addEntity(pentaLights)
 
 
@@ -227,7 +222,7 @@ roomLock.addComponent(new Transform({
     scale: new Vector3(grid.sizeX - 0.6, 6, grid.sizeZ - 0.6)
 }
 ))
-roomLock.addComponent(roomLockShape)
+roomLock.addComponent(new GLTFShape(boss_models.roomLock))
 engine.addEntity(roomLock)
 
 function isPlayerInsideRoom(_pos: Vector3): boolean {
@@ -628,7 +623,7 @@ export function addBoss() {
 
 
     bigFlame.addComponent(new Transform({ position: new Vector3(0, 0, -0.1) }))
-    bigFlame.addComponent(bigFlameShape)
+    bigFlame.addComponent(new GLTFShape(boss_models.blueFlame))
     bigFlame.setParent(ghost)
     //engine.addEntity(bigFlame)
     engine.addEntity(ghost)

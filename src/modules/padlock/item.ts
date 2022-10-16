@@ -1,3 +1,4 @@
+import { padlock_models } from 'src/resources/model_paths'
 import { PadLockComponent } from './padlock'
 
 export type Props = {
@@ -118,7 +119,7 @@ export default class PadLock implements IScript<Props> {
                 scale: new Vector3(1, 1, 1)
             })
         )
-        this.padLockEntity.addComponent(new GLTFShape('models/padlock/Padlock_base.glb'))
+        this.padLockEntity.addComponent(new GLTFShape(padlock_models.base))
 
         const wheel1 = new Entity()
         const wheel2 = new Entity()
@@ -148,7 +149,7 @@ export default class PadLock implements IScript<Props> {
                 position: new Vector3(0.14, 0, 0)
             })
         )
-        wheel1.addComponent(new GLTFShape('models/padlock/Padlock_roulette.glb'))
+        wheel1.addComponent(new GLTFShape(padlock_models.wheel1))
 
         wheel1.addComponent(
             new OnPointerDown(
@@ -172,7 +173,7 @@ export default class PadLock implements IScript<Props> {
                 position: new Vector3(0.03, 0, 0)
             })
         )
-        wheel2.addComponent(new GLTFShape('models/padlock/Padlock_roulette.glb'))
+        wheel2.addComponent(new GLTFShape(padlock_models.wheel2))
         wheel2.addComponent(
             new OnPointerDown(
                 e => {
@@ -195,7 +196,7 @@ export default class PadLock implements IScript<Props> {
                 position: new Vector3(-0.08, 0, 0)
             })
         )
-        wheel3.addComponent(new GLTFShape('models/padlock/Padlock_roulette.glb'))
+        wheel3.addComponent(new GLTFShape(padlock_models.wheel3))
         wheel3.addComponent(
             new OnPointerDown(
                 e => {
@@ -218,7 +219,7 @@ export default class PadLock implements IScript<Props> {
                 position: new Vector3(-0.18, 0, 0)
             })
         )
-        wheel4.addComponent(new GLTFShape('models/padlock/Padlock_roulette.glb'))
+        wheel4.addComponent(new GLTFShape(padlock_models.wheel4))
         wheel4.addComponent(
             new OnPointerDown(
                 e => {
@@ -240,7 +241,7 @@ export default class PadLock implements IScript<Props> {
                 position: new Vector3(-0.29, 0, 0)
             })
         )
-        wheel5.addComponent(new GLTFShape('models/padlock/Padlock_roulette.glb'))
+        wheel5.addComponent(new GLTFShape(padlock_models.wheel5))
         wheel5.addComponent(
             new OnPointerDown(
                 e => {
