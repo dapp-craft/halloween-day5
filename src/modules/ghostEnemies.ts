@@ -229,7 +229,7 @@ class ghostPatrolSystem {
                 //Dead state
                 } else {
                     if( objectInfo.animationState != 3){
-                        entity.playAnimation(`panic`, true)
+                        entity.playAnimation(`panic`, false)
                         objectInfo.animationState = 3
                     }
                     objectInfo.electric.getComponent(Transform).scale.setAll(0)
