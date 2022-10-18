@@ -15,38 +15,44 @@ import { giveGunToPlayer } from "../modules/gun";
 //creeper NPC
 export let creepDialog1: Dialog[] = [
   {
-    text: 'You\'re never gonna catch meeeeeee.... ',
+    text: 'Ooooh! Wo-oh-oh! My sorrow is as great as the ocean!',
     isEndOfDialog: true,
   }    
   
 ]
 export let creepDialog2: Dialog[] = [
   {
-    text: 'I know something, you know nothing... ',
+    text: 'Ooooh! Wo-oh-oh! My sadness is as heavy as the mountains!',
     isEndOfDialog: true,
   }    
   
 ]
 export let creepDialog3: Dialog[] = [
   {
-    text: 'OK now leave me alone will ya?',
+    text: "Oooow Daaaaamn! My rhythms are like bullets!" +
+"F***ck Ooof! My haters... more like lamers!",
     isEndOfDialog: true,
   }    
   
 ]
 export let creepDialog4: Dialog[] = [
   {
-    text: 'All right, all right. You got me.', 
+    text: "How does my new track sound? I made it just now, I just need to record a Feat. With the Mumbling Ghost." +
+"And then you could give it a listen on all the popular platforms.", 
        
   },
   {
-    text: 'You\'re just too desperate to get inside a deathly cult mansion, aren\'t you?',    
+    text: "I must hurry before they notice my absence. We are not allowed to leave." +
+"But laws are not for me. I am a gangster.",    
   },  
   {
-    text: 'Well... All you need to do is use the secret tunnel! Ya haaa!',    
-  },  
+    text: "I live the life of a gangster and write songs about it. I even know what my next track will be about! Escape from the castle!",    
+  },
   {
-    text: 'Just look for a dark grave with a cross on its lid and no tombstone. It\'s on the left of the mansion!',
+    text: "How I hid from the guards, how I went through the portal in the grave ...",    
+  }, 
+  {
+    text: "Have a good one, ichthyander! I am gonna go to Grammy’s!",
     triggeredByNext: () => {
       enableTunnelGrave()
     },
@@ -57,7 +63,7 @@ export let creepDialog4: Dialog[] = [
 
 export let creepDialogShort: Dialog[] = [
   {
-    text: 'Just look for a dark grave with a cross on its lid and no tombstone. It\'s on the left of the mansion!',
+    text: 'Just look for a dark grave with a cross on its lid and no tombstone. It\'s on the left of the castle!',
     triggeredByNext: () => {
       enableTunnelGrave()
     },
@@ -67,47 +73,25 @@ export let creepDialogShort: Dialog[] = [
 ]
 // ghost Control Injured NPC
 
-export let ghostBlasterDialogAtPlaza: Dialog[] = [
-  {
-    text: 'Looking for the old lady, huh?',
-  },  
-  {
-    text: 'Well guess what? She turned out to be the long time suspect of our GhostBlaster team and thanks to your investigation we\'ve been able to track down her secret hideout mansion',
-  },  
-  {
-    text: 'She leads an evil cult that\'s trying to channel demons into Decentraland',
-  },  
-  {
-    text: 'Now that she\'s been busted, she has probaly started to open the portal already!',
-  },  
-  {
-    text: 'I\'m heading there now to stop her. If you\'re interested in helping me putting an end to this once and for all...',
-  },  
-  {
-    text: ` ...meet me at the Cult Mansion! `,
-    triggeredByNext: () => {          
-      
-    },
-    isEndOfDialog: true,
-  }
-]
 
 export let ghostBlasterDialogAtDoor: Dialog[] = [
   {
-    text: 'Hey! ...cough ...cough ... So glad you came!',
+    text: "Did I already tell that you walk way too slow for someone who is about to beat up a gargoyle?" +
+ "Hopefully you are at least not scared.",
     triggeredByNext: () => {
       ghostBlaster.playAnimation(`HeadShake_No`, false)
     }, 
   },
   {
-    text: 'I managed to open the door, but the mansion seems to be defended by some sort of cultist dress-code magic',
+    text: "Getting into the Castle won’t be an easy task. Now it isn’t Fort Knox, no. But some elbow grease might get involved.",
     triggeredByNext: () => {
       ghostBlaster.playAnimation(`Happy Hand Gesture`, false)
     },
     
   },
   {
-    text: `If you have that cultist uniform with you... It would save a lot of time...`,
+    text: "I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six." +
+"If things get heated – remember, I am behind you.",
     triggeredByNext: () => {
       ghostBlaster.playAnimation(`Tought Head Shake`, false)
     },
@@ -115,13 +99,14 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
     
   },
   {
-    text: `Otherwise, you'll just have to find and alternative entrance into the mansion!`,
+    text: "A cipher lock. You’ll need to pick a combination to get through it." +
+"Look around, try to find secret signs around here and pick a combination to work on the lock.",
     triggeredByNext: () => {
       ghostBlaster.playAnimation(`Lengthy`, false)
     },
   },
   {
-    text: `Oh, and a weapon might also come in handy... `,
+    text: "Oh, and a weapon might also come in handy... `, .",
     triggeredByNext: () => {
       ghostBlaster.playAnimation(`Happy Hand Gesture`, false)
       giveGunToPlayer()
@@ -134,6 +119,12 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
       ghostBlaster.playAnimation(`Hard Head`, true, 2)
       
     },  
+  },
+  {
+    text: "I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.",    
+  }, 
+  {
+    text: "If you pass by -  try to chat with him, maybe he will tell you something useful. A local resident should know all the loopholes after all.",    
   },
   {
     text: `Now go and catch that son of a witch!`,
@@ -150,7 +141,7 @@ export let ghostBlasterDialogAtDoorShort: Dialog[] = [
    text: `We have to find a way inside! `,    
  },
  {
-   text: `If you don't have cultist clothes then try to look around the mansion! `,  
+   text: "If it doesn't work with the lock then try to look around the Castle for secret way! `,  
    isEndOfDialog: true,
  },
 ]
@@ -166,7 +157,7 @@ export let ghostBlasterDialogNoWeapon: Dialog[] = [
 export let ghostBlasterDialogNoClothes: Dialog[] = [
 
   {
-   text: `It seems to only let through cultists...`, 
+   text: "You’ll need to pick a combination to get through it...", 
    isEndOfDialog: true,   
  },
 ]
@@ -300,36 +291,36 @@ export let cultLeaderDialog: Dialog[] = [
 // Evil Ghost NPC
 export let ghostBossDialog: Dialog[] = [
   {
-    text: 'AH! It\'s you... AGAIN!', 
+    text: "I have waited for you! And you have stepped right into my trap!", 
     triggeredByNext: () => {
       ghost.playAnimation(`Idle_003`, true, 3)
     },   
   },
   {
-    text: 'And you\'re too late... AgAiN!! ',
+    text: "You didn’t think you could defeat me so easily did you? Now face the strength of my mighty hands and the sharpness of my dagger claws!",
     triggeredByNext: () => {
       ghost.playAnimation(`Idle_002`, true, 3)
     },
   },
   {
-    text: 'Your foolishness just keeps reaching new heights!',
+    text: "I will rip your tongue and make you lick my boots!",
     triggeredByNext: () => {
       ghost.playAnimation(`Idle_002`, true, 3)
     },
   },
   {
-    text: `My demon portal to the other side is almost complete!`,
+    text: "I will rip that precious smile of yours and make you kiss my rocky-ass!",
     
   },
   {
-    text: `I'll just need to take one last life as a sacrifice ...`,
+    text: `no text`,
     triggeredByNext: () => {
       ghost.playAnimation(`Idle_003`, true, 3)
     },  
     
   },
   {
-    text: `Well... WHO should that BE? `,
+    text: `Muaa-Ha-Ha! `,
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`Dismissing`, true, 3.3)
       ghost.getComponent(Ghost).state = ghostState.MOVING
@@ -344,22 +335,22 @@ export let ghostBossDialog: Dialog[] = [
     isEndOfDialog: true,
   },
   {
-    text: 'AARRRRRRRRGGHHHHHHH',    
+    text: "And when you're done, I'll go to  the hipster witches.",    
   },
   {
-    text: 'You won this round, but for nothing! ',
+    text: "I'll order them to go to all parts of the world!",
   },
   {
-    text: 'The portal will be completed with or without your help!',
+    text: "Unrecognized, they will walk among people dressed up for Halloween and do their hipster deeds!",
   },
   {
-    text: 'I\'ll become stronger than ever before!',
+    text: "How cunning you are",
   },
   {
-    text: 'And when I return...',
+    text: "No, I won't make the classic villain's mistake of taunting and boasting of villainous designs for too long to give the hero time to gather his strength!",
   },
   {
-    text: `...I won't come alone.`,
+    text: "Feel my power!",
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
       onBossDead()
