@@ -165,7 +165,7 @@ export function addNPCs() {
       position: new Vector3(scene.mansionCenter.x - 25, 0, scene.mansionCenter.z - 3.5),
       rotation: Quaternion.Euler(0, -45, 0),
     },
-    'models/NPCs/ghostblaster.glb',
+    'models/NPCs/hunter.glb',
     () => {
 
       if (ghostBlaster.dialog.isDialogOpen) {
@@ -194,8 +194,8 @@ export function addNPCs() {
     {
       portrait: { path: 'images/portraits/ghostblaster_suit.png', height: 256, width: 256 },
       reactDistance: 4,
-      idleAnim: `Weight_Shift`,
-      faceUser: true,
+      idleAnim: `stand`,
+      faceUser: false,
       onlyExternalTrigger: false
     }
 

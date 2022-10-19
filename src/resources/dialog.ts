@@ -78,47 +78,22 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
   {
     text: "Did I already tell that you walk way too slow for someone who is about to beat up a gargoyle?" +
  "Hopefully you are at least not scared.",
-    triggeredByNext: () => {
-      ghostBlaster.playAnimation(`HeadShake_No`, false)
-    }, 
   },
   {
-    text: "Getting into the Castle won’t be an easy task. Now it isn’t Fort Knox, no. But some elbow grease might get involved.",
-    triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Happy Hand Gesture`, false)
-    },
-    
+    text: "Getting into the Castle won’t be an easy task. Now it isn’t Fort Knox, no. But some elbow grease might get involved.",   
   },
   {
     text: "I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six." +
 "If things get heated – remember, I am behind you.",
-    triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Tought Head Shake`, false)
-    },
-    
-    
-  },
   {
     text: "A cipher lock. You’ll need to pick a combination to get through it." +
 "Look around, try to find secret signs around here and pick a combination to work on the lock.",
-    triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Lengthy`, false)
-    },
   },
   {
     text: "Oh, and a weapon might also come in handy... `, .",
-    triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Happy Hand Gesture`, false)
-      giveGunToPlayer()
-    },
-    
   },
   {
     text: `Here, take my spare one! \nIt works best in first person mode (Press V) and you need to hold the trigger once you're inside!`,  
-    triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Hard Head`, true, 2)
-      
-    },  
   },
   {
     text: "I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.",    
@@ -141,7 +116,7 @@ export let ghostBlasterDialogAtDoorShort: Dialog[] = [
    text: `We have to find a way inside! `,    
  },
  {
-   text: "If it doesn't work with the lock then try to look around the Castle for secret way! `,  
+   text: `If it doesn't work with the lock then try to look around the Castle for secret way! `,  
    isEndOfDialog: true,
  },
 ]
