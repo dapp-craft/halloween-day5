@@ -89,6 +89,7 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
   },
   {
     text: "If things get heated – remember, I am behind you.",
+  },
   {
     text: "A cipher lock. You'll need to pick a combination to get through it."
   },
