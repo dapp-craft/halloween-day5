@@ -7,8 +7,8 @@ export type Props = {
 }
 
 export default class PadLock implements IScript<Props> {
-    spinClip = new AudioClip('sounds/Button_Press.mp3')
-    solveClip = new AudioClip('sounds/Resolve.mp3')
+    spinClip = new AudioClip('sounds/padlock/Button_Press.mp3')
+    solveClip = new AudioClip('sounds/padlock/Resolve.mp3')
     padLockEntity: Entity
     callbackOnCoplete: () => void
     constructor(_callbackOnComplete: () => void) {

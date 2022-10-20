@@ -97,12 +97,12 @@ ground.getComponent(BoxShape).visible = false
 ground.getComponent(BoxShape).withCollisions = true
 engine.addEntity(ground)
 
-let pictureFrameDummy = new Entity()
+export let pictureFrameDummy = new Entity()
 pictureFrameDummy.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, -10, scene.mansionCenter.z) }))
 pictureFrameDummy.addComponent(picture2Shape)
 engine.addEntity(pictureFrameDummy)
 
-let pictureFrame = new Entity()
+export let pictureFrame = new Entity()
 pictureFrame.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, 10.25, scene.mansionCenter.z) }))
 pictureFrame.addComponent(pictureShape)
 pictureFrame.addComponent(new Shootable(() => {

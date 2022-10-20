@@ -2,7 +2,7 @@ import { Dialog } from '@dcl/npc-scene-utils'
 import * as UI from '../modules/ui'
 import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/ghostBoss";
 import {  cultLeader, ghost, farmer, girlCult, catLover, hunter, cultist1  } from "../finalHuntdown";
-import * as SOUNDS from "../modules/sounds";
+//import * as SOUNDS from "../modules/sounds";
 import { setGunUseable } from "../modules/gun";
 import { spawnGhosts  } from "../modules/ghostEnemies";
 import { PlayerTrap } from "../modules/trap";
@@ -310,7 +310,7 @@ export let ghostBossDialog: Dialog[] = [
       
       ghost.playAnimation(`Idle_001`, false)
     
-      SOUNDS.actionLoopSource.playing = true
+      //SOUNDS.actionLoopSource.playing = true
       setGunUseable()
       ghost.playAnimation(`Idle_002`, false)
       

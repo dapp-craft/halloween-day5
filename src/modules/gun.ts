@@ -1,6 +1,6 @@
 import * as tools from "./utilities";
 import * as UI from "./ui";
-import * as SOUNDS from "./sounds";
+//import * as SOUNDS from "./sounds";
 import { Ghost, ghostState } from "./ghostBoss";
 import { GhostCollider, GhostSmall } from "./ghostEnemies";
 import { ghost } from "../finalHuntdown";
@@ -48,7 +48,7 @@ ghostGun.addComponent(
   })
 )
 engine.addEntity(ghostGun)
-ghostGun.addComponent(SOUNDS.beamPowerupSource)
+//ghostGun.addComponent(SOUNDS.beamPowerupSource)
 //ghostGun.setParent(Attachable.FIRST_PERSON_CAMERA)
 
 let gunLookat = new Entity()
@@ -83,7 +83,7 @@ gunTip.addComponent(
     scale: new Vector3(1,1,1)
   })
 )
-gunTip.addComponent(SOUNDS.beamSource)
+//gunTip.addComponent(SOUNDS.beamSource)
 gunTip.setParent(ghostGun)
 
 let beam = new Entity()
@@ -124,8 +124,8 @@ export function setGunUnUseable(){
 export function setGunActive(){
     if(gunIsInHand && gunIsUseable){
         beamActive = true
-        SOUNDS.beamSource.playing = true
-        SOUNDS.beamPowerupSource.playOnce()
+        //SOUNDS.beamSource.playing = true
+        //SOUNDS.beamPowerupSource.playOnce()
     
         // if(e.hit){
         //  // if(e.hit.hitPoint.x != 0 || e.hit.hitPoint.z != 0){
@@ -141,7 +141,7 @@ export function setGunActive(){
 export function setGunInActive(){
     //if(gunIsInHand && gunIsUseable){
         beamActive = false
-        SOUNDS.beamSource.playing = false
+        //SOUNDS.beamSource.playing = false
         //updateBeamPoints(Vector3.Zero(),Vector3.Forward(),0,0)
         //beam.getComponent(Transform).scale.setAll(0.01)
     //}
@@ -185,9 +185,9 @@ class BeamGunSystem {
               //Trigger Ghost death dialog sequence
               else{
                 ghostInfo.state = ghostState.DEATH 
-                SOUNDS.actionLoopSource.playing = false
-                SOUNDS.endingMusicSource.loop = true
-                SOUNDS.endingMusicSource.playing = true
+                // SOUNDS.actionLoopSource.playing = false
+                // SOUNDS.endingMusicSource.loop = true
+                // SOUNDS.endingMusicSource.playing = true
                 ghost.talk(ghostBossDialog,6)
                 setGunUnUseable()
               } 

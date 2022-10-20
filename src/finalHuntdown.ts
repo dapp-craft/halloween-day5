@@ -13,7 +13,7 @@ import { scene } from './modules/scene'
 import { setGunUnUseable } from './modules/gun'
 import { player } from './modules/player'
 
-export let ghostBlaster: NPC
+export let hunter: NPC
 export let ghost: NPC
 export let cultLeader: NPC
 export let catLover: NPC
@@ -160,7 +160,7 @@ export function addNPCs() {
   )
   //cultist1.getComponent(Transform).lookAt(scene.trapPosition1)
 
-  ghostBlaster = new NPC(
+  hunter = new NPC(
     {
       position: new Vector3(scene.mansionCenter.x - 25, 0, scene.mansionCenter.z - 3.5),
       rotation: Quaternion.Euler(0, -45, 0),
@@ -168,22 +168,22 @@ export function addNPCs() {
     'models/NPCs/hunter.glb',
     () => {
 
-      if (ghostBlaster.dialog.isDialogOpen) {
+      if (hunter.dialog.isDialogOpen) {
         return
       }
       if (!scene.bossIsDead) {
         if (scene.guyToldIntro) {
-          ghostBlaster.talk(ghostBlasterDialogAtDoorShort, 0)
+          hunter.talk(ghostBlasterDialogAtDoorShort, 0)
         } else {
-          ghostBlaster.talk(ghostBlasterDialogAtDoor, 0)
+          hunter.talk(ghostBlasterDialogAtDoor, 0)
         }
 
       } else {
         setGunUnUseable()
         if (scene.guyToldEnding) {
-          ghostBlaster.talk(ghostBlasterDialogOutroShort, 0)
+          hunter.talk(ghostBlasterDialogOutroShort, 0)
         } else {
-          ghostBlaster.talk(ghostBlasterDialogOutro, 0)
+          hunter.talk(ghostBlasterDialogOutro, 0)
         }
 
 
@@ -201,14 +201,14 @@ export function addNPCs() {
 
   )
 
-  ghostBlaster.dialog = new DialogWindow(
+  hunter.dialog = new DialogWindow(
     { path: 'images/portraits/ghostblaster_suit.png', height: 256, width: 256 },
     true,
     null,
     halloweenTheme
   )
-  ghostBlaster.dialog.leftClickIcon.positionX = 340 - 60
-  ghostBlaster.dialog.text.color = Color4.FromHexString('#8DFF34FF')
+  hunter.dialog.leftClickIcon.positionX = 340 - 60
+  hunter.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
 
   //Evil Ghost 
