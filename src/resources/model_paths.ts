@@ -25,9 +25,9 @@ export const padlock_models = {
 
 
 export const cards_models = {
-    card1: 'models/card.glb',
-    card2: 'models/card.glb',
-    card3: 'models/card.glb',
-    card4: 'models/card.glb',
-    card5: 'models/card.glb',
+    card1: 'models/card1.glb',
+    card2: 'models/card2.glb',
+    card3: 'models/card3.glb',
+    card4: 'models/card4.glb',
+    card5: 'models/card5.glb',
 }
