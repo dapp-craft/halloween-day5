@@ -95,7 +95,6 @@ export function spawnGhostSmall(_wp1: Vector3, _wp2: Vector3, _level: number, _s
             //ghostEnemy.playAnimation('idle', false)
         },
         {
-            portrait: { path: 'images/radio3.png', height: 128, width: 128 },
             reactDistance: 20,
             idleAnim: `idle`,
             faceUser: false,

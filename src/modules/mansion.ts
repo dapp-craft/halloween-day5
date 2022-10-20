@@ -46,7 +46,7 @@ garden.addComponent(new Transform())
 garden.addComponent(gardenShape)
 engine.addEntity(garden)
 
-let mainDoor = new Gate(new Transform({ position: scene.mainDoorPos }))
+let mainDoor = new Gate(new Transform())
 export function openMainDoor() {
   mainDoor.openGate()
 }
@@ -84,7 +84,7 @@ const channelId = Math.random().toString(16).slice(2)
 const channelBus = new MessageBus()
 const padLock = new PadLock(openMainDoor)
 padLock.init()
-padLock.spawn(padlockRomanNumber, { 'combination': 12410, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
+padLock.spawn(padlockRomanNumber, { 'combination': 23521, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
 
 
 
@@ -110,21 +110,21 @@ pictureFrame.addComponent(new Shootable(() => {
 }))
 engine.addEntity(pictureFrame)
 
-let portalMat = new Material()
-portalMat.roughness = 0.5
-portalMat.metallic = 0.5
-portalMat.alphaTexture = portalAlpha
-portalMat.emissiveIntensity = 3
-portalMat.emissiveColor = Color3.FromHexString('#0088aa')
+// let portalMat = new Material()
+// portalMat.roughness = 0.5
+// portalMat.metallic = 0.5
+// portalMat.alphaTexture = portalAlpha
+// portalMat.emissiveIntensity = 3
+// portalMat.emissiveColor = Color3.FromHexString('#0088aa')
 
 
-let portalShape = new PlaneShape()
+// let portalShape = new PlaneShape()
 
-let portal = new Entity()
-portal.addComponent(new Transform({ position: new Vector3(scene.doorPos.x, 4, scene.doorPos.z), scale: new Vector3(9, 6.1, 1), rotation: Quaternion.Euler(90, 90, 0) }))
-portal.addComponent(portalShape)
-portal.addComponent(portalMat)
-engine.addEntity(portal)
+// let portal = new Entity()
+// portal.addComponent(new Transform({ position: new Vector3(scene.doorPos.x, 4, scene.doorPos.z), scale: new Vector3(9, 6.1, 1), rotation: Quaternion.Euler(90, 90, 0) }))
+// portal.addComponent(portalShape)
+// portal.addComponent(portalMat)
+// engine.addEntity(portal)
 
 
 let fire1 = new Entity()
@@ -145,54 +145,54 @@ export const mansionInTransform = mansionInside.getComponent(Transform)
 
 
 
-class portalScrollSystem {
+// class portalScrollSystem {
 
-  UVMoveVector = new Vector2(0, 1)
-  elapsedTime = 0
+//   UVMoveVector = new Vector2(0, 1)
+//   elapsedTime = 0
 
 
-  update(dt: number) {
+//   update(dt: number) {
 
-    // log('wW: ' + worldState.worldMoveVector)
-    //log('speed: ' + worldState.currentSpeed)
-    this.elapsedTime += dt
-    this.UVMoveVector.x += dt * 0.5
-    //this.UVMoveVector.y = Math.sin(this.elapsedTime)*0.1
+//     // log('wW: ' + worldState.worldMoveVector)
+//     //log('speed: ' + worldState.currentSpeed)
+//     this.elapsedTime += dt
+//     this.UVMoveVector.x += dt * 0.5
+//     //this.UVMoveVector.y = Math.sin(this.elapsedTime)*0.1
 
-    if (this.UVMoveVector.x > 2) {
-      this.UVMoveVector.x -= 2
-    }
-    if (this.UVMoveVector.y > 2) {
-      this.UVMoveVector.y -= 2
-    }
-    portalShape.uvs = [
+//     if (this.UVMoveVector.x > 2) {
+//       this.UVMoveVector.x -= 2
+//     }
+//     if (this.UVMoveVector.y > 2) {
+//       this.UVMoveVector.y -= 2
+//     }
+//     portalShape.uvs = [
 
-      this.UVMoveVector.x,
-      this.UVMoveVector.y,
+//       this.UVMoveVector.x,
+//       this.UVMoveVector.y,
 
-      this.UVMoveVector.x + 1,
-      this.UVMoveVector.y,
+//       this.UVMoveVector.x + 1,
+//       this.UVMoveVector.y,
 
-      this.UVMoveVector.x + 1,
-      this.UVMoveVector.y + 1,
+//       this.UVMoveVector.x + 1,
+//       this.UVMoveVector.y + 1,
 
-      this.UVMoveVector.x,
-      this.UVMoveVector.y + 1,
-      //----
-      this.UVMoveVector.x,
-      this.UVMoveVector.y,
+//       this.UVMoveVector.x,
+//       this.UVMoveVector.y + 1,
+//       //----
+//       this.UVMoveVector.x,
+//       this.UVMoveVector.y,
 
-      this.UVMoveVector.x + 1,
-      this.UVMoveVector.y,
+//       this.UVMoveVector.x + 1,
+//       this.UVMoveVector.y,
 
-      this.UVMoveVector.x + 1,
-      this.UVMoveVector.y + 1,
+//       this.UVMoveVector.x + 1,
+//       this.UVMoveVector.y + 1,
 
-      this.UVMoveVector.x,
-      this.UVMoveVector.y + 1,
-    ]
-  }
-}
+//       this.UVMoveVector.x,
+//       this.UVMoveVector.y + 1,
+//     ]
+//   }
+// }
 
-// Add a new instance of the system to the engine
-engine.addSystem(new portalScrollSystem())
+// // Add a new instance of the system to the engine
+// engine.addSystem(new portalScrollSystem())

@@ -88,7 +88,6 @@ export function addNPCs() {
       //catLover.playAnimation(`Head_Yes`, true, 2.63)
     },
     {
-      portrait: { path: 'images/radio3.png', height: 128, width: 128 },
       reactDistance: 20,
       idleAnim: `Idle_06`,
       faceUser: false,
@@ -110,7 +109,6 @@ export function addNPCs() {
     },
 
     {
-      portrait: { path: 'images/radio3.png', height: 128, width: 128 },
       reactDistance: 10,
       idleAnim: `Idle_05`,
       faceUser: false,
@@ -132,7 +130,6 @@ export function addNPCs() {
       //castleGuy.faceUser=true
     },
     {
-      portrait: { path: 'images/radio3.png', height: 128, width: 128 },
       reactDistance: 10,
       idleAnim: `Idle_04`,
       faceUser: false,
@@ -151,7 +148,6 @@ export function addNPCs() {
 
     },
     {
-      portrait: { path: 'images/radio3.png', height: 128, width: 128 },
       reactDistance: 10,
       idleAnim: `idle1_Armature.001`,
       faceUser: false,

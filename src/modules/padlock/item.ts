@@ -1,5 +1,4 @@
 import { padlock_models } from 'src/resources/model_paths'
-import { openMainDoor } from '../mansion'
 import { PadLockComponent } from './padlock'
 
 export type Props = {
@@ -98,7 +97,6 @@ export default class PadLock implements IScript<Props> {
             const source = new AudioSource(clip)
             source.volume = 1
             entity.addComponentOrReplace(source)
-            openMainDoor()
             source.playOnce()
             wheels.channel.sendActions(wheels.onSolve)
 

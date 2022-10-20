@@ -6,7 +6,7 @@ export const loot_models = {
 
 
 export const standart_models = {
-    gate: 'models/gate.glb',
+    gate: 'models/main_door.glb',
 }
 
 
