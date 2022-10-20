@@ -86,7 +86,7 @@ const channelId = Math.random().toString(16).slice(2)
 const channelBus = new MessageBus()
 const padLock = new PadLock(openMainDoor)
 padLock.init()
-padLock.spawn(padlockRomanNumber, { 'combination': 11111, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
+padLock.spawn(padlockRomanNumber, { 'combination': 12410, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
 
 
 

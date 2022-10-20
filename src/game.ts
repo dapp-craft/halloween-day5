@@ -10,7 +10,7 @@ import { openMainDoor } from "./modules/mansion";
 addNPCs()
 addBoss()
 addCreeper()
-openMainDoor()
+//openMainDoor()
 scene.isSceneLoaded = true
 
 //mouse input
