@@ -3,6 +3,14 @@ export const loot_models = {
     star: 'models/Star.glb'
 }
 
+
+
+export const standart_models = {
+    gate: 'models/gate.glb',
+}
+
+
+
 export const boss_models = {
     block: 'models/board_block.glb',
     transparentBlock: 'models/board_block_transp.glb',
