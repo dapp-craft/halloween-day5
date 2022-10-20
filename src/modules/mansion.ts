@@ -78,7 +78,7 @@ for (let i = 0; i < 5; i++) {
 const padlockRomanNumber = new Entity('padlockRomanNumber')
 engine.addEntity(padlockRomanNumber)
 padlockRomanNumber.addComponentOrReplace(new Transform({
-  position: new Vector3(36, 1.63, 32),
+  position: new Vector3(34.75, 2, 44.5),
   rotation: Quaternion.Euler(0, -90, 90),
   scale: new Vector3(5, 5, 5)
 }))
