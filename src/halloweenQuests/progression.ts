@@ -1,28 +1,21 @@
 import { getUserData, UserData } from '@decentraland/Identity'
-import {
-  getCurrentRealm,
-  isPreviewMode,
-  Realm,
-} from '@decentraland/EnvironmentAPI'
-import {
-  IN_PREVIEW,
-  setInPreview,
-  TESTDATA_ENABLED,
-  TESTQUESTSTATE,
-} from '../config'
-import { HalloweenState, initialQuestUI, quest } from './quest'
+import { getCurrentRealm, isPreviewMode, Realm } from '@decentraland/EnvironmentAPI'
+import { IN_PREVIEW, setInPreview, TESTDATA_ENABLED, TESTQUESTSTATE } from './config'
 import * as ui from '@dcl/ui-scene-utils'
-import * as utils from '@dcl/ecs-scene-utils'
-//import { PlayCloseSound } from '../../node_modules/@dcl/ui-utils/utils/default-ui-components'
+import { updateQuestUI } from './quest/questTasks'
+import { HalloweenState } from './quest/types'
 
-export let progression: HalloweenState
+// import {PlayCloseSound} from '@dcl/ui-scene-utils'
+
+export let progression: HalloweenState = { data: null, day: 0 }
 
 export let userData: UserData
 export let playerRealm: Realm
 
-export let fireBaseServer =
-  'https://us-central1-decentraland-halloween.cloudfunctions.net/app/'
-//`http://localhost:5001/decentraland-halloween/us-central1/app/`
+export const fireBaseServer =
+  'https://us-central1-halloween-361612.cloudfunctions.net/app/'
+  //To DO Check local sever
+  // `http://localhost:5001/halloween-361612/us-central1/app/` 
 
 export async function setUserData() {
   const data = await getUserData()
@@ -32,11 +25,35 @@ export async function setUserData() {
 
 // fetch the player's realm
 export async function setRealm() {
-  let realm = await getCurrentRealm()
+  const realm = await getCurrentRealm()
   log(`You are in the realm: ${JSON.stringify(realm.displayName)}`)
   playerRealm = realm
 }
+export async function resetProgression() {
 
+
+  if (!userData) {
+    await setUserData()
+    log(userData)
+  }
+
+  const url = fireBaseServer + 'halloweenupdate'
+  try {
+    let body = {
+      id: userData.userId,
+      clear: true
+    }
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    return true
+  } catch (e) {
+    log('reset progress error', e.message)
+    return null
+  }
+}
 export async function checkProgression() {
   setInPreview(await isPreviewMode())
   if (TESTDATA_ENABLED && IN_PREVIEW) {
@@ -46,22 +63,29 @@ export async function checkProgression() {
 
   if (!userData) {
     await setUserData()
+    log('userData',userData)
   }
+
+  if (!playerRealm) {
+    await setRealm()
+    log('playerRealm',playerRealm)
+  }
+
   const url = fireBaseServer + 'halloweenstate/?id=' + userData.userId
   try {
-    let response = await fetch(url)
-    let json = await response.json()
-    log('Player progression: ', json)
-    progression = json
-    return json
-  } catch {
-    log('error fetching from token server ', url)
+    const response = await fetch(url)
+    const curr_progression = await response.json()
+    // progression = curr_progression
+    return curr_progression
+  } catch (e) {
+    log('error fetching from token server ', e.message)
+    return null
   }
 }
 
 export async function updateProgression(stage: string, onlyLocal?: boolean) {
   if (onlyLocal || (TESTDATA_ENABLED && IN_PREVIEW)) {
-    progression.data[stage] = true
+    // progression.data[stage] = true
     return true
   }
 
@@ -74,24 +98,24 @@ export async function updateProgression(stage: string, onlyLocal?: boolean) {
 
   const url = fireBaseServer + 'halloweenupdate'
 
-  let body = {
+  const body = {
     id: userData.userId,
     stage: stage,
-    server: playerRealm.serverName,
-    realm: playerRealm.layer,
+    realm: playerRealm.serverName,
+    island: playerRealm.room || 'without_room'
   }
 
   log('sending req to: ', url)
   try {
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     })
-    let data = await response.json()
+    const data = await response.json()
     log('Player progression: ', data)
     if (data.success) {
-      progression.data[stage] = true
+      // progression.data[stage] = true
     }
     return data.success
   } catch {
@@ -102,70 +126,20 @@ export async function updateProgression(stage: string, onlyLocal?: boolean) {
 export async function nextDay(nextDay: number) {
   PlayEndJingle()
 
-  let congrats = new ui.CenterImage(
-    'images/finishedDay' + (nextDay - 1) + '.png',
-    7,
-    false,
-    0,
-    0,
-    512,
-    512
-  )
-
-  if (!userData) {
-    await setUserData()
-  }
-
-  if (userData.hasConnectedWeb3 || IN_PREVIEW) {
-    let dummyEnt = new Entity()
-    dummyEnt.addComponent(
-      new utils.Delay(6000, async () => {
-        let poap = await sendpoap('w' + (nextDay - 1))
-
-        if (!poap) {
-          let p = new ui.OkPrompt(
-            'We ran out of POAP tokens for this event, sorry.',
-            () => {
-              p.close()
-              //PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-        } else {
-          let p = new ui.OkPrompt(
-            "A POAP token for today's event will arrive to your account very soon!",
-            () => {
-              p.close()
-              //PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-        }
-      })
-    )
-
-    engine.addEntity(dummyEnt)
-  }
+  const congrats = new ui.CenterImage('images/finishedDay' + (nextDay - 1) + '.png', 7, false, 0, 0, 512, 512)
 
   if (nextDay > progression.day) {
     return false
   }
-  let currentCoords = quest.currentCoords
 
-  quest.close()
-
-  initialQuestUI(progression.data, progression.day, currentCoords)
+  updateQuestUI(progression.data, progression.day)
 
   return true
 }
 
 export const nextDayJingle = new Entity()
 nextDayJingle.addComponent(new Transform())
-nextDayJingle.addComponent(
-  new AudioSource(new AudioClip('sounds/JingleQuestCompleted.mp3'))
-)
+nextDayJingle.addComponent(new AudioSource(new AudioClip('sounds/JingleQuestCompleted.mp3')))
 nextDayJingle.getComponent(AudioSource).volume = 0.5
 nextDayJingle.getComponent(AudioSource).loop = false
 engine.addEntity(nextDayJingle)
@@ -175,40 +149,3 @@ export function PlayEndJingle() {
   nextDayJingle.getComponent(AudioSource).playOnce()
 }
 
-export async function sendpoap(stage: string) {
-  if (TESTDATA_ENABLED && IN_PREVIEW) {
-    progression.data[stage] = true
-    return true
-  }
-
-  if (!userData) {
-    await setUserData()
-  }
-  if (!playerRealm) {
-    await setRealm()
-  }
-
-  const url = fireBaseServer + 'send-poap'
-
-  let body = {
-    id: userData.userId,
-    stage: stage,
-    server: playerRealm.serverName,
-    realm: playerRealm.layer,
-  }
-
-  log('sending req to: ', url)
-  try {
-    let response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-    let data = await response.json()
-    log('Poap status: ', data)
-
-    return data.success
-  } catch {
-    log('error fetching from token server ', url)
-  }
-}

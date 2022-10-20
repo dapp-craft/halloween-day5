@@ -1,32 +1,20 @@
 import * as utils from '@dcl/ecs-scene-utils'
 import * as ui from '@dcl/ui-scene-utils'
+import { loot_models } from 'src/resources/model_paths'
+import { signedFetch } from '@decentraland/SignedFetch'
+import { COLOR_GREEN } from "../resources/theme/color";
+import {fireBaseServer, playerRealm, userData} from "./progression";
 
-import {
-  fireBaseServer,
-  playerRealm,
-  setRealm,
-  setUserData,
-  updateProgression,
-  userData,
-} from './progression'
-
-import { IN_PREVIEW } from '../config'
-
-import { getProvider } from '@decentraland/web3-provider'
-
-import * as eth from 'eth-connect'
-
-let particleGLTF = new GLTFShape('models/Particles.glb')
-let starGLTF = new GLTFShape('models/star.glb')
+let particleGLTF = new GLTFShape(loot_models.particles)
+let starGLTF = new GLTFShape(loot_models.star)
 
 @Component('alreadyFoundLoot')
-export class AlreadyFoundLoot {}
+export class AlreadyFoundLoot {
+}
 
 export class Reward extends Entity {
   progressionStep: string
-  data: RewardData[]
   particles: Entity
-  testUser: string
   openUi: boolean
   onFinished: () => void
 
@@ -36,13 +24,13 @@ export class Reward extends Entity {
     offset?: TranformConstructorArgs,
     onlyActivateWhenClicked?: boolean,
     onFinished?: () => void,
-    testUser?: string
   ) {
     if (parent.hasComponent(AlreadyFoundLoot)) return
 
     parent.addComponent(new AlreadyFoundLoot())
 
     super()
+
     this.addComponent(starGLTF)
 
     this.addComponent(
@@ -50,9 +38,9 @@ export class Reward extends Entity {
         offset
           ? offset
           : {
-              position: new Vector3(0, 1.7, 0),
-              scale: new Vector3(1.8, 1.8, 1.8),
-            }
+            position: new Vector3(0, 1.7, 0),
+            scale: new Vector3(1.8, 1.8, 1.8),
+          }
       )
     )
     this.getComponent(Transform).scale.x *= 0.3
@@ -63,9 +51,7 @@ export class Reward extends Entity {
     this.setParent(parent)
 
     this.progressionStep = progressionStep
-    if (testUser) {
-      this.testUser = testUser
-    }
+
 
     if (onFinished) {
       this.onFinished = onFinished
@@ -101,10 +87,10 @@ export class Reward extends Entity {
         offset
           ? offset
           : {
-              position: new Vector3(0, 1.7, 0),
-              scale: new Vector3(1.3, 1.3, 1.3),
-              rotation: Quaternion.Euler(0, 0, 0),
-            }
+            position: new Vector3(0, 1.7, 0),
+            scale: new Vector3(1.3, 1.3, 1.3),
+            rotation: Quaternion.Euler(0, 0, 0),
+          }
       )
     )
 
@@ -119,7 +105,7 @@ export class Reward extends Entity {
     engine.addEntity(this.particles)
 
     if (!onlyActivateWhenClicked) {
-      this.activate()
+      // this.activate()
       const spawnSource = new AudioSource(
         new AudioClip('sounds/star-spawn.mp3')
       )
@@ -130,13 +116,13 @@ export class Reward extends Entity {
       this.openUi = false
     }
   }
+
   async activate() {
     this.openUi = true
     let data = await claimToken(
       this.progressionStep,
-      this,
-      this.testUser ? this.testUser : null
-    )
+      this)
+    // let data = await claimToken()
 
     if (data) {
       this.storeData(data)
@@ -146,7 +132,6 @@ export class Reward extends Entity {
   storeData(claimData) {
     log('storing data: ', claimData)
 
-    this.data = claimData
   }
 
   vanish() {
@@ -157,6 +142,7 @@ export class Reward extends Entity {
     }
     PlayCoinSound()
   }
+
   runOnFinished() {
     if (this.onFinished) {
       this.onFinished()
@@ -165,201 +151,82 @@ export class Reward extends Entity {
 }
 
 export enum ClaimState {
-  AVAILABLE = 'available',
+  ASSIGNED = 'assigned',
   SUCCESS = 'success',
-  PENDING = 'pending',
-  CLAIMED = 'claimed',
-  FAILED = 'failed',
+  SENDING = 'sending',
   REJECTED = 'rejected',
-  NOSTOCK = 'nostock',
+  TROUBLE = 'trouble'
 }
 
 export async function claimToken(
   progressionStep: string,
   representation: Reward,
-  testUser?: string
 ) {
-  let claimData = await checkServer(
-    progressionStep,
-    representation,
-    testUser ? testUser : null
-  )
-
-  // claimstate enum w all options, do a switch case
   let p
-  switch (claimData.claimState) {
-    case ClaimState.AVAILABLE:
-      openClaimUI(
-        claimData.data,
-        progressionStep,
-        representation,
-        testUser ? testUser : null
-      )
+  log('claimToekn')
 
-      break
-    case ClaimState.FAILED:
-      log('Failed previous attempt')
-      openClaimUI(
-        claimData.data,
-        progressionStep,
-        representation,
-        testUser ? testUser : null,
-        true
-      )
-      return claimData
-      break
-    case ClaimState.SUCCESS:
-      PlayOpenSound()
-      p = new ui.OkPrompt(
-        'You already claimed this item',
-        () => {
-          p.close()
-          representation.vanish()
-          PlayCloseSound()
-        },
-        'Ok',
-        true
-      )
-      return false
-      break
-    case ClaimState.PENDING:
-      PlayOpenSound()
-      p = new ui.OkPrompt(
-        'You already attempted to claim this item.\nTry again in about an hour.',
-        () => {
-          p.close()
-          representation.vanish()
-          PlayCloseSound()
-        },
-        'Ok',
-        true
-      )
-      return false
-      break
+  try {
+    let claimData = await checkServer(
+      progressionStep,
+      representation,
+    )
+    log('after check server')
+    log(claimData)
+    if (claimData && claimData.claimState) {
+      log('if (claimData && claimData.claimState) ')
+      // claimstate enum w all options, do a switch case
+      switch (claimData.claimState) {
+        case ClaimState.SUCCESS:
+          PlayOpenSound()
+          openClaimUI(claimData, 'You already claimed this item', () => {
+            representation.vanish()
+            PlayCloseSound()
+          })
 
-    case ClaimState.NOSTOCK:
-      PlayOpenSound()
-      log('no stock')
-      p = new ui.OkPrompt(
-        'Item out of stock.',
-        () => {
-          p.close()
-          representation.vanish()
-          PlayCloseSound()
-        },
-        'Ok',
-        true
-      )
-      return false
-      break
+          return false
+        case ClaimState.ASSIGNED:
+          PlayOpenSound()
+          openClaimUI(claimData, 'Your item assigned for you.\n Please wait', () => {
+            representation.vanish()
+            PlayCloseSound()
+          })
+          return false
 
-    case ClaimState.REJECTED:
-      log('Rejected claim response: ', claimData)
-      switch (claimData.reason) {
-        case 'map':
-          log('player not on map')
+        case ClaimState.SENDING:
           PlayOpenSound()
-          p = new ui.OkPrompt(
-            'We can`t validate the authenticity of your request',
-            () => {
-              p.close()
-              representation.vanish()
-              PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-          break
-        case 'progression':
-          log('missing progression')
-          PlayOpenSound()
-          p = new ui.OkPrompt(
-            'We can`t validate the authenticity of your request',
-            () => {
-              p.close()
-              representation.vanish()
-              PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-          break
-        case 'disabled':
-          log('inexistent campaign')
-          PlayOpenSound()
-          p = new ui.OkPrompt(
-            "This item you're trying to claim doesn't exist, please contact support in Discord.",
-            () => {
-              p.close()
-              representation.vanish()
-              PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-          break
-        case 'uninitiated':
-          log('uninitiated campaign')
-          PlayOpenSound()
-          p = new ui.OkPrompt(
-            "You're too early! Please come back later.",
-            () => {
-              p.close()
-              representation.vanish()
-              PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-          break
+          openClaimUI(claimData, 'Your item already sending for you.\n Please wait', () => {
+            representation.vanish()
+            PlayCloseSound()
+          })
+          return false
 
-        case 'finished':
-          log('finished campaign')
-          PlayOpenSound()
-          p = new ui.OkPrompt(
-            'The event is over. No more items are being given away here.',
-            () => {
-              p.close()
-              representation.vanish()
-              PlayCloseSound()
-            },
-            'Ok',
-            true
-          )
-          break
+        case ClaimState.REJECTED:
+          log('Rejected claim response: ', claimData)
 
-        case 'invalid':
-          log('invalid token claim')
+          log('rejected')
           PlayOpenSound()
-          p = new ui.OkPrompt(
-            'Invalid request, please try again.',
-            () => {
-              p.close()
-              PlayCloseSound()
-              representation.openUi = false
-            },
-            'Ok',
-            true
-          )
-          break
-        case 'unkown':
-          log('unkown error')
-          PlayOpenSound()
-          p = new ui.OkPrompt(
-            'An unexpected error occurred, please try again.',
-            () => {
-              p.close()
-              PlayCloseSound()
-              representation.runOnFinished()
-              representation.openUi = false
-            },
-            'Ok',
-            true
-          )
-          break
+          openClaimUI(claimData, 'Rejected. Please try again', () => {
+            representation.vanish()
+            PlayCloseSound()
+          })
+          return false
       }
-
-      break
+    }
+    if (claimData && claimData.claimState === undefined) {
+      log('unkown error')
+      PlayOpenSound()
+      openClaimUI(claimData, 'Event did not start or finished,\n or wearables no stock,\nor an unexpected error occurred,\n Please try again.', () => {
+        PlayCloseSound()
+        representation.openUi = false
+      })
+    }
+  } catch (error) {
+    log('request error')
+    PlayOpenSound()
+    openClaimUI(undefined, 'Event did not start or finished,\n or wearables no stock,\nor an unexpected error occurred,\n Please try again.', () => {
+      PlayCloseSound()
+      representation.openUi = false
+    })
   }
   return false
 }
@@ -367,23 +234,15 @@ export async function claimToken(
 export async function checkServer(
   stage: string,
   representation: Reward,
-  testUser?: string
 ) {
-  if (!userData) {
-    await setUserData()
-  }
-  if (!playerRealm) {
-    await setRealm()
-  }
+  log('checkserver', userData, playerRealm, fireBaseServer)
 
-  if (testUser) {
-    userData.userId = testUser
-  }
 
-  if (!userData.hasConnectedWeb3 && !IN_PREVIEW) {
+  log('before guest')
+  if (!userData.publicKey) {
     PlayOpenSound()
     let p = new ui.OkPrompt(
-      'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.',
+      'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.\n But you can go next without claiming.',
       () => {
         p.close()
         representation.runOnFinished()
@@ -392,88 +251,54 @@ export async function checkServer(
       'Ok',
       true
     )
-    updateProgression(stage)
+    // representation.runOnFinished()
+
     return
   }
-
   const url = fireBaseServer + 'startclaimhalloween'
+  log('url')
+  log('url', url)
 
-  let body = {
+  const body = {
     id: userData.userId,
     stage: stage,
-    server: playerRealm.serverName,
-    realm: playerRealm.layer,
+    realm: playerRealm.serverName,
+    island: playerRealm.room || 'without_room'
   }
+
+  log(body)
 
   log('sending req to: ', url)
   try {
-    let response = await fetch(url, {
+    let response = await signedFetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-    let json = await response.json()
-    log('Claim state: ', json)
-
+    log('response', response)
+    let text = response.text
+    let json = JSON.parse(text)
+    log('Claim state: ', text)
+    // let json = await response.json()
     return json
-  } catch {
+  } catch (e) {
+    log(e.message)
     log('error fetching from token server ', url)
-  }
-}
-
-export async function makeClaim(
-  stage: string,
-  testUser?: string
-): Promise<ClaimData> {
-  if (!userData) {
-    await setUserData()
-  }
-  if (!playerRealm) {
-    await setRealm()
-  }
-
-  if (testUser) {
-    userData.userId = testUser
-  }
-
-  const url = fireBaseServer + 'endclaimhalloween'
-  log('sending req to: ', url)
-
-  let body = {
-    id: userData.userId,
-    stage: stage,
-    server: playerRealm.serverName,
-    realm: playerRealm.layer,
-  }
-
-  try {
-    let response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    PlayOpenSound()
+    openClaimUI(undefined, 'Crash Request\nPlease check you internet\nPlease try again later\nor reload page ', () => {
+      PlayCloseSound()
+      representation.openUi = false
     })
-    let json = await response.json()
-    log('Claim state: ', json)
-
-    if (json.data.ok) {
-      return json.data.data
-    }
-
-    return null
-  } catch {
-    log('error fetching from token server ', url)
-    return null
   }
 }
+
 
 let claimUI: ui.CustomPrompt
 
 export function openClaimUI(
-  data: RewardData[],
-  stage: string,
-  representation?: Reward,
-  testUser?: string,
-  failedTransaction?: boolean
+  response,
+  text,
+  onClose
 ) {
   PlayOpenSound()
 
@@ -482,125 +307,44 @@ export function openClaimUI(
   }
 
   claimUI = new ui.CustomPrompt(ui.PromptStyles.DARKLARGE)
-  claimUI.addText(
-    failedTransaction
-      ? 'Retry failed transaction'
-      : 'You have a reward to claim!',
-    0,
-    170,
-    Color4.FromHexString('#8DFF34FF'),
-    26
-  )
-  claimUI.addText(
-    'You must approve a blockchain transaction\npaying an Ethereum gas fee to the network.',
-    0,
-    130,
-    Color4.Gray(),
-    12
-  )
-
-  let currentToken = 0
-
-  if (data.length > 1) {
-    for (let i = 0; i >= data.length; i++) {
-      if (data[i].current_key) {
-        currentToken = i
-      }
-    }
-  }
-
-  claimUI.addText(data[currentToken].token, 0, 100, Color4.White(), 20) // wearable name
-
-  claimUI.addIcon(data[currentToken].image, 0, 0, 128, 128, {
-    sourceHeight: 256,
-    sourceWidth: 256,
-  })
-
-  if (data.length > 1) {
+  if (response && response.token) {
     claimUI.addText(
-      '+ ' +
-        (data.length - 1) +
-        ' other wearable' +
-        (data.length > 2 ? 's ' : ' ') +
-        'pending',
+      `${response.token}`,
       0,
-      -60,
-      Color4.FromHexString('#8DFF34FF')
+      170,
+      Color4.FromHexString(COLOR_GREEN),
+      26
     )
   }
 
-  let rejectButton = claimUI.addButton(
-    'Later',
-    -100,
-    -130,
+  log('claimUI')
+  claimUI.closeIcon.onChange(onClose)
+
+
+
+
+  claimUI.addText(text, 0, 50, Color4.White(), 20) // wearable name
+  if (response && response.image) {
+    claimUI.addIcon(response.image, 0, -50, 128, 128, {
+      sourceHeight: 256,
+      sourceWidth: 256,
+    })
+  }
+
+  let myButton = claimUI.addButton(
+    'Ok',
+    0,
+    -160,
     () => {
+      onClose()
       claimUI.hide()
-      PlayCloseSound()
-      representation.runOnFinished()
-      representation.openUi = false
-    },
-    ui.ButtonStyles.F
-  )
-  rejectButton.label.positionX = 40
-
-  let acceptButton = claimUI.addButton(
-    'Claim',
-    100,
-    -130,
-    async () => {
-      claimUI.hide()
-      representation.openUi = false
-
-      let claimData = await makeClaim(stage, testUser ? testUser : null)
-
-      log(claimData)
-
-      if (claimData) {
-        representation.vanish()
-        makeTransaction(claimData)
-      }
     },
     ui.ButtonStyles.E
   )
-
-  if (data.length > 1) {
-    acceptButton.label.value = 'Claim all'
-    acceptButton.label.positionX = 40
-  }
 }
 
-export async function makeTransaction(claimData: ClaimData) {
-  if (claimData.status == 'successful') {
-    let p = new ui.OkPrompt('You have already claimed this reward')
-    return
-  } else if (claimData.status == 'pending') {
-    let p = new ui.OptionPrompt(
-      'Claim already pending',
-      'You have a pending transaction for this same claim, are you sure you want to continue?',
-      () => {
-        p.close()
-      },
-      () => {
-        return
-      }
-    )
-  } else if (claimData.status == 'failed') {
-    PlayOpenSound()
-    let p = new ui.OkPrompt('You are reattempting a failed transaction')
-  }
 
-  //PlayOpenSound()
-  const provider = await getProvider()
-  const rm = new eth.RequestManager(provider)
 
-  const res = rm.eth_sendTransaction({
-    data: claimData.transaction_payload,
-    from: claimData.user,
-    to: claimData.contract,
-  })
-
-  return
-}
 
 export type RewardData = {
   id: string
@@ -640,21 +384,6 @@ export type ClaimData = {
   expires_at: string
   created_at: string
   updated_at: string
-}
-
-export async function makeTestTransaction(claimData: any) {
-  if (!userData) {
-    await setUserData()
-  }
-
-  const provider = await getProvider()
-  const rm = new eth.RequestManager(provider)
-
-  const res = rm.eth_sendTransaction({
-    data: claimData.transaction_payload,
-    from: userData.publicKey,
-    to: claimData.contract,
-  })
 }
 
 // Open dialog sound

@@ -3,7 +3,7 @@ import { IN_PREVIEW } from '../config'
 
 import * as utils from '@dcl/ecs-scene-utils'
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-import { cultLeader, ghost, ghostBlaster } from "../finalHuntdown";
+import { cultLeader, ghost, hunter } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as UI from "./ui";
@@ -106,16 +106,16 @@ async function isPlayerAllowedIn(): Promise<boolean> {
 
     if (!hasCultistClothes && !gunIsInHand) {
       // UI.setCursorMessage("ENTRY DENIED", "CULTISTS ONLY")
-      ghostBlaster.talk(ghostBlasterDialogNoClothes, 0, 3)
+      hunter.talk(ghostBlasterDialogNoClothes, 0, 3)
     }
     else {
       if (!hasCultistClothes) {
         // UI.setCursorMessage("ENTRY DENIED", "CULTISTS ONLY")
-        ghostBlaster.talk(ghostBlasterDialogNoClothes, 0, 3)
+        hunter.talk(ghostBlasterDialogNoClothes, 0, 3)
       }
       if (!gunIsInHand) {
         //UI.setCursorMessage("NOT READY", "YOU NEED A WEAPON")
-        ghostBlaster.talk(ghostBlasterDialogNoWeapon, 0, 3)
+        hunter.talk(ghostBlasterDialogNoWeapon, 0, 3)
       }
     }
 
@@ -220,7 +220,7 @@ export function enableTunnelGrave() {
 
       } else {
         //UI.setCursorMessage("NOT READY", "YOU NEED A WEAPON")
-        ghostBlaster.talk(ghostBlasterDialogNoWeapon, 0, 4)
+        hunter.talk(ghostBlasterDialogNoWeapon, 0, 4)
 
       }
     }, {

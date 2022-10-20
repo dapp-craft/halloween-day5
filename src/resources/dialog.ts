@@ -1,7 +1,7 @@
 import { Dialog } from '@dcl/npc-scene-utils'
 import * as UI from '../modules/ui'
 import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/ghostBoss";
-import {  cultLeader, ghost, farmer, girlCult, catLover, ghostBlaster, cultist1  } from "../finalHuntdown";
+import {  cultLeader, ghost, farmer, girlCult, catLover, hunter, cultist1  } from "../finalHuntdown";
 import * as SOUNDS from "../modules/sounds";
 import { setGunUseable } from "../modules/gun";
 import { spawnGhosts  } from "../modules/ghostEnemies";
@@ -150,19 +150,19 @@ export let ghostBlasterDialogOutro: Dialog[] = [
   {
     text: 'Amazing job! ...cough ....unbelieveable!',
     triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Head_Yes`, false)
+      hunter.playAnimation(`Head_Yes`, false)
     },    
   },
   {
     text: 'Thank you for your great help on this mission, we would have failed without you!',
     triggeredByNext: () => {
-      ghostBlaster.playAnimation(`HeadShake_No`, false)
+      hunter.playAnimation(`HeadShake_No`, false)
     },
   },
   {
     text: `I have a feeling this won't be the end of it... `,
     triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Happy Hand Gesture`, false)
+      hunter.playAnimation(`Happy Hand Gesture`, false)
     },     
   },
   {
@@ -172,7 +172,7 @@ export let ghostBlasterDialogOutro: Dialog[] = [
   {
     text: `We are throwing a huge celebration party later today at Vegas Plaza !\nThink about it and join us there...`, 
     triggeredByNext: () => {
-      ghostBlaster.playAnimation(`Head_Yes`, false)
+      hunter.playAnimation(`Head_Yes`, false)
     },   
   },
   {

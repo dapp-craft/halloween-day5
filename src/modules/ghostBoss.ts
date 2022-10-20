@@ -4,7 +4,7 @@ import { player } from "./player";
 import * as SOUNDS from "./sounds";
 import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { removeGhosts, spawnGhosts, spawnGhostSmall } from "./ghostEnemies";
-import { cultLeader, ghost, ghostBlaster, farmer, catLover, girlCult } from "../finalHuntdown";
+import { cultLeader, ghost, hunter, farmer, catLover, girlCult } from "../finalHuntdown";
 import { grid } from "../modules/grid";
 import { scene } from "../modules/scene";
 import { setGunUnUseable, setGunUseable } from "../modules/gun";
@@ -605,8 +605,8 @@ export function onBossDead() {
     SOUNDS.endingMusicSource.playing = true
     SOUNDS.thunderSource.playOnce()
     SOUNDS.ghostDisappearSource.playOnce()
-    ghostBlaster.getComponent(Transform).position = new Vector3(scene.mansionCenter.x - 26, 0, scene.mansionCenter.z)
-    ghostBlaster.getComponent(Transform).rotation = Quaternion.Euler(0, 90, 0)
+    hunter.getComponent(Transform).position = new Vector3(scene.mansionCenter.x - 26, 0, scene.mansionCenter.z)
+    hunter.getComponent(Transform).rotation = Quaternion.Euler(0, 90, 0)
     setGunUseable()
     engine.removeEntity(roomLock)
     engine.removeEntity(upperDoor)

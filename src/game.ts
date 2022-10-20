@@ -1,4 +1,3 @@
-
 import { scene } from "./modules/scene";
 import { addBoss } from "./modules/ghostBoss";
 import { setGunActive, setGunInActive } from "./modules/gun";
