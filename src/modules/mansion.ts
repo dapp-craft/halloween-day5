@@ -2,6 +2,7 @@ import { cards_transforms } from 'src/resources/locators/card_locators';
 import { cards_models } from 'src/resources/model_paths';
 import { scene } from '../modules/scene';
 import { Shootable } from '../modules/shootables';
+import { Gate } from './gate';
 import { createChannel } from './padlock/builder-scripts/channel';
 import PadLock from './padlock/item';
 
@@ -45,12 +46,9 @@ garden.addComponent(new Transform())
 garden.addComponent(gardenShape)
 engine.addEntity(garden)
 
-let mainDoor = new Entity()
-mainDoor.addComponent(new Transform({ position: scene.mainDoorPos }))
-mainDoor.addComponent(mainDoorShape)
-engine.addEntity(mainDoor)
+let mainDoor = new Gate(new Transform({ position: scene.mainDoorPos }))
 export function openMainDoor() {
-  mainDoor.getComponent(Transform).rotation = Quaternion.Euler(0, 125, 0)
+  mainDoor.openGate()
 }
 
 //cards randomizer
