@@ -5,6 +5,7 @@ import { addNPCs } from "./finalHuntdown";
 import { addCreeper } from "./modules/creep";
 import { swapMansion } from "./modules/allowPlayerIn";
 import { openMainDoor } from "./modules/mansion";
+import { areaEntity } from "./modules/cameraMode";
 
   
 addNPCs()
@@ -12,6 +13,7 @@ addBoss()
 addCreeper()
 //openMainDoor()
 scene.isSceneLoaded = true
+engine.addEntity(areaEntity)
 
 //mouse input
 const input = Input.instance
