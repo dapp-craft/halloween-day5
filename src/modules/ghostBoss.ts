@@ -5,15 +5,10 @@ import { player } from "./player";
 import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { removeGhosts  } from "./ghostEnemies";
 import { cultLeader, ghost, hunter } from "../finalHuntdown";
-import { grid } from "../modules/grid";
-import { scene } from "../modules/scene";
-import { setGunUnUseable, setGunUseable } from "../modules/gun";
+import { grid } from "./grid";
+import { scene } from "./scene";
+import { setGunUnUseable, setGunUseable } from "./gun";
 import { boss_models } from "src/resources/model_paths";
-
-
-
-
-
 
 let playerBeenInRoom = false
 

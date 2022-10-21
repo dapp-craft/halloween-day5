@@ -13,3 +13,5 @@ scene/bin/
 export/
 node_modules/
 typings/
+/.idea/
+/bin/

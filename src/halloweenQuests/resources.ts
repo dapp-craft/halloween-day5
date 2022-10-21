@@ -298,3 +298,5 @@ export function setSection(UIImage: UIImage, section: any) {
   UIImage.sourceLeft = section.sourceLeft ? section.sourceLeft : 0
   UIImage.sourceTop = section.sourceTop ? section.sourceTop : 0
 }
+
+export const COLOR_GREEN = "#8DFF34FF";

@@ -7,11 +7,11 @@ import {
   ghostBlasterDialogOutroShort
 } from './resources/dialog'
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
-import { halloweenTheme } from './halloweenQuests/quest'
 import * as ui from '@dcl/ui-scene-utils'
 import { scene } from './modules/scene'
 import { setGunUnUseable } from './modules/gun'
 import { player } from './modules/player'
+import {halloweenTheme} from "./halloweenQuests/quest/questCheckBox";
 
 export let hunter: NPC
 export let ghost: NPC

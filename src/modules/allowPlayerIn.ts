@@ -1,12 +1,10 @@
 import * as crypto from '@dcl/crypto-scene-utils'
-import { IN_PREVIEW } from '../config'
 
 import * as utils from '@dcl/ecs-scene-utils'
 import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { cultLeader, ghost, hunter } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
-import * as UI from "./ui";
 //import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform, pictureFrame, pictureFrameDummy } from './mansion';
