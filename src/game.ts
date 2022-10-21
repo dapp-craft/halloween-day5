@@ -16,13 +16,13 @@ scene.isSceneLoaded = true
 //mouse input
 const input = Input.instance
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, e => {
-  log("pointer POINTER Down", e)  
+ // log("pointer POINTER Down", e)  
   setGunActive()  
   
 })
 
 input.subscribe("BUTTON_UP", ActionButton.POINTER, false, e => {
-  log("pointer POINTER UP", e)  
+  //log("pointer POINTER UP", e)  
   setGunInActive()
 })
 

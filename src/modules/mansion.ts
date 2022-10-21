@@ -51,26 +51,6 @@ export function openMainDoor() {
   mainDoor.openGate()
 }
 
-//cards randomizer
-let variations: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-const models: string[] = [
-  cards_models.card1,
-  cards_models.card2,
-  cards_models.card3,
-  cards_models.card3,
-  cards_models.card4,
-  cards_models.card5
-]
-for (let i = 0; i < 5; i++) {
-  
-  let rnd = Math.floor(Math.random() * variations.length)
-  const card = new Entity()
-  card.addComponentOrReplace(new GLTFShape(models[i]))
-  card.addComponentOrReplace(cards_transforms[variations[rnd]])
-  engine.addEntity(card)
-
-  variations.splice(variations[rnd], 1)
-}
 
 
 const padlockRomanNumber = new Entity('padlockRomanNumber')
@@ -82,9 +62,53 @@ padlockRomanNumber.addComponentOrReplace(new Transform({
 }))
 const channelId = Math.random().toString(16).slice(2)
 const channelBus = new MessageBus()
-const padLock = new PadLock(openMainDoor)
+const padLock = new PadLock(openMainDoor.bind(this))
 padLock.init()
-padLock.spawn(padlockRomanNumber, { 'combination': 23521, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
+
+//generate code for padlock
+let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+let code_key: number[] = []
+
+function getRandom() {
+
+  let index = Math.floor(Math.random() * numbers.length)
+
+  if (code_key.length == 0) if (numbers[index] == 0) return getRandom()
+
+  return numbers[index]
+}
+
+for (let i = 0; i < 5; i++) {
+
+  let value = getRandom()
+  code_key.push(value)
+}
+
+const number_code = code_key[0] * 10000 + code_key[1] * 1000 + code_key[2] * 100 + code_key[3] * 10 + code_key[4]
+log('CODE ARE : '+number_code)
+
+padLock.spawn(padlockRomanNumber, { 'combination': number_code, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
+
+//cards randomizer
+let variations: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+const models: string[] = [
+  cards_models.cards_folder1,
+  cards_models.cards_folder2,
+  cards_models.cards_folder3,
+  cards_models.cards_folder4,
+  cards_models.cards_folder5
+]
+
+for (let i = 0; i < 5; i++) {
+
+  let rnd = Math.floor(Math.random() * variations.length)
+  const card = new Entity()
+  card.addComponentOrReplace(new GLTFShape(models[i]+code_key[i]+'.glb'))
+  card.addComponentOrReplace(cards_transforms[variations[rnd]])
+  engine.addEntity(card)
+
+  variations.splice(variations[rnd], 1)
+}
 
 
 

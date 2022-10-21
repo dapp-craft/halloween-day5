@@ -98,9 +98,10 @@ export default class PadLock implements IScript<Props> {
             source.volume = 1
             entity.addComponentOrReplace(source)
             source.playOnce()
-            wheels.channel.sendActions(wheels.onSolve)
+           // wheels.channel.sendActions(wheels.onSolve)
 
             this.callbackOnCoplete()
+            log("WORKWORKWORK")
         } else {
             const clip = this.spinClip
             const source = new AudioSource(clip)
