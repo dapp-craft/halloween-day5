@@ -7,6 +7,8 @@ export class Gate extends Entity {
   private startPos: Vector3
   private endPos: Vector3
 
+  private closed:boolean = true
+
   constructor(transform: Transform) {
     super()
     engine.addEntity(this)
@@ -16,8 +18,12 @@ export class Gate extends Entity {
     this.endPos = new Vector3(this.startPos.x, this.startPos.y - 4.75, this.startPos.z)
   }
   openGate(): void {
-    this.addComponent(new utils.MoveTransformComponent(this.startPos, this.endPos, 3, () => {
 
+    if(!this.closed) return
+
+    this.addComponent(new utils.MoveTransformComponent(this.startPos, this.endPos, 3, () => {
     }))
+    
+    this.closed = false
   }
 }
