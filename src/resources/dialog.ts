@@ -202,8 +202,8 @@ export let ghostBlasterDialogOutroShort: Dialog[] = [
 
 
 
-let playerTrap1 = new PlayerTrap(new Transform({position:scene.trapPosition1}))
-engine.addEntity(playerTrap1)
+// let playerTrap1 = new PlayerTrap(new Transform({position:scene.trapPosition1}))
+// engine.addEntity(playerTrap1)
 
 // Cult Leader NPC
 export let cultLeaderDialog: Dialog[] = [
@@ -254,18 +254,18 @@ export let cultLeaderDialog: Dialog[] = [
     text: '[To Servants:]\n\nHOLD UP THIS ONE AS LONG AS POSSIBLE! ',
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
-      setGunUseable()
+      // setGunUseable()
       
-      turnLeaderIntoGhost()
-      engine.removeEntity(catLover)
-      engine.removeEntity(farmer)
-      engine.removeEntity(girlCult)
-      engine.removeEntity(cultist1)      
-      spawnGhosts()     
+      // turnLeaderIntoGhost()
+      // engine.removeEntity(catLover)
+      // engine.removeEntity(farmer)
+      // engine.removeEntity(girlCult)
+      // engine.removeEntity(cultist1)      
+      // spawnGhosts()     
      
       
-      playerTrap1.hide()
-      UI.showGhostHealthUI(true)     
+      // playerTrap1.hide()
+      // UI.showGhostHealthUI(true)     
 
     },
     isEndOfDialog: true,

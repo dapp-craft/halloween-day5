@@ -9,9 +9,17 @@ import {
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
 import * as ui from '@dcl/ui-scene-utils'
 import { scene } from './modules/scene'
-import { setGunUnUseable } from './modules/gun'
+import { setGunUnUseable, setGunUseable } from './modules/gun'
 import { player } from './modules/player'
 import {halloweenTheme} from "./halloweenQuests/quest/questCheckBox";
+import { spawnGhosts } from './modules/ghostEnemies'
+import { PlayerTrap } from './modules/trap'
+import { turnLeaderIntoGhost } from './modules/ghostBoss'
+import * as UI from 'modules/ui'
+
+import {
+  updateProgression
+} from './halloweenQuests/progression'
 
 export let hunter: NPC
 export let ghost: NPC
@@ -240,6 +248,8 @@ export function addNPCs() {
   ghost.dialog.leftClickIcon.positionX = 340 - 60
   ghost.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
+  let playerTrap1 = new PlayerTrap(new Transform({position:scene.trapPosition1}))
+engine.addEntity(playerTrap1)
   // cult leader in human form
   cultLeader = new NPC(
     {
@@ -249,8 +259,24 @@ export function addNPCs() {
     'models/NPCs/oldlady_cult.glb',
     () => {
       // check for cat wearables
-      cultLeader.talk(cultLeaderDialog, 0)
-      ghost.playAnimation(`Acknowledging_Armature`, true, 2.63)
+      // cultLeader.talk(cultLeaderDialog, 0)
+      // ghost.playAnimation(`Acknowledging_Armature`, true, 2.63)
+      setGunUseable()
+      
+      turnLeaderIntoGhost()
+      engine.removeEntity(catLover)
+      engine.removeEntity(farmer)
+      engine.removeEntity(girlCult)
+      engine.removeEntity(cultist1)      
+      spawnGhosts()     
+      updateProgression['waypoint1']
+      updateProgression['waypoint2']
+      updateProgression['waypoint3']
+      updateProgression['waypoint4']
+      updateProgression['waypoint5']
+      
+      playerTrap1.hide()
+      UI.showGhostHealthUI(true)
       engine.addSystem(myCultTurnSystem)
 
     },
