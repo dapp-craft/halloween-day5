@@ -15,7 +15,7 @@ export class Gate extends Entity {
     this.addComponent(new GLTFShape(standart_models.gate))
     this.addComponent(transform)
     this.startPos = this.getComponent(Transform).position
-    this.endPos = new Vector3(this.startPos.x, this.startPos.y - 4.75, this.startPos.z)
+    this.endPos = new Vector3(this.startPos.x, this.startPos.y - 8, this.startPos.z)
   }
   openGate(): void {
 
