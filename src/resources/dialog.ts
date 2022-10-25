@@ -297,13 +297,6 @@ export let ghostBossDialog: Dialog[] = [
     
   },
   {
-    text: `no text`,
-    triggeredByNext: () => {
-      ghost.playAnimation(`Idle_003`, true, 3)
-    },  
-    
-  },
-  {
     text: `Muaa-Ha-Ha! `,
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`Dismissing`, true, 3.3)
@@ -318,8 +311,10 @@ export let ghostBossDialog: Dialog[] = [
     },
     isEndOfDialog: true,
   },
+  
+  //on Death
   {
-    text: "And when you're done, I'll go to  the hipster witches.",    
+    text: "And when you're done, I'll go to the hipster witches.",    
   },
   {
     text: "I'll order them to go to all parts of the world!",
