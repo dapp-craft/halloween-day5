@@ -58,4 +58,4 @@ export type HalloweenData = {
   egg5?: boolean
 }
 
-export type HalloweenState = { data: HalloweenData; day: number }
+export type HalloweenState = { data: HalloweenData; day: number, progressionChanged?: boolean }
