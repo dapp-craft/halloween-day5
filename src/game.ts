@@ -35,11 +35,11 @@ function updateSceneUI() {
                 const curr_progression = await checkProgression()
                 log('checkProgression', curr_progression, progression)
                 if (curr_progression != null) {
-                    curr_progression.data['w1Found'] = true
-                    curr_progression.data['w2Found'] = true
-                    curr_progression.data['w3Found'] = true
-                    curr_progression.data['w4Found'] = true
-                    curr_progression.data['NPCIntroDay5'] = true
+                    // curr_progression.data['w1Found'] = true
+                    // curr_progression.data['w2Found'] = true
+                    // curr_progression.data['w3Found'] = true
+                    // curr_progression.data['w4Found'] = true
+                    // curr_progression.data['NPCIntroDay5'] = true
 
                     if (progression.data != null && isEqual(progression.data, curr_progression.data)) {
                         log('no changes')
