@@ -226,14 +226,14 @@ export function addNPCs() {
     () => {
 
       ghost.talk(ghostBossDialog, 0)
-      ghost.playAnimation(`Idle_003`, true, 3)
+      ghost.playAnimation(`stand`, true, 3)
 
 
     },
     {
       portrait: { path: 'images/portraits/ghost_boss.png', height: 128, width: 128 },
       reactDistance: 4,
-      idleAnim: `Idle_001`,
+      idleAnim: `stand`,
       faceUser: false,
       onlyExternalTrigger: true
     }
