@@ -101,7 +101,7 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
   },
   {
     text: `Here, take my spare one!
-    It works best in first person mode (Press V) and you need to hold the trigger once you're inside!`,  
+    It works best in first person mode and you need to hold the trigger once you're inside!`,  
   },
   {
     text: "I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.",    
@@ -113,6 +113,7 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
     text: `Now go and catch that son of a witch!`,
     triggeredByNext: () => {          
       scene.guyToldIntro = true
+      giveGunToPlayer()
     },
     isEndOfDialog: true,
   }
