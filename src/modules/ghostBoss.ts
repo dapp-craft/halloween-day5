@@ -69,7 +69,7 @@ class Block {
 
 
         this.entity = new Entity()
-        this.entity.addComponent(new GLTFShape(boss_models.ghostBoss))
+        this.entity.addComponent(new GLTFShape(boss_models.block))
         //this.entity.addComponent(SOUNDS.woodExplodeSource)
         this.entity.addComponent(new Transform({
             position: new Vector3(this.centerPos.x, this.centerPos.y, this.centerPos.z),
@@ -98,7 +98,7 @@ class Block {
     hide(_timeout: number) {
         this.entity.getComponent(Transform).position.y = -20
         this.transpEntity.getComponent(Transform).position.y = this.centerPos.y
-        this.entity.getComponent(AudioSource).playOnce()
+        //this.entity.getComponent(AudioSource).playOnce()
 
         engine.addSystem(new BlockTimeoutSystem(this, _timeout))
     }
