@@ -20,7 +20,7 @@ import { isEqual } from './halloweenQuests/utils/isEqual';
 addNPCs()
 addBoss()
 addCreeper()
-openMainDoor()
+//openMainDoor()
 scene.isSceneLoaded = true
 engine.addEntity(areaEntity)
 

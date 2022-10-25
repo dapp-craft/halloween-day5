@@ -16,7 +16,7 @@ let gardenShape = new GLTFShape('models/fence.glb')
 let fireShape = new GLTFShape('models/fire.glb')
 let mainDoorShape = new GLTFShape('models/main_door.glb')
 
-let portalAlpha = new Texture('textures/portal_alpha.png', { samplingMode: 1, wrap: 1 })
+//let portalAlpha = new Texture('textures/portal_alpha.png', { samplingMode: 1, wrap: 1 })
 //let portalNormalmap2 = new Texture('textures/portal_normal22222.png.png', {samplingMode: 1, wrap:1})
 log(new Vector3(scene.mansionCenter.x - 50, 0, scene.mansionCenter.z - 50))
 let mansionOutside = new Entity()
@@ -92,18 +92,24 @@ padLock.spawn(padlockRomanNumber, { 'combination': number_code, onSolve: null },
 //cards randomizer
 let variations: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 const models: string[] = [
-  cards_models.cards_folder1,
-  cards_models.cards_folder2,
-  cards_models.cards_folder3,
-  cards_models.cards_folder4,
-  cards_models.cards_folder5
+  cards_models.card0,
+  cards_models.card1,
+  cards_models.card2,
+  cards_models.card3,
+  cards_models.card4,
+  cards_models.card5,
+  cards_models.card6,
+  cards_models.card7,
+  cards_models.card8,
+  cards_models.card9,
+
 ]
 
 for (let i = 0; i < 5; i++) {
 
   let rnd = Math.floor(Math.random() * variations.length)
   const card = new Entity()
-  card.addComponentOrReplace(new GLTFShape(models[i]+code_key[i]+'.glb'))
+  card.addComponentOrReplace(new GLTFShape(models[code_key[i]]))
   card.addComponentOrReplace(cards_transforms[variations[rnd]])
   engine.addEntity(card)
 

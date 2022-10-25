@@ -33,9 +33,14 @@ export const padlock_models = {
 
 
 export const cards_models = {
-    cards_folder1: 'models/padlock/cards1/',
-    cards_folder2: 'models/padlock/cards2/',
-    cards_folder3: 'models/padlock/cards3/',
-    cards_folder4: 'models/padlock/cards4/',
-    cards_folder5: 'models/padlock/cards5/',
+    card0:'models/padlock/cards/9.glb',
+    card1:'models/padlock/cards/0.glb',
+    card2:'models/padlock/cards/1.glb',
+    card3:'models/padlock/cards/2.glb',
+    card4:'models/padlock/cards/3.glb',
+    card5:'models/padlock/cards/4.glb',
+    card6:'models/padlock/cards/5.glb',
+    card7:'models/padlock/cards/6.glb',
+    card8:'models/padlock/cards/7.glb',
+    card9:'models/padlock/cards/8.glb',
 }

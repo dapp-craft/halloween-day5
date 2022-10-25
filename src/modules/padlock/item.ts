@@ -11,6 +11,9 @@ export default class PadLock implements IScript<Props> {
     solveClip = new AudioClip('sounds/padlock/Resolve.mp3')
     padLockEntity: Entity
     callbackOnCoplete: () => void
+
+    massiveCombination: number[] = []
+
     constructor(_callbackOnComplete: () => void) {
         this.callbackOnCoplete = _callbackOnComplete
     }
@@ -32,14 +35,26 @@ export default class PadLock implements IScript<Props> {
     public isOpen(): boolean {
         let wheels = this.padLockEntity.getComponent(PadLockComponent)
 
-        let nums =
-            wheels.digit1 * 10000 +
-            wheels.digit2 * 1000 +
-            wheels.digit3 * 100 +
-            wheels.digit4 * 10 +
-            wheels.digit5
+        let nums: number[] = [
+            wheels.digit1,
+            wheels.digit2,
+            wheels.digit3,
+            wheels.digit4,
+            wheels.digit5,
+        ]
+        nums.sort()
 
-        return nums == wheels.combination
+        const result =
+            nums[0] * 10000 +
+            nums[1] * 1000 +
+            nums[2] * 100 +
+            nums[3] * 10 +
+            nums[4]
+
+
+        log('curr ' + result)
+        log('true ' + wheels.combination)
+        return result === wheels.combination
     }
 
     public SetOpen(): void {
@@ -51,7 +66,6 @@ export default class PadLock implements IScript<Props> {
         wheels.digit3 = +code[2]
         wheels.digit4 = +code[3]
         wheels.digit5 = +code[4]
-        log('padLock.SetOpen()', code, wheels.digit1, wheels.digit2, wheels.digit3, wheels.digit4, wheels.digit5)
         this.rotateWheels(this.padLockEntity)
     }
 
@@ -84,24 +98,17 @@ export default class PadLock implements IScript<Props> {
             0
         )
 
-        let nums =
-            wheels.digit1 * 10000 +
-            wheels.digit2 * 1000 +
-            wheels.digit3 * 100 +
-            wheels.digit4 * 10 +
-            wheels.digit5
 
-        if (nums == wheels.combination) {
-            //log('GOT IT RIGHT!')
+        if (this.isOpen()) {
+            log('GOT IT RIGHT!')
             const clip = this.solveClip
             const source = new AudioSource(clip)
             source.volume = 1
             entity.addComponentOrReplace(source)
             source.playOnce()
-           // wheels.channel.sendActions(wheels.onSolve)
+            // wheels.channel.sendActions(wheels.onSolve)
 
             this.callbackOnCoplete()
-            log("WORKWORKWORK")
         } else {
             const clip = this.spinClip
             const source = new AudioSource(clip)
@@ -279,6 +286,27 @@ export default class PadLock implements IScript<Props> {
             )
             return [digit1, digit2, digit3, digit4, digit5]
         })
+
+        const combination = this.padLockEntity.getComponent(PadLockComponent).combination
+        let num1 = Math.floor(combination / 10000)
+        this.massiveCombination.push(num1)
+        let num2 = Math.floor((combination % 10000) / 1000)
+        this.massiveCombination.push(num2)
+        let num3 = Math.floor((combination % 1000) / 100)
+        this.massiveCombination.push(num3)
+        let num4 = Math.floor((combination % 100) / 10)
+        this.massiveCombination.push(num4)
+        let num5 = combination % 10
+        this.massiveCombination.push(num5)
+        this.massiveCombination.sort()
+        //log('massive are: '+this.massiveCombination)
+
+        this.padLockEntity.getComponent(PadLockComponent).combination = this.massiveCombination[0] * 10000
+            + this.massiveCombination[1] * 1000
+            + this.massiveCombination[2] * 100
+            + this.massiveCombination[3] * 10
+            + this.massiveCombination[4]
+
     }
 
     public Hide(): void {
