@@ -144,7 +144,7 @@ export class questUITasks{
                 coords: Coords.GenesisCoords
             },
             {
-                label: 'Enter the Castle',
+                label: 'Enter the Castle', 
                 checked: this.data.waypoint5,
                 visible: this.data.NPCIntroDay5,
                 coords: Coords.Secret
