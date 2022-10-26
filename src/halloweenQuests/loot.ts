@@ -2,7 +2,7 @@ import * as utils from '@dcl/ecs-scene-utils'
 import * as ui from '@dcl/ui-scene-utils'
 import { loot_models } from 'src/resources/model_paths'
 import { signedFetch } from '@decentraland/SignedFetch'
-import { COLOR_GREEN } from "../resources/theme/color";
+import { COLOR_GREEN } from './config' 
 import { fireBaseServer, playerRealm, userData } from "./progression";
 
 let particleGLTF = new GLTFShape(loot_models.particles)
