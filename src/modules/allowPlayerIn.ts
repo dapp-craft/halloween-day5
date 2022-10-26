@@ -7,7 +7,7 @@ import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 //import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
-import { mansionInTransform, mansionOutTransform, pictureFrame, pictureFrameDummy } from './mansion';
+import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy } from './mansion';
 import { blocks, upperDoor } from './ghostBoss';
 import { smallGhosts } from './ghostEnemies';
 
@@ -33,6 +33,10 @@ const dressList = [
 // 	const allWearables = await wearables.getListOfWearables()
 // 	log(allWearables)
 // })
+
+export function initAllowPlayerIn(){
+  
+}
 
 export async function checkWearables(): Promise<boolean> {
 
@@ -202,6 +206,7 @@ export function enableTunnelGrave() {
           cultLeader.onActivate()
           movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
           firstTimeEntry = false
+          openMainDoor()
           // SOUNDS.outsideAmbienceSource.playing = false
 
 
@@ -211,7 +216,7 @@ export function enableTunnelGrave() {
         }
         else {
           setGunUseable()
-          movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
+          movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
           //SOUNDS.outsideAmbienceSource.playing = false
 
         }
