@@ -1,11 +1,13 @@
 {
   "display": {
-    "title": "Halloween Huntdown",
+    "title": "Gargoyle Castle",
+    "description": "Place to fight with Pure Evil",
+    "navmapThumbnail": "images/thumbnail.png",
     "favicon": "favicon_asset"
   },
   "contact": {
-    "name": "dzsunyec",
-    "email": "bence@decentraland.org"
+    "name": "DAPPCRAFT",
+    "email": ""
   },
   "owner": "",
   "scene": {
