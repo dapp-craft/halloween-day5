@@ -276,21 +276,12 @@ export let cultLeaderDialog: Dialog[] = [
 export let ghostBossDialog: Dialog[] = [
   {
     text: "I have waited for you! And you have stepped right into my trap!", 
-    triggeredByNext: () => {
-      ghost.playAnimation(`Idle_003`, true, 3)
-    },   
   },
   {
     text: "You didn’t think you could defeat me so easily did you? Now face the strength of my mighty hands and the sharpness of my dagger claws!",
-    triggeredByNext: () => {
-      ghost.playAnimation(`Idle_002`, true, 3)
-    },
   },
   {
     text: "I will rip your tongue and make you lick my boots!",
-    triggeredByNext: () => {
-      ghost.playAnimation(`Idle_002`, true, 3)
-    },
   },
   {
     text: "I will rip that precious smile of yours and make you kiss my rocky-ass!",
@@ -300,14 +291,9 @@ export let ghostBossDialog: Dialog[] = [
     text: `Muaa-Ha-Ha! `,
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`Dismissing`, true, 3.3)
-      ghost.getComponent(Ghost).state = ghostState.MOVING
-      
-      ghost.playAnimation(`Idle_001`, false)
-    
+      ghost.getComponent(Ghost).state = ghostState.MOVING          
       //SOUNDS.actionLoopSource.playing = true
-      setGunUseable()
-      ghost.playAnimation(`Idle_002`, false)
-      
+      setGunUseable()      
     },
     isEndOfDialog: true,
   },
