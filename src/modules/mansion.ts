@@ -85,7 +85,7 @@ for (let i = 0; i < 5; i++) {
 }
 
 const number_code = code_key[0] * 10000 + code_key[1] * 1000 + code_key[2] * 100 + code_key[3] * 10 + code_key[4]
-log('CODE ARE : '+number_code)
+log('CODE ARE : ' + number_code)
 
 padLock.spawn(padlockRomanNumber, { 'combination': number_code, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
 
@@ -104,6 +104,17 @@ const models: string[] = [
   cards_models.card9,
 
 ]
+
+// for (const transform of cards_transforms) {
+//   const ent = new Entity()
+//   engine.addEntity(ent)
+//   ent.addComponent(new SphereShape())
+//   ent.addComponentOrReplace(new Transform({
+//     position: transform.position,
+//     rotation: transform.rotation,
+//     scale: new Vector3(5, 5, 5)
+//   }))
+// }
 
 for (let i = 0; i < 5; i++) {
 
