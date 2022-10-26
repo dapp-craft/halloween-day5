@@ -75,26 +75,26 @@ function updateSceneUI() {
     })
 }
 
-const updateProgressInterval = 1
-class UpdateSceneUISystem implements ISystem {
-    private timer = 0
+// const updateProgressInterval = 1
+// class UpdateSceneUISystem implements ISystem {
+//     private timer = 0
 
-    constructor() { }
+//     constructor() { }
 
-    update(dt: number) {
-        this.timer += dt
-        if (this.timer > updateProgressInterval) {
-            this.timer = 0
-            if (progression.progressionChanged) {
-                log('progressionChanged', progression.progressionChanged)
-                const res = updateSceneUI()
-                log('updateSceneUI', res)
-            }
-        }
-    }
-}
+//     update(dt: number) {
+//         this.timer += dt
+//         if (this.timer > updateProgressInterval) {
+//             this.timer = 0
+//             if (progression.progressionChanged) {
+//                 log('progressionChanged', progression.progressionChanged)
+//                 const res = updateSceneUI()
+//                 log('updateSceneUI', res)
+//             }
+//         }
+//     }
+// }
 
-engine.addSystem(new UpdateSceneUISystem())
+//engine.addSystem(new UpdateSceneUISystem())
 
 
 onEnterSceneObservable.add((player) => {
