@@ -20,6 +20,7 @@ import * as UI from 'modules/ui'
 import {
   updateProgression
 } from './halloweenQuests/progression'
+import { quest } from './halloweenQuests/quest/questTasks'
 
 export let hunter: NPC
 export let ghost: NPC
@@ -268,12 +269,10 @@ engine.addEntity(playerTrap1)
       engine.removeEntity(farmer)
       engine.removeEntity(girlCult)
       engine.removeEntity(cultist1)      
-      spawnGhosts()     
-      updateProgression['waypoint1']
-      updateProgression['waypoint2']
-      updateProgression['waypoint3']
-      updateProgression['waypoint4']
-      updateProgression['waypoint5']
+      spawnGhosts()
+      quest.checkBox(1)
+      quest.showCheckBox(2)
+      updateProgression('waypoint5')
       
       playerTrap1.hide()
       UI.showGhostHealthUI(true)

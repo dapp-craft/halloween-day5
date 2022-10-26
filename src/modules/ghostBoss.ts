@@ -9,6 +9,8 @@ import { grid } from "./grid";
 import { scene } from "./scene";
 import { setGunUnUseable, setGunUseable } from "./gun";
 import { boss_models } from "src/resources/model_paths";
+import { quest } from "src/halloweenQuests/quest/questTasks";
+import { updateProgression } from "src/halloweenQuests/progression";
 
 let playerBeenInRoom = false
 
@@ -590,6 +592,9 @@ export class GhostMoveSystem {
 
 export function onBossDead() {
     scene.bossIsDead = true
+    quest.checkBox(1)
+    quest.showCheckBox(2)
+    updateProgression('ghostDefeated')
     //ghost.getComponent(Transform).scale.setAll(0)
     ghost.playAnimation(`Death`, true, 2.63)
     hideAllBlocks()
