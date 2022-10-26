@@ -592,8 +592,8 @@ export class GhostMoveSystem {
 
 export function onBossDead() {
     scene.bossIsDead = true
-    quest.checkBox(1)
-    quest.showCheckBox(2)
+    quest.checkBox(2)
+    quest.showCheckBox(3)
     updateProgression('ghostDefeated')
     //ghost.getComponent(Transform).scale.setAll(0)
     ghost.playAnimation(`Death`, true, 2.63)
