@@ -5,7 +5,7 @@ import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { cultLeader, ghost, hunter } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
-//import * as SOUNDS from "./sounds";
+import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy } from './mansion';
 import { blocks, upperDoor } from './ghostBoss';
@@ -141,15 +141,15 @@ teleportOutside.addComponent(new utils.TriggerComponent(
           movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
 
           firstTimeEntry = false
-          // SOUNDS.outsideAmbienceSource.playing = false
-          // SOUNDS.musicSource.loop = true
-          // SOUNDS.musicSource.playing = true
+           SOUNDS.outsideAmbienceSource.playing = false
+           SOUNDS.musicSource.loop = true
+           SOUNDS.musicSource.playing = true
         }
       } else {
         setGunUseable()
         swapMansion('in')
         movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
-        //SOUNDS.outsideAmbienceSource.playing = false
+        SOUNDS.outsideAmbienceSource.playing = false
       }
     },
     //enableDebug: true
@@ -176,8 +176,8 @@ teleportInside.addComponent(
         swapMansion('out')
         movePlayerTo(scene.teleportArriveOutward)
         setGunUnUseable()
-        // SOUNDS.outsideAmbienceSource.loop = true
-        // SOUNDS.outsideAmbienceSource.playing = true
+         SOUNDS.outsideAmbienceSource.loop = true
+         SOUNDS.outsideAmbienceSource.playing = true
       },
       //enableDebug: true
     }
@@ -207,17 +207,17 @@ export function enableTunnelGrave() {
           movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
           firstTimeEntry = false
           openMainDoor()
-          // SOUNDS.outsideAmbienceSource.playing = false
+           SOUNDS.outsideAmbienceSource.playing = false
 
 
-          // SOUNDS.musicSource.loop = true
-          // SOUNDS.musicSource.playing = true
+           SOUNDS.musicSource.loop = true
+           SOUNDS.musicSource.playing = true
 
         }
         else {
           setGunUseable()
           movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
-          //SOUNDS.outsideAmbienceSource.playing = false
+          SOUNDS.outsideAmbienceSource.playing = false
 
         }
 
@@ -277,15 +277,15 @@ export function swapMansion(state: 'in' | 'out') {
 
 let musicBox = new Entity()
 musicBox.addComponent(new Transform({ position: new Vector3(24, 10, 24) }))
-//musicBox.addComponent(SOUNDS.musicSource)
+musicBox.addComponent(SOUNDS.musicSource)
 engine.addEntity(musicBox)
 
 //musicBox.setParent(Attachable.AVATAR)
 
 let outsideAmbience = new Entity()
-//outsideAmbience.addComponent(SOUNDS.outsideAmbienceSource)
+outsideAmbience.addComponent(SOUNDS.outsideAmbienceSource)
 outsideAmbience.addComponent(new Transform({ position: new Vector3(0, 10, 0) }))
 engine.addEntity(outsideAmbience)
-//SOUNDS.outsideAmbienceSource.loop = true
-//SOUNDS.outsideAmbienceSource.playing = true
+SOUNDS.outsideAmbienceSource.loop = true
+SOUNDS.outsideAmbienceSource.playing = true
 outsideAmbience.setParent(Attachable.AVATAR)

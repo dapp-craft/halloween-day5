@@ -2,10 +2,9 @@ import { Dialog } from '@dcl/npc-scene-utils'
 import * as UI from '../modules/ui'
 import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/ghostBoss";
 import {  cultLeader, ghost, farmer, girlCult, catLover, hunter, cultist1  } from "../finalHuntdown";
-//import * as SOUNDS from "../modules/sounds";
+import * as SOUNDS from "../modules/sounds";
 import { setGunUseable } from "../modules/gun";
 import { spawnGhosts  } from "../modules/ghostEnemies";
-import { PlayerTrap } from "../modules/trap";
 import { scene } from "../modules/scene";
 
 import { enableTunnelGrave, teleportGrave } from '../modules/allowPlayerIn'
@@ -292,7 +291,7 @@ export let ghostBossDialog: Dialog[] = [
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`Dismissing`, true, 3.3)
       ghost.getComponent(Ghost).state = ghostState.MOVING          
-      //SOUNDS.actionLoopSource.playing = true
+      SOUNDS.actionLoopSource.playing = true
       setGunUseable()      
     },
     isEndOfDialog: true,

@@ -1,7 +1,7 @@
 import * as tools from "./utilities";
 import * as UI from "./ui";
 import { player } from "./player";
-////import * as SOUNDS from "./sounds";
+import * as SOUNDS from "./sounds";
 import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { removeGhosts  } from "./ghostEnemies";
 import { cultLeader, ghost, hunter } from "../finalHuntdown";
@@ -72,7 +72,7 @@ class Block {
 
         this.entity = new Entity()
         this.entity.addComponent(new GLTFShape(boss_models.block))
-        //this.entity.addComponent(SOUNDS.woodExplodeSource)
+        this.entity.addComponent(SOUNDS.woodExplodeSource)
         this.entity.addComponent(new Transform({
             position: new Vector3(this.centerPos.x, this.centerPos.y, this.centerPos.z),
             scale: new Vector3(this.sizeX, this.sizeX, this.sizeZ),
@@ -145,31 +145,31 @@ engine.addEntity(pentaLights)
 
 
 let bossEntrySound = new Entity()
-//bossEntrySound.addComponent(SOUNDS.bossEntrySource)
+bossEntrySound.addComponent(SOUNDS.bossEntrySource)
 bossEntrySound.addComponent(new Transform({ position: grid.center }))
 engine.addEntity(bossEntrySound)
 
 let actionLoopMusic = new Entity()
-//actionLoopMusic.addComponent(SOUNDS.actionLoopSource)
+actionLoopMusic.addComponent(SOUNDS.actionLoopSource)
 actionLoopMusic.addComponent(new Transform({ position: new Vector3(0, 1, 0) }))
 engine.addEntity(actionLoopMusic)
-//SOUNDS.actionLoopSource.loop = true
+SOUNDS.actionLoopSource.loop = true
 actionLoopMusic.setParent(Attachable.AVATAR)
 
 
 let thunderSound = new Entity()
-//thunderSound.addComponent(SOUNDS.thunderSource)
+thunderSound.addComponent(SOUNDS.thunderSource)
 thunderSound.addComponent(new Transform({ position: new Vector3(grid.center.x, 5, grid.center.z) }))
 engine.addEntity(thunderSound)
 
 let ghostDisappearSound = new Entity()
-//ghostDisappearSound.addComponent(SOUNDS.ghostDisappearSource)
+ghostDisappearSound.addComponent(SOUNDS.ghostDisappearSource)
 ghostDisappearSound.addComponent(new Transform({ position: new Vector3(scene.pentagramPos.x, 1, scene.pentagramPos.z) }))
 engine.addEntity(ghostDisappearSound)
 
 
 let endingMusic = new Entity()
-//endingMusic.addComponent(SOUNDS.endingMusicSource)
+endingMusic.addComponent(SOUNDS.endingMusicSource)
 endingMusic.addComponent(new Transform({ position: new Vector3(grid.center.x, 5, grid.center.z) }))
 engine.addEntity(endingMusic)
 
@@ -204,7 +204,7 @@ function hideAllBlocks() {
         blocks[i].hide(3)
 
     }
-    //SOUNDS.woodExplodeSource.playOnce()
+    SOUNDS.woodExplodeSource.playOnce()
 }
 function resetAllBlocks() {
     for (let i = 0; i < blocks.length; i++) {
@@ -213,14 +213,14 @@ function resetAllBlocks() {
 }
 
 
-let roomLock = new Entity()
-roomLock.addComponent(new Transform({
-    position: new Vector3(grid.center.x, grid.groundLevel, grid.center.z),
-    scale: new Vector3(grid.sizeX - 0.6, 6, grid.sizeZ - 0.6)
-}
-))
-roomLock.addComponent(new GLTFShape(boss_models.roomLock))
-engine.addEntity(roomLock)
+// let roomLock = new Entity()
+// roomLock.addComponent(new Transform({
+//     position: new Vector3(grid.center.x, grid.groundLevel, grid.center.z),
+//     scale: new Vector3(grid.sizeX - 0.6, 6, grid.sizeZ - 0.6)
+// }
+// ))
+// roomLock.addComponent(new GLTFShape(boss_models.roomLock))
+// engine.addEntity(roomLock)
 
 function isPlayerInsideRoom(_pos: Vector3): boolean {
 
@@ -244,7 +244,7 @@ export function turnLeaderIntoGhost() {
     ghost.getComponent(Ghost).state = ghostState.APPEAR
     ghost.getComponent(Transform).position.copyFrom(cultLeader.getComponent(Transform).position)
     ghost.playAnimation('Appear', true, 3)
-    //SOUNDS.ghostDisappearSource.playOnce()
+    SOUNDS.ghostDisappearSource.playOnce()
     engine.addSystem(new PentaLightSystem())
 }
 
@@ -282,8 +282,8 @@ export class LockRoomSystem {
             if (isPlayerInsideRoom(player.camera.feetPosition)) {
 
                 if (!playerBeenInRoom) {
-                    //SOUNDS.musicSource.playing = false
-                    //SOUNDS.bossEntrySource.playOnce()
+                    SOUNDS.musicSource.playing = false
+                    SOUNDS.bossEntrySource.playOnce()
                     if (ghost.getComponent(Ghost).state == ghostState.TALKING) {
                         ghost.onActivate()
                         setGunUnUseable()
@@ -298,8 +298,8 @@ export class LockRoomSystem {
                 //player fell
                 if (playerBeenInRoom) {
                     ghost.getComponent(Ghost).state = ghostState.WAITING
-                    //SOUNDS.musicSource.loop = true
-                    //SOUNDS.musicSource.playing = true
+                    SOUNDS.musicSource.loop = true
+                    SOUNDS.musicSource.playing = true
                 }
                 playerBeenInRoom = false
 
@@ -307,7 +307,7 @@ export class LockRoomSystem {
             }
         } else {
             playerBeenInRoom = false
-            //SOUNDS.actionLoopSource.playing = false
+            SOUNDS.actionLoopSource.playing = false
             //roomLock.getComponent(Transform).scale.y = 0
         }
 
@@ -457,7 +457,7 @@ export class GhostMoveSystem {
                 if (this.timer >= this.anticipationTime) {
                     ghostInfo.state = ghostState.ATTACKING
                     this.timer = 0
-                    //SOUNDS.swishSource.playOnce()
+                    SOUNDS.swishSource.playOnce()
                 }
                 else {
                     transform.position.y += dt * 1
@@ -601,14 +601,14 @@ export function onBossDead() {
     //engine.removeSystem(playerFallSys)
     ghost.getComponent(Ghost).state = ghostState.DEAD
     removeGhosts()
-    //SOUNDS.endingMusicSource.loop = true
-    //SOUNDS.endingMusicSource.playing = true
-    //SOUNDS.thunderSource.playOnce()
-    //SOUNDS.ghostDisappearSource.playOnce()
+    SOUNDS.endingMusicSource.loop = true
+    SOUNDS.endingMusicSource.playing = true
+    SOUNDS.thunderSource.playOnce()
+    SOUNDS.ghostDisappearSource.playOnce()
     hunter.getComponent(Transform).position = new Vector3(scene.mansionCenter.x - 26, 0, scene.mansionCenter.z)
     hunter.getComponent(Transform).rotation = Quaternion.Euler(0, 90, 0)
     setGunUseable()
-    engine.removeEntity(roomLock)
+    //engine.removeEntity(roomLock)
     engine.removeEntity(upperDoor)
 
 }
@@ -618,7 +618,7 @@ export function addBoss() {
     //BOSS GHOST NPC
 
     ghost.addComponent(new Ghost())
-    //ghost.addComponent(SOUNDS.swishSource)
+    ghost.addComponent(SOUNDS.swishSource)
 
 
 
