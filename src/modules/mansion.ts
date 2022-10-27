@@ -1,3 +1,5 @@
+import { Reward } from 'src/halloweenQuests/loot';
+import { progression, updateProgression } from 'src/halloweenQuests/progression';
 import { cards_transforms } from 'src/resources/locators/card_locators';
 import { cards_models } from 'src/resources/model_paths';
 import { scene } from '../modules/scene';
@@ -148,6 +150,20 @@ pictureFrame.addComponent(new Shootable(() => {
   pictureFrame.getComponent(Transform).rotation = Quaternion.Euler(Math.random() * 5, 0, 0)
 }, () => {
   pictureFrame.addComponentOrReplace(picture2Shape)
+  if (progression.data.egg5) return
+  const transform = pictureFrame.getComponent(Transform)
+  const rewardDummy = new Entity()
+  rewardDummy.addComponent(new Transform(({ position: transform.position })))
+  engine.addEntity(rewardDummy)
+  const reward = new Reward(rewardDummy, 'egg5', { position: new Vector3(-1, -3.5, 0), scale: new Vector3(2, 2, 2) }, true, () => {
+    executeTask(async () => {
+      if (await updateProgression('egg5')) {
+        progression.data['egg5'] = true
+        // progression.progressionChanged = true
+        reward.getComponent(Transform).position.y = -4
+      }
+    })
+  })
 }))
 engine.addEntity(pictureFrame)
 
