@@ -14,7 +14,7 @@ export const standart_models = {
 export const boss_models = {
     block: 'models/board_block.glb',
     transparentBlock: 'models/board_block_transp.glb',
-    roomLock: 'models/room_lock_box.glb',
+    //roomLock: 'models/room_lock_box.glb',
     ghostBoss: 'models/ghost_boss.glb',
     pentaLight: 'models/penta_lights.glb',
     blueFlame: 'models/BigFlame.glb',

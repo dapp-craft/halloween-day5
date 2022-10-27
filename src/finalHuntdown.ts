@@ -13,7 +13,6 @@ import { setGunUnUseable, setGunUseable } from './modules/gun'
 import { player } from './modules/player'
 import {halloweenTheme} from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
-import { PlayerTrap } from './modules/trap'
 import { turnLeaderIntoGhost } from './modules/ghostBoss'
 import * as UI from 'modules/ui'
 
@@ -249,8 +248,6 @@ export function addNPCs() {
   ghost.dialog.leftClickIcon.positionX = 340 - 60
   ghost.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
-  let playerTrap1 = new PlayerTrap(new Transform({position:scene.trapPosition1}))
-engine.addEntity(playerTrap1)
   // cult leader in human form
   cultLeader = new NPC(
     {
@@ -274,7 +271,6 @@ engine.addEntity(playerTrap1)
       quest.showCheckBox(2)
       updateProgression('waypoint5')
       
-      playerTrap1.hide()
       UI.showGhostHealthUI(true)
       engine.addSystem(myCultTurnSystem)
 
