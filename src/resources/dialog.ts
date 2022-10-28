@@ -1,10 +1,8 @@
 import { Dialog } from '@dcl/npc-scene-utils'
-import * as UI from '../modules/ui'
-import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/boss/ghostBoss";
+import { Ghost, ghostState, onBossDead } from "../modules/boss/ghostBoss";
 import { ghost, hunter } from "../finalHuntdown";
 import * as SOUNDS from "../modules/sounds";
 import { setGunUseable } from "../modules/gun";
-import { spawnGhosts } from "../modules/ghostEnemies";
 import { scene } from "../modules/scene";
 
 import { enableTunnelGrave, teleportGrave } from '../modules/allowPlayerIn'

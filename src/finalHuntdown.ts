@@ -22,11 +22,6 @@ import { quest } from './halloweenQuests/quest/questTasks'
 
 export let hunter: NPC
 export let ghost: NPC
-export let cultLeader: NPC
-export let catLover: NPC
-export let farmer: NPC
-export let girlCult: NPC
-export let cultist1: NPC
 export let creep: NPC
 
 const cultRadius = 4
@@ -82,86 +77,6 @@ export function addNPCs() {
   creep.dialog.leftClickIcon.positionX = 340 - 60
   creep.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
-
-  catLover = new NPC(
-    {
-      position: cultistPositions[0],
-      rotation: Quaternion.Euler(0, 0, 0),
-    },
-    'models/NPCs/catguy_cult.glb',
-    () => {
-      // check for cat wearables
-      //catLover.talk(catGuyDialog, 0)
-      //catLover.playAnimation(`Head_Yes`, true, 2.63)
-    },
-    {
-      reactDistance: 20,
-      idleAnim: `Idle_06`,
-      faceUser: false,
-      onlyETrigger: false
-    }
-  )
-
-
-  farmer = new NPC(
-    {
-      position: cultistPositions[1],
-      rotation: Quaternion.Euler(0, 0, 0),
-    },
-    'models/NPCs/farmer-cult-npc.glb',
-    () => {
-      // check for cat wearables
-      //catLover.talk(catGuyDialog, 0)
-      //farmer.playAnimation(`Head_Yes`, true, 2.63)
-    },
-
-    {
-      reactDistance: 10,
-      idleAnim: `Idle_05`,
-      faceUser: false,
-      onlyETrigger: false
-    }
-  )
-
-
-
-  girlCult = new NPC(
-    {
-      position: cultistPositions[2],
-      rotation: Quaternion.Euler(0, 0, 0),
-    },
-    'models/NPCs/girl_cult.glb',
-    () => {
-      // check for cat wearables
-      //catLover.talk(catGuyDialog, 0)
-      //castleGuy.faceUser=true
-    },
-    {
-      reactDistance: 10,
-      idleAnim: `Idle_04`,
-      faceUser: false,
-      onlyETrigger: false
-    }
-  )
-  //castleGuy.getComponent(Transform).lookAt(scene.trapPosition1)
-
-  cultist1 = new NPC(
-    {
-      position: cultistPositions[3],
-      rotation: Quaternion.Euler(0, 0, 0),
-    },
-    'models/NPCs/ghost1.glb',
-    () => {
-
-    },
-    {
-      reactDistance: 10,
-      idleAnim: `idle1_Armature.001`,
-      faceUser: false,
-      onlyETrigger: false
-    }
-  )
-  //cultist1.getComponent(Transform).lookAt(scene.trapPosition1)
 
   hunter = new NPC(
     {
@@ -225,7 +140,7 @@ export function addNPCs() {
     () => {
 
       ghost.talk(ghostBossDialog, 0)
-      ghost.playAnimation(`stand`, true, 3)
+      ghost.playAnimation(`stand`, false)
 
 
     },
@@ -246,87 +161,17 @@ export function addNPCs() {
   )
   ghost.dialog.leftClickIcon.positionX = 340 - 60
   ghost.dialog.text.color = Color4.FromHexString('#8DFF34FF')
-
-  // cult leader in human form
-  cultLeader = new NPC(
-    {
-      position: scene.mansionCenter,
-      rotation: Quaternion.Euler(0, -90, 0),
-    },
-    'models/NPCs/oldlady_cult.glb',
-    () => {
-      // check for cat wearables
-      // cultLeader.talk(cultLeaderDialog, 0)
-      // ghost.playAnimation(`Acknowledging_Armature`, true, 2.63)
-      setGunUseable()
-      
-      turnLeaderIntoGhost()
-      engine.removeEntity(catLover)
-      engine.removeEntity(farmer)
-      engine.removeEntity(girlCult)
-      engine.removeEntity(cultist1)      
-      spawnGhosts()
-      quest.checkBox(1)
-      quest.showCheckBox(2)
-      updateProgression('waypoint5')
-      
-      UI.showGhostHealthUI(true)
-      engine.addSystem(myCultTurnSystem)
-
-    },
-    {
-      portrait: { path: 'images/portraits/oldlady_cult.png', height: 256, width: 256 },
-      reactDistance: 4,
-      idleAnim: `Weight_Shift_Armature`,
-      faceUser: false,
-      onlyExternalTrigger: true
-    }
-
-  )
-  cultLeader.dialog = new DialogWindow(
-    { path: 'images/portraits/oldlady_cult.png', height: 256, width: 256 },
-    true,
-    null,
-    halloweenTheme
-  )
-  cultLeader.dialog.leftClickIcon.positionX = 340 - 60
-  cultLeader.dialog.text.color = Color4.FromHexString('#8DFF34FF')
-
-
-  catLover.getComponent(Transform).lookAt(cultLeader.getComponent(Transform).position)
-  catLover.addComponent(new Cultist())
-
-  farmer.getComponent(Transform).lookAt(cultLeader.getComponent(Transform).position)
-  farmer.addComponent(new Cultist())
-
-  girlCult.getComponent(Transform).lookAt(cultLeader.getComponent(Transform).position)
-  girlCult.addComponent(new Cultist())
-
-  cultist1.getComponent(Transform).lookAt(cultLeader.getComponent(Transform).position)
-  cultist1.addComponent(new Cultist())
-
-  //ghost.addComponent(new Cultist())
 }
 
 
-
-class CultTurnSystem {
-
-  fraction: number = 0
-  cultGroup = engine.getComponentGroup(Cultist, Transform)
-
-
-  update(dt: number) {
-    if (this.fraction < 1) {
-      this.fraction += dt / 6
-      cultLookatPoint = Vector3.Lerp(scene.mansionCenter, player.camera.feetPosition, this.fraction)
-    }
-    for (let npc of this.cultGroup.entities) {
-      npc.getComponent(Transform).lookAt(cultLookatPoint)
-
-    }
-  }
+export async function firstTimeTrigger(){
+  setGunUseable()
+      
+  turnLeaderIntoGhost()    
+  spawnGhosts()
+  // quest.checkBox(1)
+  // quest.showCheckBox(2)
+  // updateProgression('waypoint5')
+  
+  UI.showGhostHealthUI(true)
 }
-
-let myCultTurnSystem = new CultTurnSystem()
-

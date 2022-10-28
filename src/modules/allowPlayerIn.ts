@@ -2,7 +2,7 @@ import * as crypto from '@dcl/crypto-scene-utils'
 
 import * as utils from '@dcl/ecs-scene-utils'
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-import { cultLeader, ghost, hunter } from "../finalHuntdown";
+import { firstTimeTrigger, ghost, hunter } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
@@ -10,8 +10,6 @@ import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../reso
 import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy } from './mansion';
 import { blocks, upperDoor } from './boss/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
-
-
 
 
 
@@ -46,8 +44,10 @@ async function tryToEnter() {
     let allowed = await isPlayerAllowedIn()
 
     if (allowed) {
+      await firstTimeTrigger()
+
+
       swapMansion('in')
-      cultLeader.onActivate()
       movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
 
       firstTimeEntry = false

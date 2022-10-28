@@ -3,7 +3,7 @@ import { addBoss } from "./modules/boss/ghostBoss";
 import { setGunActive, setGunInActive } from "./modules/gun";
 import { addNPCs } from "./finalHuntdown";
 import { addCreeper } from "./modules/creep";
-import { swapMansion } from "./modules/allowPlayerIn";
+import { enableTunnelGrave, swapMansion } from "./modules/allowPlayerIn";
 import { openMainDoor } from "./modules/mansion";
 import { areaEntity } from "./modules/cameraMode";
 
@@ -21,6 +21,7 @@ addNPCs()
 addBoss()
 addCreeper()
 openMainDoor()
+enableTunnelGrave()
 scene.isSceneLoaded = true
 engine.addEntity(areaEntity)
 
