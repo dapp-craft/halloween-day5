@@ -207,44 +207,49 @@ export let ghostBlasterDialogOutroShort: Dialog[] = [
 // Cult Leader NPC
 export let goodGirlDialog: Dialog[] = [
   {
-    text: 'Welcome to the club Fool! See some familiar faces?',
+    text: `Oh thank you MY HERO!
+This monster completely exhausted me with nightmares. 
+I no longer had the strength to resist him`,
     triggeredByNext: () => {
     },
   },
   {
-    text: 'MWAHAHAHAHAHAHAHAHHAHA',
+    text: `Never, dear player, never let anyone treat you like that. 
+Fight to the end because, most likely, 
+there won't be a hero for you who will come to your rescue.` ,
   },
   {
-    text: 'You still think you got here by your clever investigation don\'t you?',
+    text: `And I'm lucky!
+You are my hero and there I am, your princess, right in this castle.`,
   },
   {
-    text: `That poor girl had to die for the same reasons you were lead here today. `,
+    text: `Only we can not be together, 
+as it happens in fairy tales. 
+Sorry. `,
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
     },
   },
   {
-    text: `Forces, bigger than your mortal mind could ever imagine are being set loose as we speak. `,
+    text: `Firstly, because we are not in a fairy tale here. 
+And secondly, because I have one LITTLE SECRET.
+`,
     triggeredByNext: () => {
       //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
     },
   },
   {
-    text: `The ritual is almost complete and I won't let you stop that! \n\nBut otherwise, feel yourself at home!`,
+    text: `There is a Nuance.
+There is a Trick.
+
+I'M NOT A GIRL.`,
     triggeredByNext: () => {
     }
   },
   {
-    text: `MWAHAHAHAHAHAHAHAHHAHA `,
+    text: `I am a ROCK STAR!`,
     triggeredByNext: () => {   
     },
-  },
-  {
-    text: 'Oh, you have the gun? Hmm... nice touch.',
-  },
-  {
-    text: 'Okay, so that\'s how you want to play this...',
-  },
   {
     text: '[To Servants:]\n\nHOLD UP THIS ONE AS LONG AS POSSIBLE! ',
     triggeredByNext: () => { 
