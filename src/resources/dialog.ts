@@ -1,6 +1,6 @@
 import { Dialog } from '@dcl/npc-scene-utils'
 import * as UI from '../modules/ui'
-import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/ghostBoss";
+import { Ghost, ghostState, onBossDead, turnLeaderIntoGhost } from "../modules/Boss/ghostBoss";
 import { ghost, hunter } from "../finalHuntdown";
 import * as SOUNDS from "../modules/sounds";
 import { setGunUseable } from "../modules/gun";
@@ -248,15 +248,9 @@ I'M NOT A GIRL.`,
   },
   {
     text: `I am a ROCK STAR!`,
-    triggeredByNext: () => {   
+    triggeredByNext: () => {
     },
-  {
-    text: '[To Servants:]\n\nHOLD UP THIS ONE AS LONG AS POSSIBLE! ',
-    triggeredByNext: () => { 
-
-    },
-    isEndOfDialog: true,
-  },
+  }
 ]
 
 // Evil Ghost NPC

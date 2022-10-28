@@ -1,7 +1,7 @@
 import * as tools from "./utilities";
 import * as UI from "./ui";
 import * as SOUNDS from "./sounds";
-import { Ghost, ghostState } from "./ghostBoss";
+import { Ghost, ghostState  } from "./Boss/ghostBoss"; 
 import { GhostCollider, GhostSmall } from "./ghostEnemies";
 import { ghost } from "../finalHuntdown";
 import { ghostBossDialog } from "../resources/dialog";

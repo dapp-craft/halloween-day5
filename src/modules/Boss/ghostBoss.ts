@@ -3,34 +3,8 @@ import * as UI from "../ui";
 import { player } from "../player";
 import * as SOUNDS from "../sounds";
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-import { removeGhosts  } from "./ghostEnemies";
-import { cultLeader, ghost, hunter } from "../finalHuntdown";
-import { grid } from "./grid";
-import { scene } from "./scene";
-import { setGunUnUseable, setGunUseable } from "./gun";
-import { boss_models } from "src/resources/model_paths";
-import { quest } from "src/halloweenQuests/quest/questTasks";
-import { updateProgression } from "src/halloweenQuests/progression";
-=======
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-import { removeGhosts, spawnGhosts, spawnGhostSmall } from "./ghostEnemies";
-import { cultLeader, ghost, ghostBlaster, farmer, catLover, girlCult} from "../finalHuntdown";
-import { grid } from "../modules/grid";
-import { scene } from "../modules/scene";
-import { setGunUnUseable, setGunUseable} from "../modules/gun";
 
 
-let blockShape =  new GLTFShape("models/board_block.glb")
-let blockTranspShape =  new GLTFShape("models/board_block_transp.glb")
-let roomLockShape =  new GLTFShape("models/room_lock_box.glb")
-let ghostShape =  new GLTFShape("models/ghost_boss.glb")
-let pentaLightsShape =  new GLTFShape("models/penta_lights.glb")
-let bigFlameShape =  new GLTFShape("models/BigFlame.glb")
-let upperDoorShape =  new GLTFShape("models/upper_door.glb")
-
-
-=======
 import { removeGhosts, spawnGhosts } from "../ghostEnemies";
 import { ghost, hunter } from "../../finalHuntdown";
 import { grid } from "../grid";
@@ -40,8 +14,7 @@ import { boss_models } from "src/resources/model_paths";
 import { quest } from "src/halloweenQuests/quest/questTasks";
 import { updateProgression } from "src/halloweenQuests/progression";
 import { Block } from "./block";
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
+
 
 let playerBeenInRoom = false
 
@@ -59,19 +32,6 @@ export enum ghostState {
     HIDDEN = 9
 }
 
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-export enum leaderState {
-    TALK = 0,
-    DISAPPEAR = 1
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-
-}
-=======
-    
-} 
-=======
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
 @Component("Ghost")
 export class Ghost {
@@ -80,95 +40,7 @@ export class Ghost {
     healthRegenRate: number = 1
 }
 
-@Component("Leader")
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-export class Leader {
-    // health:number = 100
-    state: leaderState = leaderState.TALK
-    animFraction: number = 0
 
-=======
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-export class Leader {  
-   // health:number = 100
-    state:leaderState = leaderState.TALK 
-    animFraction:number = 0      
-       
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
-}
-
-
-class Block {
-    row: number
-    col: number
-    centerPos: Vector3
-    abovePos: Vector3
-    hidePos: Vector3
-    sizeX: number
-    sizeZ: number
-    entity: Entity
-    transpEntity: Entity
-
-    constructor(_row: number, _col: number, _centerPos: Vector3, _abovePos: Vector3, _sizeX: number, _sizeZ: number) {
-        this.row = _row
-        this.col = _col
-        this.centerPos = _centerPos
-        this.abovePos = _abovePos
-        this.sizeX = _sizeX
-        this.sizeZ = _sizeZ
-
-
-        this.entity = new Entity()
-        this.entity.addComponent(new GLTFShape(boss_models.block))
-        this.entity.addComponent(SOUNDS.woodExplodeSource)
-        this.entity.addComponent(new Transform({
-            position: new Vector3(this.centerPos.x, this.centerPos.y, this.centerPos.z),
-            scale: new Vector3(this.sizeX, this.sizeX, this.sizeZ),
-            rotation: Quaternion.Euler(0, Math.floor(Math.random() * 3) * 90, 0)
-        }))
-
-        let collider = new Entity()
-        collider.addComponent(new Transform({ position: new Vector3(0, -0.01, 0), scale: new Vector3(1, 0.01, 1) }))
-        collider.addComponent(new BoxShape())
-        collider.getComponent(BoxShape).visible = false
-        collider.getComponent(BoxShape).withCollisions = true
-        collider.setParent(this.entity)
-        engine.addEntity(this.entity)
-
-        this.transpEntity = new Entity()
-        this.transpEntity.addComponent(new GLTFShape(boss_models.transparentBlock))
-        this.transpEntity.addComponent(new Transform({
-            position: new Vector3(this.centerPos.x, -20, this.centerPos.z),
-            scale: new Vector3(this.sizeX, this.sizeX, this.sizeZ),
-            rotation: Quaternion.Euler(0, Math.floor(Math.random() * 3) * 90, 0)
-        }))
-        engine.addEntity(this.transpEntity)
-    }
-
-    hide(_timeout: number) {
-        this.entity.getComponent(Transform).position.y = -20
-        this.transpEntity.getComponent(Transform).position.y = this.centerPos.y
-        //this.entity.getComponent(AudioSource).playOnce()
-
-        engine.addSystem(new BlockTimeoutSystem(this, _timeout))
-    }
-    reset() {
-
-        this.transpEntity.getComponent(Transform).position.y = -20
-        this.entity.getComponent(Transform).position.y = this.centerPos.y
-
-    }
-}
-=======
-export class Leader {
-    // health:number = 100
-    animFraction: number = 0
-
-}
-
-
-
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
 export let upperDoor = new Entity()
 upperDoor.addComponent(new Transform({ position: scene.upperDoorPos }))
@@ -295,46 +167,17 @@ export function StartBossFight() {
     ghost.getComponent(Ghost).state = ghostState.MOVING
 }
 
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
+
 export function turnLeaderIntoGhost() {
-    //cultLeader.addComponentOrReplace(ghostShape)
-    cultLeader.getComponent(Leader).state = leaderState.DISAPPEAR
-=======
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-export function turnLeaderIntoGhost(){
-   //cultLeader.addComponentOrReplace(ghostShape)
-   cultLeader.getComponent(Leader).state = leaderState.DISAPPEAR
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
     ghost.getComponent(Ghost).state = ghostState.APPEAR
-    ghost.getComponent(Transform).position.copyFrom(cultLeader.getComponent(Transform).position)
+    ghost.getComponent(Transform).position = scene.mansionCenter
     ghost.playAnimation('Appear', true, 3)
     SOUNDS.ghostDisappearSource.playOnce()
     engine.addSystem(new PentaLightSystem())
 }
 
-export class CultLeaderSystem {
 
-    update(dt: number) {
-
-        const leaderInfo = cultLeader.getComponent(Leader)
-
-        switch (leaderInfo.state) {
-
-            case leaderState.TALK: {
-                break
-            }
-
-            case leaderState.DISAPPEAR: {
-
-                engine.removeEntity(cultLeader)
-                engine.removeSystem(this)
-                break
-            }
-        }
-
-    }
-=======
 export function spawnEnemies() {
     ghost.getComponent(Ghost).state = ghostState.APPEAR
     ghost.getComponent(Transform).position.copyFrom(scene.mansionCenter)
@@ -350,7 +193,6 @@ export function spawnEnemies() {
     updateProgression('waypoint5')
     
     UI.showGhostHealthUI(true)
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 }
 
 
@@ -398,40 +240,7 @@ export class LockRoomSystem {
 let myLockRoomSystem = new LockRoomSystem()
 
 
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-export class BlockTimeoutSystem {
 
-    block: Block
-    timeout: number = 10
-    elapsed: number = 0
-=======
-<<<<<<< Updated upstream:src/modules/ghostBoss.ts
-export class BlockTimeoutSystem {  
-  
-    block:Block
-    timeout:number = 10
-    elapsed:number = 0
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
-
-    constructor(_block: Block, _time?: number) {
-        this.block = _block
-        if (_time) {
-            this.timeout = _time
-        }
-        this.elapsed = 0
-    }
-
-    update(dt: number) {
-        this.elapsed += dt
-        if (this.elapsed > this.timeout) {
-            this.block.reset()
-            engine.removeSystem(this)
-        }
-    }
-}
-=======
-
->>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 export class PentaLightSystem {
     fraction = 0
     update(dt: number) {

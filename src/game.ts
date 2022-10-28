@@ -1,5 +1,5 @@
 import { scene } from "./modules/scene";
-import { addBoss } from "./modules/ghostBoss";
+import { addBoss } from "./modules/Boss/ghostBoss";
 import { setGunActive, setGunInActive } from "./modules/gun";
 import { addNPCs } from "./finalHuntdown";
 import { addCreeper } from "./modules/creep";
