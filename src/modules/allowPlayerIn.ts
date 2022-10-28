@@ -7,7 +7,7 @@ import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
-import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy } from './mansion';
+import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy, rewardDummy } from './mansion';
 import { blocks, upperDoor } from './boss/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
 
@@ -144,6 +144,7 @@ export function swapMansion(state: 'in' | 'out') {
       mansionInTransform.scale.setAll(1)
       pictureFrame.getComponent(Transform).scale.setAll(1)
       pictureFrameDummy.getComponent(Transform).scale.setAll(1)
+      rewardDummy.getComponent(Transform).scale.setAll(1)
 
       mansionOutTransform.scale.setAll(0)
       break
@@ -160,6 +161,7 @@ export function swapMansion(state: 'in' | 'out') {
       mansionInTransform.scale.setAll(0)
       pictureFrame.getComponent(Transform).scale.setAll(0)
       pictureFrameDummy.getComponent(Transform).scale.setAll(0)
+      rewardDummy.getComponent(Transform).scale.setAll(0)
 
       mansionOutTransform.scale.setAll(1)
       break
