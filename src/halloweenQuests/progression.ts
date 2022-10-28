@@ -13,9 +13,13 @@ export let userData: UserData
 export let playerRealm: Realm
 
 export const fireBaseServer =
+  ////main server
   'https://us-central1-halloween-361612.cloudfunctions.net/app/'
-  //To DO Check local sever
-  // `http://localhost:5001/halloween-361612/us-central1/app/` 
+
+  //test server
+  //'https://us-central1-halloween-test-587d1.cloudfunctions.net/app'
+
+
 
 export async function setUserData() {
   const data = await getUserData()
@@ -63,12 +67,12 @@ export async function checkProgression() {
 
   if (!userData) {
     await setUserData()
-    log('userData',userData)
+    log('userData', userData)
   }
 
   if (!playerRealm) {
     await setRealm()
-    log('playerRealm',playerRealm)
+    log('playerRealm', playerRealm)
   }
 
   const url = fireBaseServer + 'halloweenstate/?id=' + userData.userId
