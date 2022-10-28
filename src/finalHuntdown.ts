@@ -1,28 +1,38 @@
+import * as UI from 'modules/ui'
+
+import {
+  progression,
+  updateProgression
+} from './halloweenQuests/progression'
+import { quest } from './halloweenQuests/quest/questTasks'
+
 import {
   ghostBlasterDialogAtDoor,
   ghostBlasterDialogAtDoorShort,
   ghostBlasterDialogOutro,
   ghostBossDialog,
-  ghostBlasterDialogOutroShort
+  ghostBlasterDialogOutroShort,
+  goodGirlDialog,
+  goodGirlOutro
 } from './resources/dialog'
+
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
-import * as ui from '@dcl/ui-scene-utils'
 import { scene } from './modules/scene'
 import { setGunUnUseable, setGunUseable } from './modules/gun'
-import { player } from './modules/player'
-import {halloweenTheme} from "./halloweenQuests/quest/questCheckBox";
+import { halloweenTheme } from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
+import { girlNPC } from './modules/girl'
 import { turnLeaderIntoGhost } from './modules/boss/ghostBoss'
-import * as UI from 'modules/ui'
+import { Reward } from './halloweenQuests/loot'
 
-import {
-  updateProgression
-} from './halloweenQuests/progression'
-import { quest } from './halloweenQuests/quest/questTasks'
+
+
+
 
 export let hunter: NPC
 export let ghost: NPC
 export let creep: NPC
+export let girl: girlNPC
 
 const cultRadius = 4
 export const cultistPositions = [
@@ -161,20 +171,51 @@ export function addNPCs() {
   )
   ghost.dialog.leftClickIcon.positionX = 340 - 60
   ghost.dialog.text.color = Color4.FromHexString('#8DFF34FF')
+
+
+  //create girl and hide
+  girl = new girlNPC()
+  girl.addComponentOrReplace(new Transform(
+    {
+      position: new Vector3(41.70, -10, 38.31),
+      rotation: Quaternion.Euler(0, 45, 0)
+    }
+  ))
+  girl.currentDialog = goodGirlDialog(
+    () => {
+      girl.player_talk = false
+      setGunUseable()
+      girl.currentDialog = goodGirlOutro(() => {
+        girl.player_talk = false
+        setGunUseable()
+      })
+      const reward = new Reward(girl, 'w5', { position: new Vector3(0, 1, 1), scale: new Vector3(2, 2, 2) }, true, () => {
+        executeTask(async () => {
+          //if (await updateProgression('w5')) {
+          //progression.data['w5'] = true
+          // progression.progressionChanged = true
+          //}
+          reward.getComponent(Transform).position.y = -4
+        })
+      })
+    }
+  )
+  engine.addEntity(girl)
+  engine.addSystem(girl)
 }
 
 
-export async function firstTimeTrigger(){
+export async function firstTimeTrigger() {
   setGunUseable()
-      
-  turnLeaderIntoGhost()    
-  spawnGhosts()
-  if (updateProgression('waypoint5')) {
-    quest.checkBox(1)
-    quest.showCheckBox(2)
-  }
 
-  
-  
+  turnLeaderIntoGhost()
+  spawnGhosts()
+  // if (updateProgression('waypoint5')) {
+  //   quest.checkBox(1)
+  //   quest.showCheckBox(2)
+  // }
+
+
+
   UI.showGhostHealthUI(true)
 }

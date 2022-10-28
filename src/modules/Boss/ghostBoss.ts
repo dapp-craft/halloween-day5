@@ -6,7 +6,7 @@ import { movePlayerTo } from '@decentraland/RestrictedActions'
 
 
 import { removeGhosts, spawnGhosts } from "../ghostEnemies";
-import { ghost, hunter } from "../../finalHuntdown";
+import { ghost, girl, hunter } from "../../finalHuntdown";
 import { grid } from "../grid";
 import { scene } from "../scene";
 import { setGunUnUseable, setGunUseable } from "../gun";
@@ -355,7 +355,7 @@ export class GhostMoveSystem {
                 this.timer += dt
                 if (this.timer >= this.attackTime) {
                     ghostInfo.state = ghostState.DIZZY
-                   //ghost.playAnimation(`Idle_002`, false)
+                    //ghost.playAnimation(`Idle_002`, false)
                     this.timer = 0
                     this.targetBlock.hide(16)
                     //transform.scale.y = 2
@@ -477,10 +477,10 @@ export class GhostMoveSystem {
 
 export async function onBossDead() {
     scene.bossIsDead = true
-    if (updateProgression('ghostDefeated')) {
-        quest.checkBox(2)
-        quest.showCheckBox(3)
-      }
+    // if (updateProgression('ghostDefeated')) {
+    //     quest.checkBox(2)
+    //     quest.showCheckBox(3)
+    // }
     ghost.getComponent(Transform).scale.setAll(0)
     //ghost.playAnimation(`Death`, true, 2.63)
     hideAllBlocks()
@@ -491,8 +491,8 @@ export async function onBossDead() {
     SOUNDS.endingMusicSource.playing = true
     SOUNDS.thunderSource.playOnce()
     SOUNDS.ghostDisappearSource.playOnce()
-    hunter.getComponent(Transform).position = new Vector3(scene.mansionCenter.x - 26, 0, scene.mansionCenter.z)
-    hunter.getComponent(Transform).rotation = Quaternion.Euler(0, 90, 0)
+    hunter.getComponent(Transform).position.y = -10
+    girl.getComponent(Transform).position.y = 0.2
     setGunUseable()
     //engine.removeEntity(roomLock)
     engine.removeEntity(upperDoor)

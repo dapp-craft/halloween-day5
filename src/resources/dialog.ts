@@ -198,60 +198,70 @@ export let ghostBlasterDialogOutroShort: Dialog[] = [
 ]
 
 
-
-// let playerTrap1 = new PlayerTrap(new Transform({position:scene.trapPosition1}))
-// engine.addEntity(playerTrap1)
-
-// Cult Leader NPC
-export let goodGirlDialog: Dialog[] = [
-  {
-    text: `Oh thank you MY HERO!
+// girl NPC
+export function goodGirlDialog(callback: () => void) {
+  const dialog: Dialog[] = [
+    {
+      text: `Oh thank you MY HERO!
 This monster completely exhausted me with nightmares. 
 I no longer had the strength to resist him`,
-    triggeredByNext: () => {
     },
-  },
-  {
-    text: `Never, dear player, never let anyone treat you like that. 
+    {
+      text: `Never, dear player, never let anyone treat you like that. 
 Fight to the end because, most likely, 
 there won't be a hero for you who will come to your rescue.` ,
-  },
-  {
-    text: `And I'm lucky!
+    },
+    {
+      text: `And I'm lucky!
 You are my hero and there I am, your princess, right in this castle.`,
-  },
-  {
-    text: `Only we can not be together, 
+    },
+    {
+      text: `Only we can not be together, 
 as it happens in fairy tales. 
 Sorry. `,
-    triggeredByNext: () => {
-      //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
     },
-  },
-  {
-    text: `Firstly, because we are not in a fairy tale here. 
+    {
+      text: `Firstly, because we are not in a fairy tale here. 
 And secondly, because I have one LITTLE SECRET.
 `,
-    triggeredByNext: () => {
-      //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
     },
-  },
-  {
-    text: `There is a Nuance.
+    {
+      text: `There is a Nuance.
 There is a Trick.
 
 I'M NOT A GIRL.`,
-    triggeredByNext: () => {
-    }
-  },
-  {
-    text: `I am a ROCK STAR!`,
-    triggeredByNext: () => {
     },
-  }
-]
+    {
+      text: `I am a ROCK STAR!`,
+      triggeredByNext: () => {
+        callback()
+      },
+      isEndOfDialog: true
+    },
 
-// Evil Ghost NPC
+  ]
+  return dialog
+}
+
+export function goodGirlOutro(callback: () => void) {
+  const dialog: Dialog[] = [
+    {
+      text: `bla-bla`,
+    },
+    {
+      text: `bla-bla2`,
+      triggeredByNext: () => {
+        callback()
+      },
+      isEndOfDialog: true
+    },
+  ]
+
+  return dialog
+}
+
+
+// Evil Garg NPC
 export let ghostBossDialog: Dialog[] = [
   {
     text: "I have waited for you! And you have stepped right into my trap!",
@@ -295,7 +305,7 @@ export let ghostBossDialog: Dialog[] = [
   },
   {
     text: "Feel my power!",
-    triggeredByNext: async() => {
+    triggeredByNext: async () => {
       //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
       onBossDead()
     },

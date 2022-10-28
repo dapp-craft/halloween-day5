@@ -1,7 +1,6 @@
-import * as utils from "@dcl/ecs-scene-utils";
-import { NPC, Dialog, NPCState, DialogWindow } from '@dcl/npc-scene-utils'
+import { NPC, Dialog, DialogWindow } from '@dcl/npc-scene-utils'
 import { halloweenTheme } from "src/halloweenQuests/quest/questCheckBox";
-import { COLOR_GREEN } from "src/resources/theme/color";
+import { setGunUnUseable } from './gun';
 
 enum states {
     idle,
@@ -33,11 +32,12 @@ export class girlNPC extends Entity implements ISystem {
                 position: new Vector3(0, 0, 0),
                 scale: new Vector3(0, 0, 0)
             },
-            'models/evil_girl.glb',
+            'models/NPCs/good_girl.glb',
             () => {
                 //this.dialog_start()
                 log('acivated')
                 npc.talk(this.currentDialog, 0)
+                setGunUnUseable()
                 this.player_talk = true
             },
             {
@@ -60,10 +60,10 @@ export class girlNPC extends Entity implements ISystem {
 
         npc.dialog = new DialogWindow({ path: 'images/portraits/girl.png', height: 256, width: 256 }, true, null, halloweenTheme)
         npc.dialog.leftClickIcon.positionX = 340 - 60
-        npc.dialog.text.color = Color4.FromHexString(COLOR_GREEN)
+        npc.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
 
-        this.addComponentOrReplace(new GLTFShape('models/evil_girl.glb'))
+        this.addComponentOrReplace(new GLTFShape('models/NPCs/good_girl.glb'))
 
         const _animator = new Animator()
         _animator.addClip(new AnimationState('stand', { layer: 0, looping: true, weight: 1 }))
