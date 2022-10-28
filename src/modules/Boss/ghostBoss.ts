@@ -172,28 +172,11 @@ export function turnLeaderIntoGhost() {
 
     ghost.getComponent(Ghost).state = ghostState.APPEAR
     ghost.getComponent(Transform).position = scene.mansionCenter
-    ghost.playAnimation('Appear', true, 3)
+    //ghost.playAnimation('Appear', true, 3)
     SOUNDS.ghostDisappearSource.playOnce()
     engine.addSystem(new PentaLightSystem())
 }
 
-
-export function spawnEnemies() {
-    ghost.getComponent(Ghost).state = ghostState.APPEAR
-    ghost.getComponent(Transform).position.copyFrom(scene.mansionCenter)
-    ghost.playAnimation('Appear', true, 3)
-    SOUNDS.ghostDisappearSource.playOnce()
-    engine.addSystem(new PentaLightSystem())
-
-    setGunUseable()
-    
-    spawnGhosts()
-    quest.checkBox(1)
-    quest.showCheckBox(2)
-    updateProgression('waypoint5')
-    
-    UI.showGhostHealthUI(true)
-}
 
 
 export class LockRoomSystem {
@@ -372,7 +355,7 @@ export class GhostMoveSystem {
                 this.timer += dt
                 if (this.timer >= this.attackTime) {
                     ghostInfo.state = ghostState.DIZZY
-                    ghost.playAnimation(`Idle_002`, false)
+                   //ghost.playAnimation(`Idle_002`, false)
                     this.timer = 0
                     this.targetBlock.hide(16)
                     //transform.scale.y = 2
@@ -387,7 +370,7 @@ export class GhostMoveSystem {
                 this.timer += dt
                 if (this.timer >= this.dizzyTime) {
                     ghostInfo.state = ghostState.MOVING
-                    ghost.playAnimation(`Idle_001`, false)
+                    //ghost.playAnimation(`Idle_001`, false)
                     this.timer = 0
                     // this.targetBlock.reset()
                     this.movesBeforeAttack = Math.floor(Math.random() * 3 + 2)
@@ -494,9 +477,9 @@ export class GhostMoveSystem {
 
 export function onBossDead() {
     scene.bossIsDead = true
-    quest.checkBox(2)
-    quest.showCheckBox(3)
-    updateProgression('ghostDefeated')
+    // quest.checkBox(2)
+    // quest.showCheckBox(3)
+    // updateProgression('ghostDefeated')
     //ghost.getComponent(Transform).scale.setAll(0)
     //ghost.playAnimation(`Death`, true, 2.63)
     hideAllBlocks()
