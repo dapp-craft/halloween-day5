@@ -16,7 +16,6 @@ let pictureShape = new GLTFShape('models/picture.glb')
 let picture2Shape = new GLTFShape('models/picture2.glb')
 let gardenShape = new GLTFShape('models/fence.glb')
 let fireShape = new GLTFShape('models/fire.glb')
-let mainDoorShape = new GLTFShape('models/main_door.glb')
 
 //let portalAlpha = new Texture('textures/portal_alpha.png', { samplingMode: 1, wrap: 1 })
 //let portalNormalmap2 = new Texture('textures/portal_normal22222.png.png', {samplingMode: 1, wrap:1})
