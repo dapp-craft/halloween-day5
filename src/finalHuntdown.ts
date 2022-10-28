@@ -169,9 +169,12 @@ export async function firstTimeTrigger(){
       
   turnLeaderIntoGhost()    
   spawnGhosts()
-  // quest.checkBox(1)
-  // quest.showCheckBox(2)
-  // updateProgression('waypoint5')
+  if (updateProgression('waypoint5')) {
+    quest.checkBox(1)
+    quest.showCheckBox(2)
+  }
+
+  
   
   UI.showGhostHealthUI(true)
 }

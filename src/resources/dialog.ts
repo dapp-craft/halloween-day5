@@ -295,7 +295,7 @@ export let ghostBossDialog: Dialog[] = [
   },
   {
     text: "Feel my power!",
-    triggeredByNext: () => {
+    triggeredByNext: async() => {
       //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
       onBossDead()
     },

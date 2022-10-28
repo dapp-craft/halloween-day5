@@ -475,12 +475,13 @@ export class GhostMoveSystem {
 }
 
 
-export function onBossDead() {
+export async function onBossDead() {
     scene.bossIsDead = true
-    // quest.checkBox(2)
-    // quest.showCheckBox(3)
-    // updateProgression('ghostDefeated')
-    //ghost.getComponent(Transform).scale.setAll(0)
+    if (updateProgression('ghostDefeated')) {
+        quest.checkBox(2)
+        quest.showCheckBox(3)
+      }
+    ghost.getComponent(Transform).scale.setAll(0)
     //ghost.playAnimation(`Death`, true, 2.63)
     hideAllBlocks()
     //engine.removeSystem(playerFallSys)
