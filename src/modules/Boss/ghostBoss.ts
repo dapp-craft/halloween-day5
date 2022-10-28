@@ -1,8 +1,9 @@
-import * as tools from "./utilities";
-import * as UI from "./ui";
-import { player } from "./player";
-import * as SOUNDS from "./sounds";
+import * as tools from "../utilities";
+import * as UI from "../ui";
+import { player } from "../player";
+import * as SOUNDS from "../sounds";
 import { movePlayerTo } from '@decentraland/RestrictedActions'
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
 import { removeGhosts  } from "./ghostEnemies";
 import { cultLeader, ghost, hunter } from "../finalHuntdown";
 import { grid } from "./grid";
@@ -11,6 +12,36 @@ import { setGunUnUseable, setGunUseable } from "./gun";
 import { boss_models } from "src/resources/model_paths";
 import { quest } from "src/halloweenQuests/quest/questTasks";
 import { updateProgression } from "src/halloweenQuests/progression";
+=======
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
+import { removeGhosts, spawnGhosts, spawnGhostSmall } from "./ghostEnemies";
+import { cultLeader, ghost, ghostBlaster, farmer, catLover, girlCult} from "../finalHuntdown";
+import { grid } from "../modules/grid";
+import { scene } from "../modules/scene";
+import { setGunUnUseable, setGunUseable} from "../modules/gun";
+
+
+let blockShape =  new GLTFShape("models/board_block.glb")
+let blockTranspShape =  new GLTFShape("models/board_block_transp.glb")
+let roomLockShape =  new GLTFShape("models/room_lock_box.glb")
+let ghostShape =  new GLTFShape("models/ghost_boss.glb")
+let pentaLightsShape =  new GLTFShape("models/penta_lights.glb")
+let bigFlameShape =  new GLTFShape("models/BigFlame.glb")
+let upperDoorShape =  new GLTFShape("models/upper_door.glb")
+
+
+=======
+import { removeGhosts, spawnGhosts } from "../ghostEnemies";
+import { ghost, hunter } from "../../finalHuntdown";
+import { grid } from "../grid";
+import { scene } from "../scene";
+import { setGunUnUseable, setGunUseable } from "../gun";
+import { boss_models } from "src/resources/model_paths";
+import { quest } from "src/halloweenQuests/quest/questTasks";
+import { updateProgression } from "src/halloweenQuests/progression";
+import { Block } from "./block";
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
 let playerBeenInRoom = false
 
@@ -28,11 +59,19 @@ export enum ghostState {
     HIDDEN = 9
 }
 
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
 export enum leaderState {
     TALK = 0,
     DISAPPEAR = 1
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
 
 }
+=======
+    
+} 
+=======
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
 @Component("Ghost")
 export class Ghost {
@@ -42,11 +81,20 @@ export class Ghost {
 }
 
 @Component("Leader")
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
 export class Leader {
     // health:number = 100
     state: leaderState = leaderState.TALK
     animFraction: number = 0
 
+=======
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
+export class Leader {  
+   // health:number = 100
+    state:leaderState = leaderState.TALK 
+    animFraction:number = 0      
+       
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 }
 
 
@@ -111,6 +159,16 @@ class Block {
 
     }
 }
+=======
+export class Leader {
+    // health:number = 100
+    animFraction: number = 0
+
+}
+
+
+
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
 export let upperDoor = new Entity()
 upperDoor.addComponent(new Transform({ position: scene.upperDoorPos }))
@@ -237,9 +295,16 @@ export function StartBossFight() {
     ghost.getComponent(Ghost).state = ghostState.MOVING
 }
 
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
 export function turnLeaderIntoGhost() {
     //cultLeader.addComponentOrReplace(ghostShape)
     cultLeader.getComponent(Leader).state = leaderState.DISAPPEAR
+=======
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
+export function turnLeaderIntoGhost(){
+   //cultLeader.addComponentOrReplace(ghostShape)
+   cultLeader.getComponent(Leader).state = leaderState.DISAPPEAR
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
     ghost.getComponent(Ghost).state = ghostState.APPEAR
     ghost.getComponent(Transform).position.copyFrom(cultLeader.getComponent(Transform).position)
@@ -269,8 +334,24 @@ export class CultLeaderSystem {
         }
 
     }
-}
+=======
+export function spawnEnemies() {
+    ghost.getComponent(Ghost).state = ghostState.APPEAR
+    ghost.getComponent(Transform).position.copyFrom(scene.mansionCenter)
+    ghost.playAnimation('Appear', true, 3)
+    SOUNDS.ghostDisappearSource.playOnce()
+    engine.addSystem(new PentaLightSystem())
 
+    setGunUseable()
+    
+    spawnGhosts()
+    quest.checkBox(1)
+    quest.showCheckBox(2)
+    updateProgression('waypoint5')
+    
+    UI.showGhostHealthUI(true)
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
+}
 
 
 export class LockRoomSystem {
@@ -317,11 +398,20 @@ export class LockRoomSystem {
 let myLockRoomSystem = new LockRoomSystem()
 
 
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
 export class BlockTimeoutSystem {
 
     block: Block
     timeout: number = 10
     elapsed: number = 0
+=======
+<<<<<<< Updated upstream:src/modules/ghostBoss.ts
+export class BlockTimeoutSystem {  
+  
+    block:Block
+    timeout:number = 10
+    elapsed:number = 0
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 
     constructor(_block: Block, _time?: number) {
         this.block = _block
@@ -339,6 +429,9 @@ export class BlockTimeoutSystem {
         }
     }
 }
+=======
+
+>>>>>>> Stashed changes:src/modules/Boss/ghostBoss.ts
 export class PentaLightSystem {
     fraction = 0
     update(dt: number) {
@@ -596,7 +689,7 @@ export function onBossDead() {
     quest.showCheckBox(3)
     updateProgression('ghostDefeated')
     //ghost.getComponent(Transform).scale.setAll(0)
-    ghost.playAnimation(`Death`, true, 2.63)
+    //ghost.playAnimation(`Death`, true, 2.63)
     hideAllBlocks()
     //engine.removeSystem(playerFallSys)
     ghost.getComponent(Ghost).state = ghostState.DEAD
@@ -628,12 +721,7 @@ export function addBoss() {
     //engine.addEntity(bigFlame)
     engine.addEntity(ghost)
 
-    //CULT LEADER NPC
-    cultLeader.addComponent(new Leader())
-    cultLeader.getComponent(Leader).state = leaderState.TALK
-    engine.addEntity(cultLeader)
 
-    engine.addSystem(new CultLeaderSystem())
     engine.addSystem(new GhostMoveSystem())
     engine.addSystem(myLockRoomSystem)
 
