@@ -12,7 +12,7 @@ import { setGunUnUseable, setGunUseable } from './modules/gun'
 import { player } from './modules/player'
 import {halloweenTheme} from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
-import { turnLeaderIntoGhost } from './modules/Boss/ghostBoss'
+import { turnLeaderIntoGhost } from './modules/boss/ghostBoss'
 import * as UI from 'modules/ui'
 
 import {

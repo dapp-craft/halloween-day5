@@ -1,5 +1,5 @@
 import { scene } from "./modules/scene";
-import { addBoss } from "./modules/Boss/ghostBoss";
+import { addBoss } from "./modules/boss/ghostBoss";
 import { setGunActive, setGunInActive } from "./modules/gun";
 import { addNPCs } from "./finalHuntdown";
 import { addCreeper } from "./modules/creep";
@@ -20,7 +20,7 @@ import { isEqual } from './halloweenQuests/utils/isEqual';
 addNPCs()
 addBoss()
 addCreeper()
-//openMainDoor()
+openMainDoor()
 scene.isSceneLoaded = true
 engine.addEntity(areaEntity)
 
