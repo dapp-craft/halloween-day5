@@ -1,87 +1,24 @@
-import * as crypto from '@dcl/crypto-scene-utils'
-
 import * as utils from '@dcl/ecs-scene-utils'
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-import { cultLeader, ghost, hunter } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
-import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
-import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy } from './mansion';
-import { blocks, upperDoor } from './ghostBoss';
+import { hunterNoWeapon } from '../resources/dialog'
+import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy, rewardDummy } from './mansion';
+import { blocks, upperDoor } from './bossCode/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
+import { NPC } from "@dcl/npc-scene-utils";
+import { BlendedNPC } from './npc';
 
+let ghost: NPC
+let firstTimeTrigger
+let hunter: BlendedNPC
 
-
-const dressList = [
-  "dcl://halloween_2020/hwn_2020_cult_supreme_feet",
-  "dcl://halloween_2020/hwn_2020_cult_supreme_helmet",
-  "dcl://halloween_2020/hwn_2020_cult_supreme_lower_body",
-  "dcl://halloween_2020/hwn_2020_cult_supreme_upper_body",
-  "dcl://halloween_2020/hwn_2020_cult_servant_feet",
-  "dcl://halloween_2020/hwn_2020_cult_servant_helmet",
-  "dcl://halloween_2020/hwn_2020_cult_servant_lower_body",
-  "dcl://halloween_2020/hwn_2020_cult_servant_upper_body"
-
-
-]
-
-//"dcl://moonshot_2020/ms_dcl_upper_body"
-
-
-// executeTask(async () => {
-// 	const allWearables = await wearables.getListOfWearables()
-// 	log(allWearables)
-// })
-
-export function initAllowPlayerIn(){
-  
+export function initTeleport(ghost_, hunter_, firstTimeTrigger_) {
+  ghost = ghost_
+  hunter = hunter_
+  firstTimeTrigger = firstTimeTrigger_
 }
-
-export async function checkWearables(): Promise<boolean> {
-
-  //TODO: REMOVE ADDRESS!!!
-  let equiped = await crypto.avatar
-    .getUserInfo()
-    .then(items => {
-
-      log("items: " + items.metadata.avatars[0].avatar.wearables)
-      return items.metadata.avatars[0].avatar.wearables
-
-    }).catch((e) => {
-      log("error: " + e)
-      log("player doesn't own these items")
-      return null
-    })
-
-  let count = 0
-
-  // if (equiped != null) {
-  //   for (let item of equiped) {
-  //     for (let allowedItem of dressList) {
-  //       if (item === allowedItem) {
-  //         count++
-  //         log('found ' + count + ' matching wearables! ', item)
-
-  //       }
-  //     }
-  //   }
-  // }
-
-  // if (count > 0) {
-  //   return true
-  // }
-
-  // log('no cultist clothes found! ')
-  // return false
-  return true
-
-
-}
-
-//dcl://base-avatars/eyebrows_00,dcl://base-avatars/mouth_00,dcl://base-avatars/casual_hair_01,dcl://base-avatars/beard,dcl://base-avatars/sneakers,dcl://moonshot_2020/ms_dcl_upper_body,dcl://stay_safe/protection_mask_funny_mask,dcl://dcl_launch/colorful_hat_hat,dcl://base-avatars/aviatorstyle,dcl://base-avatars/comfortablepants,dcl://base-avatars/eyes_09
-
-
 
 let graveShape = new GLTFShape("models/grave_portal.glb")
 
@@ -100,30 +37,41 @@ let firstTimeEntry = true
 //TODO: check wearables/badges here
 async function isPlayerAllowedIn(): Promise<boolean> {
 
-  let hasCultistClothes = await checkWearables()
-
-  if (hasCultistClothes && gunIsInHand) {
+  if (gunIsInHand) {
     return true
   } else {
-
-    if (!hasCultistClothes && !gunIsInHand) {
-      // UI.setCursorMessage("ENTRY DENIED", "CULTISTS ONLY")
-      hunter.talk(ghostBlasterDialogNoClothes, 0, 3)
-    }
-    else {
-      if (!hasCultistClothes) {
-        // UI.setCursorMessage("ENTRY DENIED", "CULTISTS ONLY")
-        hunter.talk(ghostBlasterDialogNoClothes, 0, 3)
+    hunter.npcEntity.talk(hunterNoWeapon(
+      () => {
+        hunter.player_talk = false
       }
-      if (!gunIsInHand) {
-        //UI.setCursorMessage("NOT READY", "YOU NEED A WEAPON")
-        hunter.talk(ghostBlasterDialogNoWeapon, 0, 3)
-      }
-    }
-
-
+    ), 0, 3)
+    return false
   }
-  return false
+
+}
+
+async function tryToEnter() {
+  if (firstTimeEntry) {
+    let allowed = await isPlayerAllowedIn()
+
+    if (allowed) {
+      await firstTimeTrigger()
+
+
+      swapMansion('in')
+      movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
+
+      firstTimeEntry = false
+      SOUNDS.outsideAmbienceSource.playing = false
+      SOUNDS.musicSource.loop = true
+      SOUNDS.musicSource.playing = true
+    }
+  } else {
+    setGunUseable()
+    swapMansion('in')
+    movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
+    SOUNDS.outsideAmbienceSource.playing = false
+  }
 }
 
 //create trigger for entity
@@ -132,25 +80,7 @@ teleportOutside.addComponent(new utils.TriggerComponent(
   {
     layer: 0,
     onCameraEnter: async () => {
-      if (firstTimeEntry) {
-        let allowed = await isPlayerAllowedIn()
-
-        if (allowed) {
-          swapMansion('in')
-          cultLeader.onActivate()
-          movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
-
-          firstTimeEntry = false
-           SOUNDS.outsideAmbienceSource.playing = false
-           SOUNDS.musicSource.loop = true
-           SOUNDS.musicSource.playing = true
-        }
-      } else {
-        setGunUseable()
-        swapMansion('in')
-        movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
-        SOUNDS.outsideAmbienceSource.playing = false
-      }
+      tryToEnter()
     },
     //enableDebug: true
   }
@@ -176,8 +106,8 @@ teleportInside.addComponent(
         swapMansion('out')
         movePlayerTo(scene.teleportArriveOutward)
         setGunUnUseable()
-         SOUNDS.outsideAmbienceSource.loop = true
-         SOUNDS.outsideAmbienceSource.playing = true
+        SOUNDS.outsideAmbienceSource.loop = true
+        SOUNDS.outsideAmbienceSource.playing = true
       },
       //enableDebug: true
     }
@@ -198,36 +128,9 @@ export function enableTunnelGrave() {
 
   if (!teleportGrave.hasComponent(OnPointerDown)) {
     teleportGrave.addComponent(new OnPointerDown((e) => {
-
-      if (gunIsInHand) {
-        swapMansion('in')
-
-        if (firstTimeEntry) {
-          cultLeader.onActivate()
-          movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
-          firstTimeEntry = false
-          openMainDoor()
-           SOUNDS.outsideAmbienceSource.playing = false
-
-
-           SOUNDS.musicSource.loop = true
-           SOUNDS.musicSource.playing = true
-
-        }
-        else {
-          setGunUseable()
-          movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 1, scene.mansionCenter.z))
-          SOUNDS.outsideAmbienceSource.playing = false
-
-        }
-
-      } else {
-        //UI.setCursorMessage("NOT READY", "YOU NEED A WEAPON")
-        hunter.talk(ghostBlasterDialogNoWeapon, 0, 4)
-
-      }
+      tryToEnter()
     }, {
-      button: ActionButton.POINTER,
+      button: ActionButton.PRIMARY,
       showFeedback: true,
       hoverText: "Use secret tunnel",
       distance: 5
@@ -244,7 +147,7 @@ export function swapMansion(state: 'in' | 'out') {
         block.entity.getComponent(Transform).scale.setAll(7.92)
         block.transpEntity.getComponent(Transform).scale.setAll(7.92)
       }
-      for (const bat of smallGhosts){
+      for (const bat of smallGhosts) {
         bat.getComponent(Transform).scale.setAll(1)
       }
       ghost.getComponent(Transform).scale.setAll(4)
@@ -252,6 +155,7 @@ export function swapMansion(state: 'in' | 'out') {
       mansionInTransform.scale.setAll(1)
       pictureFrame.getComponent(Transform).scale.setAll(1)
       pictureFrameDummy.getComponent(Transform).scale.setAll(1)
+      rewardDummy.getComponent(Transform).scale.setAll(1)
 
       mansionOutTransform.scale.setAll(0)
       break
@@ -260,7 +164,7 @@ export function swapMansion(state: 'in' | 'out') {
         block.entity.getComponent(Transform).scale.setAll(0)
         block.transpEntity.getComponent(Transform).scale.setAll(0)
       }
-      for (const bat of smallGhosts){
+      for (const bat of smallGhosts) {
         bat.getComponent(Transform).scale.setAll(0)
       }
       ghost.getComponent(Transform).scale.setAll(0)
@@ -268,6 +172,7 @@ export function swapMansion(state: 'in' | 'out') {
       mansionInTransform.scale.setAll(0)
       pictureFrame.getComponent(Transform).scale.setAll(0)
       pictureFrameDummy.getComponent(Transform).scale.setAll(0)
+      rewardDummy.getComponent(Transform).scale.setAll(0)
 
       mansionOutTransform.scale.setAll(1)
       break
