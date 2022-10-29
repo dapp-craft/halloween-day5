@@ -156,10 +156,10 @@ export class questUITasks{
                 coords: Coords.Secret
             },
             {
-                label: 'Talk to Hunter',
+                label: 'Talk to ROCK STAR',
                 checked: false,
                 visible: this.data.ghostDefeated,
-                coords: Coords.Secret
+                coords: Coords.GenesisCoords
             }
         ];
     }
