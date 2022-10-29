@@ -3,7 +3,7 @@ import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
-import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
+import { hunterNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy, rewardDummy } from './mansion';
 import { blocks, upperDoor } from './bossCode/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
@@ -39,7 +39,7 @@ async function isPlayerAllowedIn(): Promise<boolean> {
   if (gunIsInHand) {
     return true
   } else {
-    hunter.talk(ghostBlasterDialogNoWeapon, 0, 3)
+    hunter.talk(hunterNoWeapon, 0, 3)
     return false
   }
 

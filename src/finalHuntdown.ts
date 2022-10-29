@@ -7,13 +7,11 @@ import {
 import { quest } from './halloweenQuests/quest/questTasks'
 
 import {
-  ghostBlasterDialogAtDoor,
-  ghostBlasterDialogAtDoorShort,
-  ghostBlasterDialogOutro,
+  hunterAfterBossDeath,
+  hunterAtDoorShort,
   ghostBossDialog,
-  ghostBlasterDialogOutroShort,
   goodGirlDialog,
-  goodGirlOutro, initDialogsDeps
+  goodGirlOutro, initDialogsDeps, hunterAtDoor
 } from './resources/dialog'
 
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
@@ -87,21 +85,11 @@ export function addNPCs() {
       if (hunter.dialog.isDialogOpen) {
         return
       }
-      if (!scene.bossIsDead) {
         if (scene.guyToldIntro) {
-          hunter.talk(ghostBlasterDialogAtDoorShort, 0)
+          hunter.talk(hunterAtDoorShort, 0)
         } else {
-          hunter.talk(ghostBlasterDialogAtDoor, 0)
+          hunter.talk(hunterAtDoor, 0)
         }
-
-      } else {
-        setGunUnUseable()
-        if (scene.guyToldEnding) {
-          hunter.talk(ghostBlasterDialogOutroShort, 0)
-        } else {
-          hunter.talk(ghostBlasterDialogOutro(hunter), 0)
-        }
-      }
     },
 
     {
