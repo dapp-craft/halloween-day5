@@ -1,7 +1,6 @@
 import { Dialog } from '@dcl/npc-scene-utils'
 import * as SOUNDS from "../modules/sounds";
 import { scene } from "../modules/scene";
-
 import {Ghost, ghostState, onBossDeadExec} from "../modules/bossCode/ghostDef";
 
 let setGunUseable
@@ -32,30 +31,26 @@ export let creepDialog2: Dialog[] = [
 ]
 export let creepDialog3: Dialog[] = [
   {
-    text: "Oooow Daaaaamn! My rhythms are like bullets!" +
-      "F***ck Ooof! My haters... more like lamers!",
-    isEndOfDialog: true,
-  }
-
-]
-export let creepDialog4: Dialog[] = [
+    text: `Oooow Daaaaamn! My rhythms are like bullets!
+F***ck Ooof! My haters... more like lamers!`,
+  },
   {
-    text: "How does my new track sound? I made it just now, I just need to record a Feat. With the Mumbling Ghost." +
-      "And then you could give it a listen on all the popular platforms.",
+    text: `How does my new track sound? I made it just now, I just need to record a Feat. With the Mumbling Ghost.
+And then you could give it a listen on all the popular platforms.`,
 
   },
   {
-    text: "I must hurry before they notice my absence. We are not allowed to leave." +
-      "But laws are not for me. I am a gangster.",
+    text: `I must hurry before they notice my absence. We are not allowed to leave.
+But laws are not for me. I am a gangster.`,
   },
   {
-    text: "I live the life of a gangster and write songs about it. I even know what my next track will be about! Escape from the castle!",
+    text: `I live the life of a gangster and write songs about it. I even know what my next track will be about! Escape from the castle!`,
   },
   {
-    text: "How I hid from the guards, how I went through the portal in the grave ...",
+    text: `How I hid from the guards, how I went through the portal in the grave ...`,
   },
   {
-    text: "Have a good one, ichthyander! I am gonna go to Grammy’s!",
+    text: `Have a good one, ichthyander! I am gonna go to Grammy’s!`,
     triggeredByNext: () => {
       enableTunnelGrave()
     },
@@ -74,43 +69,41 @@ export let creepDialogShort: Dialog[] = [
   }
 
 ]
-// ghost Control Injured NPC
 
-
-export let ghostBlasterDialogAtDoor: Dialog[] = [
+export let hunterAtDoor: Dialog[] = [
   {
-    text: "Did I already tell that you walk way too slow for someone who is about to BAET UP a GARGOYLE?"
+    text: `Did I already tell that you walk way too slow for someone who is about to BAET UP a GARGOYLE?`
   },
   {
-    text: "Hopefully you are at least not scared.",
+    text: `Hopefully you are at least not scared.`,
   },
   {
-    text: "Getting INTO the CASTLE won't be an easy task. Now it isn't Fort Knox, no. But some elbow grease might get involved.",
+    text: `Getting INTO the CASTLE won't be an easy task. Now it isn't Fort Knox, no. But some elbow grease might get involved.`,
   },
   {
-    text: "I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six."
+    text: `I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six.`
   },
   {
-    text: "If things get heated – remember, I am behind you.",
+    text: `If things get heated – remember, I am behind you.`,
   },
   {
-    text: "A cipher lock. You'll need to pick a combination to get through it."
+    text: `A cipher lock. You'll need to pick a combination to get through it.`
   },
   {
-    text: "Look around, try to find secret signs around here and pick a combination to work on the lock.",
+    text: `Look around, try to find secret signs around here and pick a combination to work on the lock.`,
   },
   {
-    text: "Oh, and a weapon might also come in handy...",
+    text: `Oh, and a weapon might also come in handy...`,
   },
   {
     text: `Here, take my spare one!
-    It works best in first person mode and you need to hold the trigger once you're inside!`,
+It works best in first person mode and you need to hold the trigger once you're inside!`,
   },
   {
-    text: "I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.",
+    text: `I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.`,
   },
   {
-    text: "If you pass by -  try to chat with him, maybe he will tell you something useful. A local resident should know all the loopholes after all.",
+    text: `If you pass by -  try to chat with him, maybe he will tell you something useful. A local resident should know all the loopholes after all.`,
   },
   {
     text: `Now go and catch that son of a witch!`,
@@ -122,7 +115,7 @@ export let ghostBlasterDialogAtDoor: Dialog[] = [
   }
 ]
 
-export let ghostBlasterDialogAtDoorShort: Dialog[] = [
+export let hunterAtDoorShort: Dialog[] = [
 
   {
     text: `We have to find a way inside! `,
@@ -133,7 +126,7 @@ export let ghostBlasterDialogAtDoorShort: Dialog[] = [
   },
 ]
 
-export let ghostBlasterDialogNoWeapon: Dialog[] = [
+export let hunterNoWeapon: Dialog[] = [
 
   {
     text: `You'll need a weapon first, come here! `,
@@ -141,68 +134,24 @@ export let ghostBlasterDialogNoWeapon: Dialog[] = [
   },
 ]
 
-export let ghostBlasterDialogNoClothes: Dialog[] = [
 
-  {
-    text: "You’ll need to pick a combination to get through it...",
-    isEndOfDialog: true,
-  },
-]
-
-export function ghostBlasterDialogOutro(hunter): Dialog[] {
+export function hunterAfterBossDeath(): Dialog[] {
   return [
     {
-      text: 'Amazing job! ...cough ....unbelieveable!',
-      triggeredByNext: () => {
-        hunter.playAnimation(`Head_Yes`, false)
-      },
+      text: 'Wanna enter Castle again?',
     },
     {
-      text: 'Thank you for your great help on this mission, we would have failed without you!',
-      triggeredByNext: () => {
-        hunter.playAnimation(`HeadShake_No`, false)
-      },
+      text: 'There nothing left. But I feel we can miss something.',
     },
     {
-      text: `I have a feeling this won't be the end of it... `,
+      text: `Take gun for sure.`,
       triggeredByNext: () => {
-        hunter.playAnimation(`Happy Hand Gesture`, false)
-      },
-    },
-    {
-      text: `sooo... How would you like a spot on our GhostBlaster team?`,
-
-    },
-    {
-      text: `We are throwing a huge celebration party later today at Vegas Plaza !\nThink about it and join us there...`,
-      triggeredByNext: () => {
-        hunter.playAnimation(`Head_Yes`, false)
-      },
-    },
-    {
-      text: `You really deserve it! `,
-      triggeredByNext: () => {
-        setGunUseable()
-        scene.guyToldEnding = true
+        giveGunToPlayer()
       },
       isEndOfDialog: true,
     },
   ]
 }
-export let ghostBlasterDialogOutroShort: Dialog[] = [
-
-  {
-    text: `Truly outstanding job! Think about it and join our team!`,
-  },
-  {
-    text: `You really deserve it! `,
-    triggeredByNext: () => {
-      setGunUseable()
-      scene.guyToldEnding = true
-    },
-    isEndOfDialog: true,
-  },
-]
 
 
 // girl NPC
@@ -272,16 +221,16 @@ export function goodGirlOutro(callback: () => void) {
 export function ghostBossDialog(g):  Dialog[]  {
   return [
     {
-      text: "I have waited for you! And you have stepped right into my trap!",
+      text: `I have waited for you! And you have stepped right into my trap!`,
     },
     {
-      text: "You didn’t think you could defeat me so easily did you? Now face the strength of my mighty hands and the sharpness of my dagger claws!",
+      text: `You didn’t think you could defeat me so easily did you? Now face the strength of my mighty hands and the sharpness of my dagger claws!`,
     },
     {
-      text: "I will rip your tongue and make you lick my boots!",
+      text: `I will rip your tongue and make you lick my boots!`,
     },
     {
-      text: "I will rip that precious smile of yours and make you kiss my rocky-ass!",
+      text: `I will rip that precious smile of yours and make you kiss my rocky-ass!`,
 
     },
     {
@@ -297,22 +246,22 @@ export function ghostBossDialog(g):  Dialog[]  {
 
     //on Death
     {
-      text: "And when you're done, I'll go to the hipster witches.",
+      text: `And when you're done, I'll go to the hipster witches.`,
     },
     {
-      text: "I'll order them to go to all parts of the world!",
+      text: `I'll order them to go to all parts of the world!`,
     },
     {
-      text: "Unrecognized, they will walk among people dressed up for Halloween and do their hipster deeds!",
+      text: `Unrecognized, they will walk among people dressed up for Halloween and do their hipster deeds!`,
     },
     {
-      text: "How cunning you are",
+      text: `How cunning you are`,
     },
     {
-      text: "No, I won't make the classic villain's mistake of taunting and boasting of villainous designs for too long to give the hero time to gather his strength!",
+      text: `No, I won't make the classic villain's mistake of taunting and boasting of villainous designs for too long to give the hero time to gather his strength!`,
     },
     {
-      text: "Feel my power!",
+      text: `Feel my power!`,
       triggeredByNext: async () => {
         //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
         onBossDeadExec()
