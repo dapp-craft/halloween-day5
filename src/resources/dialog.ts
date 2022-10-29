@@ -1,5 +1,5 @@
 import { Dialog } from '@dcl/npc-scene-utils'
-import { Ghost, ghostState, onBossDead } from "../modules/boss/ghostBoss";
+import { Ghost, ghostState, onBossDead } from "../modules/bossCode/ghostBoss";
 import { ghost, hunter } from "../finalHuntdown";
 import * as SOUNDS from "../modules/sounds";
 import { setGunUseable } from "../modules/gun";
