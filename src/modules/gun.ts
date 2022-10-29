@@ -2,7 +2,7 @@ import * as tools from "./utilities";
 import * as UI from "./ui";
 import * as SOUNDS from "./sounds";
 import { GhostCollider, GhostSmall } from "./ghostEnemies";
-import { ghostBossDialog } from "../resources/dialog";
+import { ghostDeathDialog } from "../resources/dialog";
 import { Shootable } from "./shootables";
 import { Ghost, ghostState } from "./bossCode/ghostDef";
 import { NPC } from "@dcl/npc-scene-utils";
@@ -70,7 +70,7 @@ ghostGunShake.addComponent(
   new Transform({
     position: Vector3.Zero(),
     rotation: Quaternion.Euler(0, 0, 0),
-    scale: new Vector3(1, 1, 1)
+    scale: new Vector3(1.75, 1.75, 1.75)
   })
 )
 ghostGunShake.setParent(ghostGun)
@@ -192,7 +192,7 @@ export class BeamGunSystem {
                 SOUNDS.actionLoopSource.playing = false
                 SOUNDS.endingMusicSource.loop = true
                 SOUNDS.endingMusicSource.playing = true
-                this.ghost.talk(ghostBossDialog(this.ghost), 5)
+                this.ghost.talk(ghostDeathDialog(), 0)
                 setGunUnUseable()
               }
 
