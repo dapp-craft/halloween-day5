@@ -10,21 +10,23 @@ import { areaEntity } from "./modules/cameraMode";
 import {
     checkProgression,
     progression,
-    updateProgression,
-    resetProgression,
     userData, setUserData
 } from './halloweenQuests/progression'
 import { updateQuestUI } from './halloweenQuests/quest/questTasks'
-import { isEqual } from './halloweenQuests/utils/isEqual';
 
-addNPCs()
-addBoss()
-addCreeper()
-openMainDoor()
-enableTunnelGrave()
-scene.isSceneLoaded = true
-engine.addEntity(areaEntity)
+export function setUpScene() {
+    addNPCs()
+    addBoss()
+    addCreeper()
+    scene.isSceneLoaded = true
+    engine.addEntity(areaEntity)
+    swapMansion('out')
+}
 
+function updateSceneByProgression() {
+    openMainDoor()
+    enableTunnelGrave()
+}
 
 let updating = false
 function updateSceneUI() {
@@ -42,10 +44,10 @@ function updateSceneUI() {
                     // curr_progression.data['w4Found'] = true
                     // curr_progression.data['NPCIntroDay5'] = true
 
-                    if (progression.data != null && isEqual(progression.data, curr_progression.data)) {
-                        log('no changes')
-                        result = true
-                    } else {
+                    // if (progression.data != null && isEqual(progression.data, curr_progression.data)) {
+                    //     log('no changes')
+                    //     result = true
+                    // } else {
                         progression.data = curr_progression.data
                         progression.day = curr_progression.day
 
@@ -53,12 +55,12 @@ function updateSceneUI() {
                             log('updateQuestUI', progression.day, progression.data)
                             updateQuestUI(progression.data, progression.day)
 
-                            //updateSceneByProgression()
+                            updateSceneByProgression()
                             result = true
                         } else {
                             log('progression problem', progression.data)
                         }
-                    }
+                    // }
                 }
             } catch (e) {
                 log('updating error', e)
@@ -76,28 +78,6 @@ function updateSceneUI() {
     })
 }
 
-// const updateProgressInterval = 1
-// class UpdateSceneUISystem implements ISystem {
-//     private timer = 0
-
-//     constructor() { }
-
-//     update(dt: number) {
-//         this.timer += dt
-//         if (this.timer > updateProgressInterval) {
-//             this.timer = 0
-//             if (progression.progressionChanged) {
-//                 log('progressionChanged', progression.progressionChanged)
-//                 const res = updateSceneUI()
-//                 log('updateSceneUI', res)
-//             }
-//         }
-//     }
-// }
-
-//engine.addSystem(new UpdateSceneUISystem())
-
-
 onEnterSceneObservable.add((player) => {
     log('player entered scene: ', player.userId)
     executeTask(async () => {
@@ -114,28 +94,19 @@ onEnterSceneObservable.add((player) => {
 onSceneReadyObservable.add(() => {
     log('onSceneReadyObservable')
     executeTask(async () => {
-        //await setUpScene()
+        setUpScene()
         updateSceneUI()
     })
 })
-
-
-
 
 //mouse input
 const input = Input.instance
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, e => {
     // log("pointer POINTER Down", e)  
     setGunActive()
-
 })
 
 input.subscribe("BUTTON_UP", ActionButton.POINTER, false, e => {
     //log("pointer POINTER UP", e)  
     setGunInActive()
 })
-
-onSceneReadyObservable.add(() => {
-    swapMansion('out')
-})
-
