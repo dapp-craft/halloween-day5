@@ -13,17 +13,18 @@ import {
   ghostBossDialog,
   ghostBlasterDialogOutroShort,
   goodGirlDialog,
-  goodGirlOutro
+  goodGirlOutro, initDialogsDeps
 } from './resources/dialog'
 
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
 import { scene } from './modules/scene'
-import { setGunUnUseable, setGunUseable } from './modules/gun'
+import {BeamGunSystem, giveGunToPlayer, setGunUnUseable, setGunUseable} from './modules/gun'
 import { halloweenTheme } from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
 import { girlNPC } from './modules/girl'
-import { turnLeaderIntoGhost } from './modules/bossCode/ghostBoss'
+import {bossInit, turnLeaderIntoGhost} from './modules/bossCode/ghostBoss'
 import { Reward } from './halloweenQuests/loot'
+import {enableTunnelGrave, initTeleport} from "./modules/allowPlayerIn";
 
 
 
@@ -34,17 +35,7 @@ export let ghost: NPC
 export let creep: NPC
 export let girl: girlNPC
 
-const cultRadius = 4
-export const cultistPositions = [
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 25, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 70, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 335, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 295, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 75, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 100, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 285, 0))),
-  scene.cultCircleCenter.add(Vector3.Right().multiplyByFloats(cultRadius, 0, 3).rotate(Quaternion.Euler(0, 260, 0)))
-]
+
 
 let cultLookatPoint = new Vector3(scene.mansionCenter.x, 0, scene.mansionCenter.z)
 
@@ -53,9 +44,6 @@ let cultLookatPoint = new Vector3(scene.mansionCenter.x, 0, scene.mansionCenter.
 export class Cultist {
 
 }
-
-
-
 
 export function addNPCs() {
 
@@ -111,12 +99,9 @@ export function addNPCs() {
         if (scene.guyToldEnding) {
           hunter.talk(ghostBlasterDialogOutroShort, 0)
         } else {
-          hunter.talk(ghostBlasterDialogOutro, 0)
+          hunter.talk(ghostBlasterDialogOutro(hunter), 0)
         }
-
-
       }
-
     },
 
     {
@@ -147,13 +132,7 @@ export function addNPCs() {
       scale: new Vector3(4, 4, 4)
     },
     'models/ram_head.glb',
-    () => {
-
-      ghost.talk(ghostBossDialog, 0)
-      ghost.playAnimation(`stand`, false)
-
-
-    },
+      () => {},
     {
       portrait: { path: 'images/portraits/ghost_boss.png', height: 128, width: 128 },
       reactDistance: 4,
@@ -162,6 +141,11 @@ export function addNPCs() {
       onlyExternalTrigger: true
     }
   )
+
+  ghost.onActivate = () => {
+    ghost.talk(ghostBossDialog(ghost), 0)
+    ghost.playAnimation(`stand`, false)
+  }
 
   ghost.dialog = new DialogWindow(
     { path: 'images/portraits/ghost_boss.png', height: 256, width: 256 },
@@ -172,7 +156,7 @@ export function addNPCs() {
   ghost.dialog.leftClickIcon.positionX = 340 - 60
   ghost.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
-
+  initDialogsDeps(setGunUseable, enableTunnelGrave, giveGunToPlayer)
   //create girl and hide
   girl = new girlNPC()
   girl.addComponentOrReplace(new Transform(
@@ -191,17 +175,22 @@ export function addNPCs() {
       })
       const reward = new Reward(girl, 'w5', { position: new Vector3(0, 1, 1), scale: new Vector3(2, 2, 2) }, true, () => {
         executeTask(async () => {
-          //if (await updateProgression('w5')) {
-          //progression.data['w5'] = true
-          // progression.progressionChanged = true
-          //}
+          if (await updateProgression('w5')) {
+            progression.data['w5'] = true
+            progression.progressionChanged = true
+          }
           reward.getComponent(Transform).position.y = -4
         })
       })
     }
   )
+  bossInit(ghost, girl, hunter)
+  initTeleport(ghost,hunter,firstTimeTrigger)
+
   engine.addEntity(girl)
   engine.addSystem(girl)
+
+  engine.addSystem(new BeamGunSystem(ghost))
 }
 
 
@@ -210,10 +199,10 @@ export async function firstTimeTrigger() {
 
   turnLeaderIntoGhost()
   spawnGhosts()
-  // if (updateProgression('waypoint5')) {
-  //   quest.checkBox(1)
-  //   quest.showCheckBox(2)
-  // }
+  if (updateProgression('waypoint5')) {
+    quest.checkBox(1)
+    quest.showCheckBox(2)
+  }
 
 
 

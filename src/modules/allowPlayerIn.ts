@@ -1,8 +1,5 @@
-import * as crypto from '@dcl/crypto-scene-utils'
-
 import * as utils from '@dcl/ecs-scene-utils'
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-import { firstTimeTrigger, ghost, hunter } from "../finalHuntdown";
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
@@ -10,8 +7,17 @@ import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../reso
 import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy, rewardDummy } from './mansion';
 import { blocks, upperDoor } from './bossCode/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
+import {NPC} from "@dcl/npc-scene-utils";
 
+let ghost:NPC
+let firstTimeTrigger
+let hunter:NPC
 
+export function initTeleport(ghost_,hunter_,firstTimeTrigger_) {
+  ghost = ghost_
+  hunter = hunter_
+  firstTimeTrigger = firstTimeTrigger_
+}
 
 let graveShape = new GLTFShape("models/grave_portal.glb")
 

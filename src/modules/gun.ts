@@ -1,11 +1,11 @@
 import * as tools from "./utilities";
 import * as UI from "./ui";
 import * as SOUNDS from "./sounds";
-import { Ghost, ghostState  } from "./bossCode/ghostBoss"; 
 import { GhostCollider, GhostSmall } from "./ghostEnemies";
-import { ghost } from "../finalHuntdown";
 import { ghostBossDialog } from "../resources/dialog";
 import { Shootable } from "./shootables";
+import {Ghost, ghostState} from "./bossCode/ghostDef";
+import {NPC} from "@dcl/npc-scene-utils";
 
 
 const player = Camera.instance
@@ -115,7 +115,7 @@ export function setGunUseable(){
 }
 
 export function setGunUnUseable(){
-    
+
       setGunInActive()
      gunIsUseable = false
 
@@ -148,7 +148,11 @@ export function setGunInActive(){
 }
 
 
-class BeamGunSystem {
+export class BeamGunSystem {
+    ghost:NPC
+    constructor(g) {
+        this.ghost = g
+    }
 
   elapsedTime = 0
   update(dt:number){
@@ -180,7 +184,7 @@ class BeamGunSystem {
               if(ghostInfo.health > 0){
                 ghostInfo.health -= dt * damageRate
                 UI.setGhostHealth(ghostInfo.health)
-                ghost.playAnimation('Hit',true,1) 
+                this.ghost.playAnimation('Hit',true,1)
               }
               //Trigger Ghost death dialog sequence
               else{
@@ -188,7 +192,7 @@ class BeamGunSystem {
                  SOUNDS.actionLoopSource.playing = false
                  SOUNDS.endingMusicSource.loop = true
                  SOUNDS.endingMusicSource.playing = true
-                ghost.talk(ghostBossDialog,6)
+                  this.ghost.talk(ghostBossDialog(this.ghost),6)
                 setGunUnUseable()
               } 
 
@@ -247,4 +251,3 @@ class BeamGunSystem {
     }  
   } 
 }
-engine.addSystem(new BeamGunSystem())

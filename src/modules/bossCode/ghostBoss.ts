@@ -5,42 +5,24 @@ import * as SOUNDS from "../sounds";
 import { movePlayerTo } from '@decentraland/RestrictedActions'
 
 
-import { removeGhosts, spawnGhosts } from "../ghostEnemies";
-import { ghost, girl, hunter } from "../../finalHuntdown";
+import { removeGhosts } from "../ghostEnemies";
 import { grid } from "../grid";
 import { scene } from "../scene";
 import { setGunUnUseable, setGunUseable } from "../gun";
 import { boss_models } from "src/resources/model_paths";
-import { quest } from "src/halloweenQuests/quest/questTasks";
-import { updateProgression } from "src/halloweenQuests/progression";
 import { Block } from "./block";
+import {addOnBossDead, Ghost, ghostState} from "./ghostDef";
+import {NPC} from "@dcl/npc-scene-utils";
+import {updateProgression} from "../../halloweenQuests/progression";
+import {quest} from "../../halloweenQuests/quest/questTasks";
+
+
+let ghost:NPC
+let girl:NPC
+let hunter:NPC
 
 
 let playerBeenInRoom = false
-
-
-export enum ghostState {
-    MOVING = 0,
-    ANTICIPATING = 1,
-    ATTACKING = 2,
-    DIZZY = 3,
-    WAITING = 4,
-    TALKING = 5,
-    DEATH = 6,
-    DEAD = 7,
-    APPEAR = 8,
-    HIDDEN = 9
-}
-
-
-@Component("Ghost")
-export class Ghost {
-    health: number = 100
-    state: ghostState = ghostState.HIDDEN
-    healthRegenRate: number = 1
-}
-
-
 
 export let upperDoor = new Entity()
 upperDoor.addComponent(new Transform({ position: scene.upperDoorPos }))
@@ -474,39 +456,47 @@ export class GhostMoveSystem {
     }
 }
 
-
-export async function onBossDead() {
-    scene.bossIsDead = true
-    // if (updateProgression('ghostDefeated')) {
-    //     quest.checkBox(2)
-    //     quest.showCheckBox(3)
-    // }
-    ghost.getComponent(Transform).scale.setAll(0)
-    //ghost.playAnimation(`Death`, true, 2.63)
-    hideAllBlocks()
-    //engine.removeSystem(playerFallSys)
-    ghost.getComponent(Ghost).state = ghostState.DEAD
-    removeGhosts()
-    SOUNDS.endingMusicSource.loop = true
-    SOUNDS.endingMusicSource.playing = true
-    SOUNDS.thunderSource.playOnce()
-    SOUNDS.ghostDisappearSource.playOnce()
-    hunter.getComponent(Transform).position.y = -10
-    girl.getComponent(Transform).position.y = 0.2
-    setGunUseable()
-    //engine.removeEntity(roomLock)
-    engine.removeEntity(upperDoor)
-
+function onDead() {
+    try {
+        scene.bossIsDead = true
+        ghost.getComponent(Transform).scale.setAll(0)
+        //ghost.playAnimation(`Death`, true, 2.63)
+        hideAllBlocks()
+        //engine.removeSystem(playerFallSys)
+        ghost.getComponent(Ghost).state = ghostState.DEAD
+        removeGhosts()
+        SOUNDS.endingMusicSource.loop = true
+        SOUNDS.endingMusicSource.playing = true
+        SOUNDS.thunderSource.playOnce()
+        SOUNDS.ghostDisappearSource.playOnce()
+        hunter.getComponent(Transform).position.y = -10
+        girl.getComponent(Transform).position.y = 0.2
+        setGunUseable()
+        //engine.removeEntity(roomLock)
+        engine.removeEntity(upperDoor)
+        executeTask(async () => {
+            if (await updateProgression('ghostDefeated')) {
+                quest.checkBox(2)
+                quest.showCheckBox(3)
+            }
+        })
+    } catch (e) {
+        log('err', e.message)
+    }
 }
 
+export function bossInit(ghost_, girl_, hunter_) {
+    ghost = ghost_
+    girl = girl_
+    hunter = hunter_
+    addOnBossDead(onDead)
+}
 
 export function addBoss() {
     //BOSS GHOST NPC
 
     ghost.addComponent(new Ghost())
     ghost.addComponent(SOUNDS.swishSource)
-
-
 
     bigFlame.addComponent(new Transform({ position: new Vector3(0, 0, -0.1) }))
     bigFlame.addComponent(new GLTFShape(boss_models.blueFlame))

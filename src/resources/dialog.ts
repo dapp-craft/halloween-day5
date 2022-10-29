@@ -1,12 +1,18 @@
 import { Dialog } from '@dcl/npc-scene-utils'
-import { Ghost, ghostState, onBossDead } from "../modules/bossCode/ghostBoss";
-import { ghost, hunter } from "../finalHuntdown";
 import * as SOUNDS from "../modules/sounds";
-import { setGunUseable } from "../modules/gun";
 import { scene } from "../modules/scene";
 
-import { enableTunnelGrave, teleportGrave } from '../modules/allowPlayerIn'
-import { giveGunToPlayer } from "../modules/gun";
+import {Ghost, ghostState, onBossDeadExec} from "../modules/bossCode/ghostDef";
+
+let setGunUseable
+let enableTunnelGrave
+let giveGunToPlayer
+
+export function initDialogsDeps(setGunUseable_, enableTunnelGrave_, giveGunToPlayer_) {
+  setGunUseable = setGunUseable_
+  enableTunnelGrave = enableTunnelGrave_
+  giveGunToPlayer = giveGunToPlayer_
+}
 
 
 //creeper NPC
@@ -143,45 +149,46 @@ export let ghostBlasterDialogNoClothes: Dialog[] = [
   },
 ]
 
-export let ghostBlasterDialogOutro: Dialog[] = [
+export function ghostBlasterDialogOutro(hunter): Dialog[] {
+  return [
+    {
+      text: 'Amazing job! ...cough ....unbelieveable!',
+      triggeredByNext: () => {
+        hunter.playAnimation(`Head_Yes`, false)
+      },
+    },
+    {
+      text: 'Thank you for your great help on this mission, we would have failed without you!',
+      triggeredByNext: () => {
+        hunter.playAnimation(`HeadShake_No`, false)
+      },
+    },
+    {
+      text: `I have a feeling this won't be the end of it... `,
+      triggeredByNext: () => {
+        hunter.playAnimation(`Happy Hand Gesture`, false)
+      },
+    },
+    {
+      text: `sooo... How would you like a spot on our GhostBlaster team?`,
 
-  {
-    text: 'Amazing job! ...cough ....unbelieveable!',
-    triggeredByNext: () => {
-      hunter.playAnimation(`Head_Yes`, false)
     },
-  },
-  {
-    text: 'Thank you for your great help on this mission, we would have failed without you!',
-    triggeredByNext: () => {
-      hunter.playAnimation(`HeadShake_No`, false)
+    {
+      text: `We are throwing a huge celebration party later today at Vegas Plaza !\nThink about it and join us there...`,
+      triggeredByNext: () => {
+        hunter.playAnimation(`Head_Yes`, false)
+      },
     },
-  },
-  {
-    text: `I have a feeling this won't be the end of it... `,
-    triggeredByNext: () => {
-      hunter.playAnimation(`Happy Hand Gesture`, false)
+    {
+      text: `You really deserve it! `,
+      triggeredByNext: () => {
+        setGunUseable()
+        scene.guyToldEnding = true
+      },
+      isEndOfDialog: true,
     },
-  },
-  {
-    text: `sooo... How would you like a spot on our GhostBlaster team?`,
-
-  },
-  {
-    text: `We are throwing a huge celebration party later today at Vegas Plaza !\nThink about it and join us there...`,
-    triggeredByNext: () => {
-      hunter.playAnimation(`Head_Yes`, false)
-    },
-  },
-  {
-    text: `You really deserve it! `,
-    triggeredByNext: () => {
-      setGunUseable()
-      scene.guyToldEnding = true
-    },
-    isEndOfDialog: true,
-  },
-]
+  ]
+}
 export let ghostBlasterDialogOutroShort: Dialog[] = [
 
   {
@@ -262,55 +269,56 @@ export function goodGirlOutro(callback: () => void) {
 
 
 // Evil Garg NPC
-export let ghostBossDialog: Dialog[] = [
-  {
-    text: "I have waited for you! And you have stepped right into my trap!",
-  },
-  {
-    text: "You didn’t think you could defeat me so easily did you? Now face the strength of my mighty hands and the sharpness of my dagger claws!",
-  },
-  {
-    text: "I will rip your tongue and make you lick my boots!",
-  },
-  {
-    text: "I will rip that precious smile of yours and make you kiss my rocky-ass!",
-
-  },
-  {
-    text: `Muaa-Ha-Ha! `,
-    triggeredByNext: () => {
-      //ghostControlInjured.playAnimation(`Dismissing`, true, 3.3)
-      ghost.getComponent(Ghost).state = ghostState.MOVING
-      SOUNDS.actionLoopSource.playing = true
-      setGunUseable()
+export function ghostBossDialog(g):  Dialog[]  {
+  return [
+    {
+      text: "I have waited for you! And you have stepped right into my trap!",
     },
-    isEndOfDialog: true,
-  },
-
-  //on Death
-  {
-    text: "And when you're done, I'll go to the hipster witches.",
-  },
-  {
-    text: "I'll order them to go to all parts of the world!",
-  },
-  {
-    text: "Unrecognized, they will walk among people dressed up for Halloween and do their hipster deeds!",
-  },
-  {
-    text: "How cunning you are",
-  },
-  {
-    text: "No, I won't make the classic villain's mistake of taunting and boasting of villainous designs for too long to give the hero time to gather his strength!",
-  },
-  {
-    text: "Feel my power!",
-    triggeredByNext: async () => {
-      //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
-      onBossDead()
+    {
+      text: "You didn’t think you could defeat me so easily did you? Now face the strength of my mighty hands and the sharpness of my dagger claws!",
     },
-    isEndOfDialog: true,
-  },
+    {
+      text: "I will rip your tongue and make you lick my boots!",
+    },
+    {
+      text: "I will rip that precious smile of yours and make you kiss my rocky-ass!",
 
-]
+    },
+    {
+      text: `Muaa-Ha-Ha! `,
+      triggeredByNext: () => {
+        //ghostControlInjured.playAnimation(`Dismissing`, true, 3.3)
+        g.getComponent(Ghost).state = ghostState.MOVING
+        SOUNDS.actionLoopSource.playing = true
+        setGunUseable()
+      },
+      isEndOfDialog: true,
+    },
+
+    //on Death
+    {
+      text: "And when you're done, I'll go to the hipster witches.",
+    },
+    {
+      text: "I'll order them to go to all parts of the world!",
+    },
+    {
+      text: "Unrecognized, they will walk among people dressed up for Halloween and do their hipster deeds!",
+    },
+    {
+      text: "How cunning you are",
+    },
+    {
+      text: "No, I won't make the classic villain's mistake of taunting and boasting of villainous designs for too long to give the hero time to gather his strength!",
+    },
+    {
+      text: "Feel my power!",
+      triggeredByNext: async () => {
+        //ghostControlInjured.playAnimation(`HeadShake_No`, true, 1.83)
+        onBossDeadExec()
+      },
+      isEndOfDialog: true,
+    }
+  ]
+}
 

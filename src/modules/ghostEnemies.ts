@@ -1,6 +1,6 @@
-import { cultistPositions } from '../finalHuntdown';
 import { NPC } from '@dcl/npc-scene-utils'
 import { scene } from './scene';
+import {cultistPositions} from "./bossCode/ghostDef";
 
 let ghostSmallShape: string = 'models/NPCs/bat.glb'
 let starsShape: GLTFShape = new GLTFShape('models/stars.glb')
