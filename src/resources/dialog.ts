@@ -152,6 +152,16 @@ export function hunterAfterBossDeath(): Dialog[] {
     },
   ]
 }
+export let hunterAfterBossDeathShort: Dialog[] = [
+
+  {
+    text: `Find anything interesting?`,
+  },
+  {
+    text: `I bet you are!`,
+    isEndOfDialog: true,
+  },
+]
 
 
 // girl NPC
