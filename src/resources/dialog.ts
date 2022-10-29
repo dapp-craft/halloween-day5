@@ -79,13 +79,13 @@ export let creepDialogShort: Dialog[] = [
 
 export let ghostBlasterDialogAtDoor: Dialog[] = [
   {
-    text: "Did I already tell that you walk way too slow for someone who is about to beat up a gargoyle?"
+    text: "Did I already tell that you walk way too slow for someone who is about to BAET UP a GARGOYLE?"
   },
   {
     text: "Hopefully you are at least not scared.",
   },
   {
-    text: "Getting into the Castle won't be an easy task. Now it isn't Fort Knox, no. But some elbow grease might get involved.",
+    text: "Getting INTO the CASTLE won't be an easy task. Now it isn't Fort Knox, no. But some elbow grease might get involved.",
   },
   {
     text: "I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six."
