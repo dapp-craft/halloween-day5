@@ -22,7 +22,7 @@ import { setGunUnUseable, setGunUseable } from './modules/gun'
 import { halloweenTheme } from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
 import { girlNPC } from './modules/girl'
-import { turnLeaderIntoGhost } from './modules/boss/ghostBoss'
+import { turnLeaderIntoGhost } from './modules/bossCode/ghostBoss'
 import { Reward } from './halloweenQuests/loot'
 
 

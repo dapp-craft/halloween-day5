@@ -8,7 +8,7 @@ import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
 import { ghostBlasterDialogNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy, rewardDummy } from './mansion';
-import { blocks, upperDoor } from './boss/ghostBoss';
+import { blocks, upperDoor } from './bossCode/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
 
 
