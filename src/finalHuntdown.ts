@@ -16,22 +16,22 @@ import {
 
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
 import { scene } from './modules/scene'
-import {BeamGunSystem, giveGunToPlayer, setGunUnUseable, setGunUseable} from './modules/gun'
+import { BeamGunSystem, giveGunToPlayer, setGunUnUseable, setGunUseable } from './modules/gun'
 import { halloweenTheme } from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
-import { girlNPC } from './modules/girl'
-import {bossInit, turnLeaderIntoGhost} from './modules/bossCode/ghostBoss'
+import { BlendedNPC } from './modules/npc'
+import { bossInit, turnLeaderIntoGhost } from './modules/bossCode/ghostBoss'
 import { Reward } from './halloweenQuests/loot'
-import {enableTunnelGrave, initTeleport} from "./modules/allowPlayerIn";
+import { enableTunnelGrave, initTeleport } from "./modules/allowPlayerIn";
 
 
 
 
 
-export let hunter: NPC
+export let hunter: BlendedNPC
 export let ghost: NPC
 export let creep: NPC
-export let girl: girlNPC
+export let girl: BlendedNPC
 
 
 
@@ -60,7 +60,8 @@ export function addNPCs() {
       portrait: { path: 'images/portraits/creep.png', height: 128, width: 128 },
       reactDistance: 5,
       faceUser: false,
-      onlyExternalTrigger: true
+      onlyExternalTrigger: true,
+      continueOnWalkAway: true
     }
   )
 
@@ -73,43 +74,26 @@ export function addNPCs() {
   creep.dialog.leftClickIcon.positionX = 340 - 60
   creep.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
+  const hunterIdleTiming: number[] = [4.3, 2.5, 2.3]
+  hunter = new BlendedNPC('models/NPCs/hunter.glb', 'images/portraits/ghostblaster_suit.png', hunterIdleTiming)
+  hunter.currentDialog = hunterAtDoor(
+    () => {
+      hunter.player_talk = false
+      hunter.currentDialog = hunterAtDoorShort(
+        () => {
+          hunter.player_talk = false
+        })
 
-  hunter = new NPC(
+    }
+  )
+  hunter.addComponentOrReplace(new Transform(
     {
       position: new Vector3(scene.mansionCenter.x - 25, 0, scene.mansionCenter.z - 3.5),
       rotation: Quaternion.Euler(0, -45, 0),
-    },
-    'models/NPCs/hunter.glb',
-    () => {
-
-      if (hunter.dialog.isDialogOpen) {
-        return
-      }
-        if (scene.guyToldIntro) {
-          hunter.talk(hunterAtDoorShort, 0)
-        } else {
-          hunter.talk(hunterAtDoor, 0)
-        }
-    },
-
-    {
-      portrait: { path: 'images/portraits/ghostblaster_suit.png', height: 256, width: 256 },
-      reactDistance: 4,
-      idleAnim: `stand`,
-      faceUser: false,
-      onlyExternalTrigger: false
     }
-
-  )
-
-  hunter.dialog = new DialogWindow(
-    { path: 'images/portraits/ghostblaster_suit.png', height: 256, width: 256 },
-    true,
-    null,
-    halloweenTheme
-  )
-  hunter.dialog.leftClickIcon.positionX = 340 - 60
-  hunter.dialog.text.color = Color4.FromHexString('#8DFF34FF')
+  ))
+  engine.addEntity(hunter)
+  engine.addSystem(hunter)
 
 
   //Evil Ghost 
@@ -120,7 +104,7 @@ export function addNPCs() {
       scale: new Vector3(4, 4, 4)
     },
     'models/ram_head.glb',
-      () => {},
+    () => { },
     {
       portrait: { path: 'images/portraits/ghost_boss.png', height: 128, width: 128 },
       reactDistance: 4,
@@ -144,9 +128,12 @@ export function addNPCs() {
   ghost.dialog.leftClickIcon.positionX = 340 - 60
   ghost.dialog.text.color = Color4.FromHexString('#8DFF34FF')
 
-  initDialogsDeps(setGunUseable, enableTunnelGrave, giveGunToPlayer)
+
+
+
   //create girl and hide
-  girl = new girlNPC()
+  const girlIdleTiming: number[] = [4, 5, 2.7]
+  girl = new BlendedNPC('models/NPCs/good_girl.glb', 'images/portraits/girl.png', girlIdleTiming)
   girl.addComponentOrReplace(new Transform(
     {
       position: new Vector3(41.70, -10, 38.31),
@@ -172,8 +159,10 @@ export function addNPCs() {
       })
     }
   )
+
+  initDialogsDeps(setGunUseable, enableTunnelGrave, giveGunToPlayer)
   bossInit(ghost, girl, hunter)
-  initTeleport(ghost,hunter,firstTimeTrigger)
+  initTeleport(ghost, hunter, firstTimeTrigger)
 
   engine.addEntity(girl)
   engine.addSystem(girl)

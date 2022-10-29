@@ -3,17 +3,18 @@ import { movePlayerTo } from '@decentraland/RestrictedActions'
 import { gunIsInHand, setGunUseable, setGunUnUseable } from "./gun";
 import { scene } from "./scene";
 import * as SOUNDS from "./sounds";
-import { hunterNoWeapon, ghostBlasterDialogNoClothes } from '../resources/dialog'
+import { hunterNoWeapon } from '../resources/dialog'
 import { mansionInTransform, mansionOutTransform, openMainDoor, pictureFrame, pictureFrameDummy, rewardDummy } from './mansion';
 import { blocks, upperDoor } from './bossCode/ghostBoss';
 import { smallGhosts } from './ghostEnemies';
-import {NPC} from "@dcl/npc-scene-utils";
+import { NPC } from "@dcl/npc-scene-utils";
+import { BlendedNPC } from './npc';
 
-let ghost:NPC
+let ghost: NPC
 let firstTimeTrigger
-let hunter:NPC
+let hunter: BlendedNPC
 
-export function initTeleport(ghost_,hunter_,firstTimeTrigger_) {
+export function initTeleport(ghost_, hunter_, firstTimeTrigger_) {
   ghost = ghost_
   hunter = hunter_
   firstTimeTrigger = firstTimeTrigger_
@@ -39,7 +40,11 @@ async function isPlayerAllowedIn(): Promise<boolean> {
   if (gunIsInHand) {
     return true
   } else {
-    hunter.talk(hunterNoWeapon, 0, 3)
+    hunter.npcEntity.talk(hunterNoWeapon(
+      () => {
+        hunter.player_talk = false
+      }
+    ), 0, 3)
     return false
   }
 

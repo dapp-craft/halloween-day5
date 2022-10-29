@@ -1,7 +1,7 @@
 import { Dialog } from '@dcl/npc-scene-utils'
 import * as SOUNDS from "../modules/sounds";
 import { scene } from "../modules/scene";
-import {Ghost, ghostState, onBossDeadExec} from "../modules/bossCode/ghostDef";
+import { Ghost, ghostState, onBossDeadExec } from "../modules/bossCode/ghostDef";
 
 let setGunUseable
 let enableTunnelGrave
@@ -70,72 +70,84 @@ export let creepDialogShort: Dialog[] = [
 
 ]
 
-export let hunterAtDoor: Dialog[] = [
-  {
-    text: `Did I already tell that you walk way too slow for someone who is about to BAET UP a GARGOYLE?`
-  },
-  {
-    text: `Hopefully you are at least not scared.`,
-  },
-  {
-    text: `Getting INTO the CASTLE won't be an easy task. Now it isn't Fort Knox, no. But some elbow grease might get involved.`,
-  },
-  {
-    text: `I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six.`
-  },
-  {
-    text: `If things get heated – remember, I am behind you.`,
-  },
-  {
-    text: `A cipher lock. You'll need to pick a combination to get through it.`
-  },
-  {
-    text: `Look around, try to find secret signs around here and pick a combination to work on the lock.`,
-  },
-  {
-    text: `Oh, and a weapon might also come in handy...`,
-  },
-  {
-    text: `Here, take my spare one!
-It works best in first person mode and you need to hold the trigger once you're inside!`,
-  },
-  {
-    text: `I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.`,
-  },
-  {
-    text: `If you pass by -  try to chat with him, maybe he will tell you something useful. A local resident should know all the loopholes after all.`,
-  },
-  {
-    text: `Now go and catch that son of a witch!`,
-    triggeredByNext: () => {
-      scene.guyToldIntro = true
-      giveGunToPlayer()
+export function hunterAtDoor(callback: () => void): Dialog[] {
+  return [
+    {
+      text: `Did I already tell that you walk way too slow for someone who is about to BAET UP a GARGOYLE?`
     },
-    isEndOfDialog: true,
-  }
-]
+    {
+      text: `Hopefully you are at least not scared.`,
+    },
+    {
+      text: `Getting INTO the CASTLE won't be an easy task. Now it isn't Fort Knox, no. But some elbow grease might get involved.`,
+    },
+    {
+      text: `I would help, but I need to make sure the perimeter is clear, you know... Gotta watch your six.`
+    },
+    {
+      text: `If things get heated – remember, I am behind you.`,
+    },
+    {
+      text: `A cipher lock. You'll need to pick a combination to get through it.`
+    },
+    {
+      text: `Look around, try to find secret signs around here and pick a combination to work on the lock.`,
+    },
+    {
+      text: `Oh, and a weapon might also come in handy...`,
+    },
+    {
+      text: `Here, take my spare one!
+It works best in first person mode and you need to hold the trigger once you're inside!`,
+    },
+    {
+      text: `I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.`,
+    },
+    {
+      text: `If you pass by -  try to chat with him, maybe he will tell you something useful. A local resident should know all the loopholes after all.`,
+    },
+    {
+      text: `Now go and catch that son of a witch!`,
+      triggeredByNext: () => {
+        scene.guyToldIntro = true
+        giveGunToPlayer()
+        callback()
+      },
+      isEndOfDialog: true,
+    }
+  ]
+}
 
-export let hunterAtDoorShort: Dialog[] = [
 
-  {
-    text: `We have to find a way inside! `,
-  },
-  {
-    text: `If it doesn't work with the lock then try to look around the Castle for secret way! `,
-    isEndOfDialog: true,
-  },
-]
+export function hunterAtDoorShort(callback: () => void): Dialog[] {
+  return [
+    {
+      text: `We have to find a way inside! `,
+    },
+    {
+      text: `If it doesn't work with the lock then try to look around the Castle for secret way! `,
+      triggeredByNext: () => {
+        callback()
+      },
+      isEndOfDialog: true,
+    },
+  ]
+}
 
-export let hunterNoWeapon: Dialog[] = [
+export function hunterNoWeapon(callback: () => void): Dialog[] {
+  return [
+    {
+      text: `You'll need a weapon first, come here! `,
+      triggeredByNext: () => {
+        callback()
+      },
+      isEndOfDialog: true,
+    },
+  ]
+}
 
-  {
-    text: `You'll need a weapon first, come here! `,
-    isEndOfDialog: true,
-  },
-]
 
-
-export function hunterAfterBossDeath(): Dialog[] {
+export function hunterAfterBossDeath(callback: () => void): Dialog[] {
   return [
     {
       text: 'Wanna enter Castle again?',
@@ -147,21 +159,26 @@ export function hunterAfterBossDeath(): Dialog[] {
       text: `Take gun for sure.`,
       triggeredByNext: () => {
         giveGunToPlayer()
+        callback()
       },
       isEndOfDialog: true,
     },
   ]
 }
-export let hunterAfterBossDeathShort: Dialog[] = [
-
-  {
-    text: `Find anything interesting?`,
-  },
-  {
-    text: `I bet you are!`,
-    isEndOfDialog: true,
-  },
-]
+export function hunterAfterBossDeathShort(callback: () => void): Dialog[] {
+  return [
+    {
+      text: `Find anything interesting?`,
+    },
+    {
+      text: `I bet you are!`,
+      triggeredByNext: () => {
+        callback()
+      },
+      isEndOfDialog: true,
+    },
+  ]
+}
 
 
 // girl NPC
@@ -228,7 +245,7 @@ export function goodGirlOutro(callback: () => void) {
 
 
 // Evil Garg NPC
-export function ghostBossDialog(g):  Dialog[]  {
+export function ghostBossDialog(g): Dialog[] {
   return [
     {
       text: `I have waited for you! And you have stepped right into my trap!`,

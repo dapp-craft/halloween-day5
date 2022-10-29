@@ -15,11 +15,12 @@ import {addOnBossDead, Ghost, ghostState} from "./ghostDef";
 import {NPC} from "@dcl/npc-scene-utils";
 import {updateProgression} from "../../halloweenQuests/progression";
 import {quest} from "../../halloweenQuests/quest/questTasks";
+import { BlendedNPC } from "../npc";
 
 
 let ghost:NPC
-let girl:NPC
-let hunter:NPC
+let girl:BlendedNPC
+let hunter:BlendedNPC
 
 
 let playerBeenInRoom = false

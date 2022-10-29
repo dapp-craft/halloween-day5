@@ -5,36 +5,37 @@ import { setGunUnUseable } from './gun';
 enum states {
     idle,
     Standing,
-    //Talking_start,
     Talking,
-    //Talking_end
 }
 
 
-const IDLE_TIMING: number[] = [5, 2.7, 4.2]
+
 const IDLE_NAMES: string[] = ['idle1', 'idle2', 'idle3']
 
-export class girlNPC extends Entity implements ISystem {
+export class BlendedNPC extends Entity implements ISystem {
 
     public currentDialog: Dialog[] = []
-    private current_state: states
-
     public player_talk: boolean
+    public npcEntity:NPC
+
+    private current_state: states
 
     private animator: Animator
     private idle_index: number = 0
 
-    constructor() {
+    private idle_timings:number[]
+
+    constructor(glb: string, portrait: string, idleTimings:number[]) {
         super()
 
+        this.idle_timings = idleTimings
         const npc = new NPC(
             {
                 position: new Vector3(0, 0, 0),
                 scale: new Vector3(0, 0, 0)
             },
-            'models/NPCs/good_girl.glb',
+            glb,
             () => {
-                //this.dialog_start()
                 log('acivated')
                 npc.talk(this.currentDialog, 0)
                 setGunUnUseable()
@@ -43,8 +44,6 @@ export class girlNPC extends Entity implements ISystem {
             {
                 onWalkAway: () => {
                     this.player_talk = false
-                    //if (this.current_state != states.Talking_on && this.current_state != states.Talking_start) return
-                    //this.dialog_ends()
                 },
                 faceUser: false,
                 darkUI: false,
@@ -58,12 +57,13 @@ export class girlNPC extends Entity implements ISystem {
         )
         npc.setParent(this)
 
-        npc.dialog = new DialogWindow({ path: 'images/portraits/girl.png', height: 256, width: 256 }, true, null, halloweenTheme)
+        npc.dialog = new DialogWindow({ path: portrait, height: 256, width: 256 }, true, null, halloweenTheme)
         npc.dialog.leftClickIcon.positionX = 340 - 60
         npc.dialog.text.color = Color4.FromHexString('#8DFF34FF')
+        this.npcEntity = npc
 
 
-        this.addComponentOrReplace(new GLTFShape('models/NPCs/good_girl.glb'))
+        this.addComponentOrReplace(new GLTFShape(glb))
 
         const _animator = new Animator()
         _animator.addClip(new AnimationState('stand', { layer: 0, looping: true, weight: 1 }))
@@ -110,7 +110,7 @@ export class girlNPC extends Entity implements ISystem {
 
             case states.idle:
 
-                if (this.timer >= IDLE_TIMING[this.idle_index]) {
+                if (this.timer >= this.idle_timings[this.idle_index]) {
                     this.timer = 0
                     this.current_state = states.Standing
                 } else if (this.player_talk) {
@@ -139,33 +139,6 @@ export class girlNPC extends Entity implements ISystem {
         }
     }
 
-
-    // public dialog_start() {
-    //     this.playAnimation('talk_start', true)
-    //     this.current_state = states.Talking_start
-    //     utils.setTimeout(
-    //         1166,
-    //         () => {
-    //             if (this.current_state != states.Talking_start) return
-    //             this.current_state = states.Talking_on
-    //             this.playAnimation('talk', false)
-    //             this.talk(this.currentDialog, 0)
-    //         }
-    //     )
-    // }
-
-    // public dialog_ends() {
-    //     this.endInteraction()
-    //     this.current_state = states.Talking_end
-    //     this.playAnimation('talk_end', true)
-    //     utils.setTimeout(
-    //         700,
-    //         () => {
-    //             this.current_state = states.Standing
-    //             this.playAnimation('stand', false)
-    //         }
-    //     )
-    // }
 
     private generateIndex(): number {
 
