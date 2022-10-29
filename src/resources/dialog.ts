@@ -271,6 +271,10 @@ export function ghostBossDialog(g): Dialog[] {
       isEndOfDialog: true,
     },
 
+  ]
+}
+export function ghostDeathDialog(): Dialog[] {
+  return [
     //on Death
     {
       text: `And when you're done, I'll go to the hipster witches.`,
