@@ -1,6 +1,6 @@
 import { player } from "./player";
 import { creep } from "../finalHuntdown"
-import { creepDialog1, creepDialog2, creepDialog4 } from "../resources/dialog";
+import { creepDialog1, creepDialog2, creepDialog3, creepDialogShort } from "../resources/dialog";
 
 
 class creeperSystem {
@@ -97,8 +97,13 @@ function moveCreeperToNext() {
       break
     }
     case 2: {
-      creep.talk(creepDialog4, 0)
+      creep.talk(creepDialog3, 0)
+      creeperState += 1
       engine.removeSystem(creepSys)
+      break
+    }
+    case 3: {
+      creep.talk(creepDialogShort, 0)
       break
     }
 
