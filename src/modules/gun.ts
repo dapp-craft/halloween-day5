@@ -70,7 +70,7 @@ ghostGunShake.addComponent(
   new Transform({
     position: Vector3.Zero(),
     rotation: Quaternion.Euler(0, 0, 0),
-    scale: new Vector3(1.75, 1.75, 1.75)
+    scale: new Vector3(1, 1, 1)
   })
 )
 ghostGunShake.setParent(ghostGun)
