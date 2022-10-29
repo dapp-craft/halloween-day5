@@ -61,7 +61,7 @@ But laws are not for me. I am a gangster.`,
 
 export let creepDialogShort: Dialog[] = [
   {
-    text: 'Just look for a dark grave with a cross on its lid and no tombstone. It\'s on the left of the castle!',
+    text: `Just look for a dark grave with a cross on its lid and no tombstone. It\'s on the left of the castle!`,
     triggeredByNext: () => {
       enableTunnelGrave()
     },
@@ -150,10 +150,11 @@ export function hunterNoWeapon(callback: () => void): Dialog[] {
 export function hunterAfterBossDeath(callback: () => void): Dialog[] {
   return [
     {
-      text: 'Wanna enter Castle again?',
+      text: `Wanna enter Castle again?`,
     },
     {
-      text: 'There nothing left. But I feel we can miss something.',
+      text: `Looks like There nothing left.
+But I feel we can miss something.`,
     },
     {
       text: `Take gun for sure.`,

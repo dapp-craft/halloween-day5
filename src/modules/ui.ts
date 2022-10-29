@@ -20,7 +20,7 @@ ghostHealthBar.color = Color4.FromHexString(`#0066bbff`)
 
 let ghostHealthTitle = new UIText(ghostHealthContainer)
 ghostHealthTitle.visible = true
-ghostHealthTitle.value = "Cult Leader"
+ghostHealthTitle.value = "GARGOYLE"
 ghostHealthTitle.height = '100%'
 ghostHealthTitle.hAlign = 'center'
 ghostHealthTitle.hTextAlign = 'center'

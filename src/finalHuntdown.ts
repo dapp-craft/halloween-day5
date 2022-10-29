@@ -43,7 +43,7 @@ export class Cultist {
 
 }
 
-export function addNPCs() {
+export function createNPCs() {
 
   creep = new NPC(
     {
@@ -92,8 +92,7 @@ export function addNPCs() {
       rotation: Quaternion.Euler(0, -45, 0),
     }
   ))
-  engine.addEntity(hunter)
-  engine.addSystem(hunter)
+
 
 
   //Evil Ghost 
@@ -143,6 +142,7 @@ export function addNPCs() {
   girl.currentDialog = goodGirlDialog(
     () => {
       girl.player_talk = false
+      quest.showCheckBox(3)
       setGunUseable()
       girl.currentDialog = goodGirlOutro(() => {
         girl.player_talk = false
@@ -164,10 +164,19 @@ export function addNPCs() {
   bossInit(ghost, girl, hunter)
   initTeleport(ghost, hunter, firstTimeTrigger)
 
-  engine.addEntity(girl)
-  engine.addSystem(girl)
+
 
   engine.addSystem(new BeamGunSystem(ghost))
+}
+
+export function hunterAddToEngine(){
+  engine.addEntity(hunter)
+  engine.addSystem(hunter)
+}
+
+export function girlAddToEngine(){
+  engine.addEntity(girl)
+  engine.addSystem(girl)
 }
 
 

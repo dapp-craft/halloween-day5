@@ -1,31 +1,91 @@
 import { scene } from "./modules/scene";
-import { addBoss } from "./modules/bossCode/ghostBoss";
-import { setGunActive, setGunInActive } from "./modules/gun";
-import { addNPCs } from "./finalHuntdown";
+import { addBoss, upperDoor } from "./modules/bossCode/ghostBoss";
+import { giveGunToPlayer, setGunActive, setGunInActive } from "./modules/gun";
+import { createNPCs, girlAddToEngine, hunter, hunterAddToEngine } from "./finalHuntdown";
 import { addCreeper } from "./modules/creep";
-import { enableTunnelGrave, swapMansion } from "./modules/allowPlayerIn";
-import { openMainDoor } from "./modules/mansion";
+import { enableTunnelGrave, setFirstTimeEntryFalse, swapMansion } from "./modules/allowPlayerIn";
+import { createPadlock, openMainDoor } from "./modules/mansion";
 import { areaEntity } from "./modules/cameraMode";
 
 import {
     checkProgression,
     progression,
-    userData, setUserData
+    userData, setUserData, updateProgression
 } from './halloweenQuests/progression'
-import { updateQuestUI } from './halloweenQuests/quest/questTasks'
+import { quest, updateQuestUI } from './halloweenQuests/quest/questTasks'
+import { hunterAfterBossDeath, hunterAfterBossDeathShort, hunterAtDoorShort } from "./resources/dialog";
+import { Reward } from "./halloweenQuests/loot";
 
 export function setUpScene() {
-    addNPCs()
+    createNPCs()
     addBoss()
-    addCreeper()
     scene.isSceneLoaded = true
     engine.addEntity(areaEntity)
     swapMansion('out')
 }
 
 function updateSceneByProgression() {
-    openMainDoor()
-    enableTunnelGrave()
+    log('UPDATE')
+    if (
+        quest.isChecked(0) &&
+        progression.data.w1Found &&
+        progression.data.w2Found &&
+        progression.data.w3Found &&
+        progression.data.w4Found &&
+        progression.day > 4
+    ) {
+        log('ITS TIME')
+        createPadlock()
+        girlAddToEngine()
+        hunterAddToEngine()
+
+        if (progression.data.ghostDefeated) {
+            log('DEFEATED')
+            setFirstTimeEntryFalse()
+            upperDoor.removeComponent(OnPointerDown)
+            openMainDoor()
+            enableTunnelGrave()
+            hunter.currentDialog = hunterAfterBossDeath(
+                () => {
+                    hunter.currentDialog = hunterAfterBossDeathShort(
+                        () => {
+                            hunter.player_talk = false
+                        })
+                    hunter.player_talk = false
+                })
+                
+                if(!progression.data.w5Found){
+                    const rewardDummy = new Entity()
+                    rewardDummy.addComponent(new Transform({position: scene.mansionCenter}))
+                    engine.addEntity(rewardDummy)
+                    const reward = new Reward(rewardDummy, 'w5', { position: new Vector3(0, 1, 0), scale: new Vector3(2, 2, 2) }, true, () => {
+                        executeTask(async () => {
+                          if (await updateProgression('w5')) {
+                            progression.data['w5'] = true
+                            progression.progressionChanged = true
+                          }
+                          reward.getComponent(Transform).position.y = -4
+                        })
+                      })
+                }
+
+        } else if (progression.data.waypoint5) {
+            giveGunToPlayer()
+            openMainDoor()
+            enableTunnelGrave()
+
+            hunter.currentDialog = hunterAtDoorShort(
+                () => {
+                    hunter.player_talk = false
+                })
+
+        } else {
+            addCreeper()
+        }
+
+
+    }
+
 }
 
 let updating = false
@@ -43,23 +103,26 @@ function updateSceneUI() {
                     // curr_progression.data['w3Found'] = true
                     // curr_progression.data['w4Found'] = true
                     // curr_progression.data['NPCIntroDay5'] = true
-
+                    // curr_progression.data['waypoint5'] = true
+                    // curr_progression.data['ghostDefeated'] = true
+        
+      
                     // if (progression.data != null && isEqual(progression.data, curr_progression.data)) {
                     //     log('no changes')
                     //     result = true
                     // } else {
-                        progression.data = curr_progression.data
-                        progression.day = curr_progression.day
+                    progression.data = curr_progression.data
+                    progression.day = curr_progression.day
 
-                        if (progression.data != null) {
-                            log('updateQuestUI', progression.day, progression.data)
-                            updateQuestUI(progression.data, progression.day)
+                    if (progression.data != null) {
+                        log('updateQuestUI', progression.day, progression.data)
+                        updateQuestUI(progression.data, progression.day)
 
-                            updateSceneByProgression()
-                            result = true
-                        } else {
-                            log('progression problem', progression.data)
-                        }
+                        updateSceneByProgression()
+                        result = true
+                    } else {
+                        log('progression problem', progression.data)
+                    }
                     // }
                 }
             } catch (e) {
@@ -94,8 +157,8 @@ onEnterSceneObservable.add((player) => {
 onSceneReadyObservable.add(() => {
     log('onSceneReadyObservable')
     executeTask(async () => {
-        setUpScene()
         updateSceneUI()
+        setUpScene()
     })
 })
 

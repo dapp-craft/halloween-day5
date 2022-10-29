@@ -33,6 +33,9 @@ let triggerBoxOutside = new utils.TriggerBoxShape(scene.teleportScale, new Vecto
 let triggerBoxInside = new utils.TriggerBoxShape(scene.teleportScale, Vector3.Zero())
 
 let firstTimeEntry = true
+export function setFirstTimeEntryFalse(){
+  firstTimeEntry = false
+}
 
 //TODO: check wearables/badges here
 async function isPlayerAllowedIn(): Promise<boolean> {
@@ -69,7 +72,7 @@ async function tryToEnter() {
   } else {
     setGunUseable()
     swapMansion('in')
-    movePlayerTo(scene.teleportArriveInward, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
+    movePlayerTo(scene.trapPosition1, new Vector3(scene.mansionCenter.x, 0.8, scene.mansionCenter.z))
     SOUNDS.outsideAmbienceSource.playing = false
   }
 }

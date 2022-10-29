@@ -36,7 +36,7 @@ upperDoor.addComponent(new OnPointerDown((e) => {
 }, {
     button: ActionButton.PRIMARY,
     showFeedback: true,
-    hoverText: "Fight the Cult Leader",
+    hoverText: "Fight the GARGOYLE",
     distance: 5
 }))
 
@@ -478,7 +478,6 @@ function onDead() {
         executeTask(async () => {
             if (await updateProgression('ghostDefeated')) {
                 quest.checkBox(2)
-                quest.showCheckBox(3)
             }
         })
     } catch (e) {

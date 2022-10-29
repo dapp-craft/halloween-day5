@@ -54,7 +54,8 @@ export function openMainDoor() {
 
 
 
-const padlockRomanNumber = new Entity('padlockRomanNumber')
+export function createPadlock(){
+  const padlockRomanNumber = new Entity('padlockRomanNumber')
 engine.addEntity(padlockRomanNumber)
 padlockRomanNumber.addComponentOrReplace(new Transform({
   position: new Vector3(34.75, 2, 44.5),
@@ -106,17 +107,6 @@ const models: string[] = [
 
 ]
 
-// for (const transform of cards_transforms) {
-//   const ent = new Entity()
-//   engine.addEntity(ent)
-//   ent.addComponent(new SphereShape())
-//   ent.addComponentOrReplace(new Transform({
-//     position: transform.position,
-//     rotation: transform.rotation,
-//     scale: new Vector3(5, 5, 5)
-//   }))
-// }
-
 for (let i = 0; i < 5; i++) {
 
   let rnd = Math.floor(Math.random() * variations.length)
@@ -124,11 +114,11 @@ for (let i = 0; i < 5; i++) {
   card.addComponentOrReplace(new GLTFShape(models[code_key[i]]))
   card.addComponentOrReplace(cards_transforms[variations[rnd]])
   engine.addEntity(card)
-
+  log(variations[rnd])
   variations.splice(variations[rnd], 1)
 }
 
-
+}
 
 let ground = new Entity()
 ground.addComponent(new Transform({ position: new Vector3(24, -0.1, 24), scale: new Vector3(48, 0.22, 48), rotation: Quaternion.Euler(0, 0, 0) }))
