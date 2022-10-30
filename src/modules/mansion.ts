@@ -162,6 +162,7 @@ pictureFrame.addComponent(new Shootable(() => {
       }
     })
   })
+  reward.spawnSound()
 
 }))
 engine.addEntity(pictureFrame)

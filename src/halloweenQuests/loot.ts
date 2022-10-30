@@ -2,7 +2,7 @@ import * as utils from '@dcl/ecs-scene-utils'
 import * as ui from '@dcl/ui-scene-utils'
 import { loot_models } from 'src/resources/model_paths'
 import { signedFetch } from '@decentraland/SignedFetch'
-import { COLOR_GREEN } from './config' 
+import { COLOR_GREEN } from 'src/resources/theme/colors' 
 import { fireBaseServer, playerRealm, userData } from "./progression";
 
 let particleGLTF = new GLTFShape(loot_models.particles)
@@ -104,21 +104,23 @@ export class Reward extends Entity {
     playAnim.play()
     engine.addEntity(this.particles)
 
-    if (!onlyActivateWhenClicked) {
+    // if (!onlyActivateWhenClicked) {
       // this.activate()
       const spawnSource = new AudioSource(
         new AudioClip('sounds/star-spawn.mp3')
       )
+      log('star-spawn added')
       this.particles.addComponentOrReplace(spawnSource)
       spawnSource.loop = false
-      spawnSource.playing = true
+      // spawnSource.playing = true
 
       this.openUi = false
-    }
+    // }
   }
 
   async activate() {
     this.openUi = true
+    coinSound.getComponent(AudioSource).playOnce()
     let data = await claimToken(
       this.progressionStep,
       this)
@@ -127,6 +129,10 @@ export class Reward extends Entity {
     if (data) {
       this.storeData(data)
     }
+  }
+
+  spawnSound() {
+    this.particles.getComponent(AudioSource).playOnce()
   }
 
   storeData(claimData) {
@@ -181,7 +187,7 @@ export async function claimToken(
       switch (claimData.claimState) {
         case ClaimState.SUCCESS:
           PlayOpenSound()
-          openClaimUI(claimData, 'You already claimed this item', () => {
+          openClaimUI(claimData, 'You already claimed this Reward', () => {
             representation.vanish()
             PlayCloseSound()
           })
@@ -189,7 +195,7 @@ export async function claimToken(
           return false
         case ClaimState.ASSIGNED:
           PlayOpenSound()
-          openClaimUI(claimData, 'Your item assigned for you.\n Please wait', () => {
+          openClaimUI(claimData, 'Your Reward assigned for you.\n Please wait', () => {
             representation.vanish()
             PlayCloseSound()
           })
@@ -197,7 +203,7 @@ export async function claimToken(
 
         case ClaimState.SENDING:
           PlayOpenSound()
-          openClaimUI(claimData, 'Your item already sending for you.\n Please wait', () => {
+          openClaimUI(claimData, 'Your Reward already sending for you.\n Please wait', () => {
             representation.vanish()
             PlayCloseSound()
           })
@@ -293,8 +299,10 @@ export async function checkServer(
       'Ok',
       true
     )
+    p.background.isPointerBlocker = true
+    p.text.isPointerBlocker = true
     // representation.runOnFinished()
-
+    representation.openUi = false
     return
   }
   const url = fireBaseServer + 'startclaimhalloween'

@@ -157,6 +157,7 @@ export function createNPCs() {
           reward.getComponent(Transform).position.y = -4
         })
       })
+      reward.spawnSound()
     }
   )
 
