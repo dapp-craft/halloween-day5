@@ -47,7 +47,7 @@ But laws are not for me. I am a gangster.`,
     text: `I live the life of a gangster and write songs about it. I even know what my next track will be about! Escape from the castle!`,
   },
   {
-    text: `How I hid from the guards, how I went through the portal in the grave ...`,
+    text: `How I hid from the guards, how I went through the PORTAL in the GRAVE ...`,
   },
   {
     text: `Have a good one, ichthyander! I am gonna go to Grammy’s!`,
@@ -61,7 +61,7 @@ But laws are not for me. I am a gangster.`,
 
 export let creepDialogShort: Dialog[] = [
   {
-    text: `Just look for a dark grave with a cross on its lid and no tombstone. It\'s on the left of the castle!`,
+    text: `Just LOOK FOR a dark GRAVE with a CROSS on its lid and no tombstone. It\'s on the LEFT OF THE CASTLE!`,
     triggeredByNext: () => {
       enableTunnelGrave()
     },
@@ -91,14 +91,14 @@ export function hunterAtDoor(callback: () => void): Dialog[] {
       text: `A cipher lock. You'll need to pick a combination to get through it.`
     },
     {
-      text: `Look around, try to find secret signs around here and pick a combination to work on the lock.`,
+      text: `Look around, try to find SECRET SIGNS around here and PICK a COMBINATION to work on the lock.`,
     },
     {
-      text: `Oh, and a weapon might also come in handy...`,
+      text: `Oh, and a WEAPON might also come in handy...`,
     },
     {
       text: `Here, take my spare one!
-It works best in first person mode and you need to hold the trigger once you're inside!`,
+It works best in FIRST PERSON MODE and you need to hold the trigger once you're inside!`,
     },
     {
       text: `I wandered around here for a little, to get an understanding of the area. And you know...There are many interesting things here. There is even a real Howling Ghost.`,
@@ -107,7 +107,7 @@ It works best in first person mode and you need to hold the trigger once you're 
       text: `If you pass by -  try to chat with him, maybe he will tell you something useful. A local resident should know all the loopholes after all.`,
     },
     {
-      text: `Now go and catch that son of a witch!`,
+      text: `Now go and CATCH that SON OF A WITCH!`,
       triggeredByNext: () => {
         scene.guyToldIntro = true
         giveGunToPlayer()
@@ -125,7 +125,7 @@ export function hunterAtDoorShort(callback: () => void): Dialog[] {
       text: `We have to find a way inside! `,
     },
     {
-      text: `If it doesn't work with the lock then try to look around the Castle for secret way! `,
+      text: `If it doesn't work with the lock then try to look AROUND the CASTLE for SECRET WAY! `,
       triggeredByNext: () => {
         callback()
       },
@@ -153,7 +153,7 @@ export function hunterAfterBossDeath(callback: () => void): Dialog[] {
       text: `Wanna enter Castle again?`,
     },
     {
-      text: `Looks like There nothing left.
+      text: `Looks like there is nothing left.
 But I feel we can miss something.`,
     },
     {
@@ -230,10 +230,10 @@ I'M NOT A GIRL.`,
 export function goodGirlOutro(callback: () => void) {
   const dialog: Dialog[] = [
     {
-      text: `bla-bla`,
+      text: `See you at GLASS PAVILLION`,
     },
     {
-      text: `bla-bla2`,
+      text: `Rock Star is waiting for you at `,
       triggeredByNext: () => {
         callback()
       },
