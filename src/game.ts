@@ -10,7 +10,7 @@ import { areaEntity } from "./modules/cameraMode";
 import {
     checkProgression,
     progression,
-    userData, setUserData, updateProgression
+    userData, setUserData, updateProgression, playerRealm, setRealm
 } from './halloweenQuests/progression'
 import { quest, updateQuestUI } from './halloweenQuests/quest/questTasks'
 import { hunterAfterBossDeath, hunterAfterBossDeathShort, hunterAtDoorShort } from "./resources/dialog";
@@ -62,10 +62,8 @@ function updateSceneByProgression() {
                     const reward = new Reward(rewardDummy, 'w5', { position: new Vector3(0, 1, 0), scale: new Vector3(2, 2, 2) }, true, () => {
                         executeTask(async () => {
                           if (await updateProgression('w5')) {
-                            progression.data['w5'] = true
-                            progression.progressionChanged = true
+                              reward.getComponent(Transform).position.y = -4
                           }
-                          reward.getComponent(Transform).position.y = -4
                         })
                       })
                 }
@@ -99,19 +97,6 @@ function updateSceneUI() {
                 const curr_progression = await checkProgression()
                 log('checkProgression', curr_progression, progression)
                 if (curr_progression != null) {
-                    // curr_progression.data['w1Found'] = true
-                    // curr_progression.data['w2Found'] = true
-                    // curr_progression.data['w3Found'] = true
-                    // curr_progression.data['w4Found'] = true
-                    // curr_progression.data['NPCIntroDay5'] = true
-                    // curr_progression.data['waypoint5'] = true
-                    // curr_progression.data['ghostDefeated'] = true
-        
-      
-                    // if (progression.data != null && isEqual(progression.data, curr_progression.data)) {
-                    //     log('no changes')
-                    //     result = true
-                    // } else {
                     progression.data = curr_progression.data
                     progression.day = curr_progression.day
 
@@ -124,7 +109,6 @@ function updateSceneUI() {
                     } else {
                         log('progression problem', progression.data)
                     }
-                    // }
                 }
             } catch (e) {
                 log('updating error', e)
@@ -142,24 +126,36 @@ function updateSceneUI() {
     })
 }
 
-onEnterSceneObservable.add((player) => {
-    log('player entered scene: ', player.userId)
-    executeTask(async () => {
-        if (!userData) {
-            await setUserData()
-        }
-
-        if (userData.userId == player.userId) {
-            updateSceneUI()
-        }
-    })
-})
+// onEnterSceneObservable.add((player) => {
+//     log('player entered scene: ', player.userId)
+//     executeTask(async () => {
+//         if (!userData) {
+//             await setUserData()
+//         }
+//
+//         if (userData.userId == player.userId) {
+//             updateSceneUI()
+//         }
+//     })
+// })
 
 onSceneReadyObservable.add(() => {
     log('onSceneReadyObservable')
     executeTask(async () => {
         updateSceneUI()
         setUpScene()
+    })
+})
+
+onRealmChangedObservable.add((realmChange) => {
+    log("PLAYER CHANGED ISLAND TO ", realmChange.room)
+    executeTask(async () => {
+        if (!playerRealm) {
+            await setRealm()
+            log('playerRealm', playerRealm)
+        }
+        playerRealm.room = realmChange.room
+        playerRealm.serverName = realmChange.serverName
     })
 })
 

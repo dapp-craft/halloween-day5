@@ -120,8 +120,8 @@ export async function updateProgression(stage: string, onlyLocal?: boolean) {
     const data = await response.json()
     log('Player progression: ', data)
     if (data.success) {
-      progression.progressionChanged = true
-      // progression.data[stage] = true
+      // progression.progressionChanged = true
+      progression.data[stage] = true
     }
     return data.success
   } catch {

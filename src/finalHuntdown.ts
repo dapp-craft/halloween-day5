@@ -151,10 +151,8 @@ export function createNPCs() {
       const reward = new Reward(girl, 'w5', { position: new Vector3(0, 1, 1), scale: new Vector3(2, 2, 2) }, true, () => {
         executeTask(async () => {
           if (await updateProgression('w5')) {
-            progression.data['w5'] = true
-            progression.progressionChanged = true
+              reward.getComponent(Transform).position.y = -4
           }
-          reward.getComponent(Transform).position.y = -4
         })
       })
       reward.spawnSound()
@@ -180,18 +178,15 @@ export function girlAddToEngine(){
   engine.addSystem(girl)
 }
 
-
 export async function firstTimeTrigger() {
   setGunUseable()
 
   turnLeaderIntoGhost()
   spawnGhosts()
-  if (updateProgression('waypoint5')) {
+  if (await updateProgression('waypoint5')) {
     quest.checkBox(1)
     quest.showCheckBox(2)
   }
-
-
 
   UI.showGhostHealthUI(true)
 }
