@@ -41,7 +41,8 @@ export const TESTQUESTSTATE: HalloweenState = {
     waypoint4: false,
     waypoint5: false,
     ghostDefeated: false,
-    w5Found: false
+    w5Found: false,
+    talkStar:false
   },
   day: 5
 }
