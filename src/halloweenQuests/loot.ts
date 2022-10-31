@@ -2,7 +2,7 @@ import * as utils from '@dcl/ecs-scene-utils'
 import * as ui from '@dcl/ui-scene-utils'
 import { loot_models } from 'src/resources/model_paths'
 import { signedFetch } from '@decentraland/SignedFetch'
-import { COLOR_GREEN } from 'src/resources/theme/colors' 
+import { COLOR_GREEN } from './config'  
 import { fireBaseServer, playerRealm, userData } from "./progression";
 
 let particleGLTF = new GLTFShape(loot_models.particles)
@@ -15,6 +15,7 @@ export class AlreadyFoundLoot {
 export class Reward extends Entity {
   progressionStep: string
   particles: Entity
+
   openUi: boolean
   onFinished: () => void
 
@@ -76,7 +77,7 @@ export class Reward extends Entity {
     const idleSource = new AudioSource(new AudioClip('sounds/star-idle.mp3'))
     this.addComponentOrReplace(idleSource)
     idleSource.loop = true
-    idleSource.playing = true
+    idleSource.playing = false
 
     this.particles = new Entity()
     this.particles.setParent(parent)
@@ -133,6 +134,7 @@ export class Reward extends Entity {
 
   spawnSound() {
     this.particles.getComponent(AudioSource).playOnce()
+    this.getComponent(AudioSource).playing = true
   }
 
   storeData(claimData) {
