@@ -16,7 +16,7 @@ import {
 
 import { NPC, DialogWindow } from '@dcl/npc-scene-utils'
 import { scene } from './modules/scene'
-import { BeamGunSystem, giveGunToPlayer, setGunUnUseable, setGunUseable } from './modules/gun'
+import { BeamGunSystem, giveGunToPlayer, setGunUseable } from './modules/gun'
 import { halloweenTheme } from "./halloweenQuests/quest/questCheckBox";
 import { spawnGhosts } from './modules/ghostEnemies'
 import { BlendedNPC } from './modules/npc'
