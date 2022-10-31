@@ -115,7 +115,7 @@ export function createPadlock() {
     card.addComponentOrReplace(cards_transforms[variations[rnd]])
     engine.addEntity(card)
     log(variations[rnd])
-    variations.splice(variations[rnd], 1)
+    variations.splice(rnd, 1)
   }
 
 }
@@ -128,24 +128,27 @@ ground.getComponent(BoxShape).withCollisions = true
 engine.addEntity(ground)
 
 export let pictureFrameDummy = new Entity()
+pictureFrameDummy.addComponent(new Transform())
 export let pictureFrame = new Entity()
+pictureFrame.addComponent(new Transform())
 export const rewardDummy = new Entity()
+rewardDummy.addComponent(new Transform())
 
 export function spawnPicture() {
-
-  pictureFrameDummy.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, -10, scene.mansionCenter.z) }))
+  
+  pictureFrameDummy.addComponentOrReplace(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, -10, scene.mansionCenter.z) }))
   pictureFrameDummy.addComponent(picture2Shape)
   engine.addEntity(pictureFrameDummy)
 
 
-  pictureFrame.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, 10.25, scene.mansionCenter.z) }))
+  pictureFrame.addComponentOrReplace(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, 10.25, scene.mansionCenter.z) }))
   pictureFrame.addComponent(pictureShape)
 
 
   const transform = pictureFrame.getComponent(Transform)
 
   const rewardDummy = new Entity()
-  rewardDummy.addComponent(new Transform(({ position: transform.position })))
+  rewardDummy.addComponentOrReplace(new Transform(({ position: transform.position })))
 
   pictureFrame.addComponent(new Shootable(() => {
     pictureFrame.getComponent(Transform).rotation = Quaternion.Euler(Math.random() * 5, 0, 0)

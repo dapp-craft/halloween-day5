@@ -57,7 +57,7 @@ function updateSceneByProgression() {
                 
                 if(!progression.data.w5Found){
                     const rewardDummy = new Entity()
-                    rewardDummy.addComponent(new Transform({position: scene.mansionCenter}))
+                    rewardDummy.addComponentOrReplace(new Transform({position: scene.mansionCenter}))
                     engine.addEntity(rewardDummy)
                     const reward = new Reward(rewardDummy, 'w5', { position: new Vector3(0, 1, 0), scale: new Vector3(2, 2, 2) }, true, () => {
                         executeTask(async () => {
