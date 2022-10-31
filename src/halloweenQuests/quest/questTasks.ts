@@ -157,7 +157,7 @@ export class questUITasks{
             },
             {
                 label: 'Talk to ROCK STAR',
-                checked: false,
+                checked: this.data.talkStar,
                 visible: this.data.ghostDefeated,
                 coords: Coords.GenesisCoords
             }
