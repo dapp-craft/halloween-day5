@@ -132,6 +132,7 @@ export function enableTunnelGrave() {
   if (!teleportGrave.hasComponent(OnPointerDown)) {
     teleportGrave.addComponent(new OnPointerDown((e) => {
       tryToEnter()
+      openMainDoor()
     }, {
       button: ActionButton.PRIMARY,
       showFeedback: true,
