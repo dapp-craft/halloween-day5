@@ -54,69 +54,69 @@ export function openMainDoor() {
 
 
 
-export function createPadlock(){
+export function createPadlock() {
   const padlockRomanNumber = new Entity('padlockRomanNumber')
-engine.addEntity(padlockRomanNumber)
-padlockRomanNumber.addComponentOrReplace(new Transform({
-  position: new Vector3(34.75, 2, 44.5),
-  rotation: Quaternion.Euler(0, -90, 90),
-  scale: new Vector3(5, 5, 5)
-}))
-const channelId = Math.random().toString(16).slice(2)
-const channelBus = new MessageBus()
-const padLock = new PadLock(openMainDoor.bind(this))
-padLock.init()
+  engine.addEntity(padlockRomanNumber)
+  padlockRomanNumber.addComponentOrReplace(new Transform({
+    position: new Vector3(34.75, 2, 44.5),
+    rotation: Quaternion.Euler(0, -90, 90),
+    scale: new Vector3(5, 5, 5)
+  }))
+  const channelId = Math.random().toString(16).slice(2)
+  const channelBus = new MessageBus()
+  const padLock = new PadLock(openMainDoor.bind(this))
+  padLock.init()
 
-//generate code for padlock
-let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-let code_key: number[] = []
+  //generate code for padlock
+  let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  let code_key: number[] = []
 
-function getRandom() {
+  function getRandom() {
 
-  let index = Math.floor(Math.random() * numbers.length)
+    let index = Math.floor(Math.random() * numbers.length)
 
-  if (code_key.length == 0) if (numbers[index] == 0) return getRandom()
+    if (code_key.length == 0) if (numbers[index] == 0) return getRandom()
 
-  return numbers[index]
-}
+    return numbers[index]
+  }
 
-for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
 
-  let value = getRandom()
-  code_key.push(value)
-}
+    let value = getRandom()
+    code_key.push(value)
+  }
 
-const number_code = code_key[0] * 10000 + code_key[1] * 1000 + code_key[2] * 100 + code_key[3] * 10 + code_key[4]
-log('CODE ARE : ' + number_code)
+  const number_code = code_key[0] * 10000 + code_key[1] * 1000 + code_key[2] * 100 + code_key[3] * 10 + code_key[4]
+  log('CODE ARE : ' + number_code)
 
-padLock.spawn(padlockRomanNumber, { 'combination': number_code, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
+  padLock.spawn(padlockRomanNumber, { 'combination': number_code, onSolve: null }, createChannel(channelId, padlockRomanNumber, channelBus))
 
-//cards randomizer
-let variations: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-const models: string[] = [
-  cards_models.card0,
-  cards_models.card1,
-  cards_models.card2,
-  cards_models.card3,
-  cards_models.card4,
-  cards_models.card5,
-  cards_models.card6,
-  cards_models.card7,
-  cards_models.card8,
-  cards_models.card9,
+  //cards randomizer
+  let variations: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const models: string[] = [
+    cards_models.card0,
+    cards_models.card1,
+    cards_models.card2,
+    cards_models.card3,
+    cards_models.card4,
+    cards_models.card5,
+    cards_models.card6,
+    cards_models.card7,
+    cards_models.card8,
+    cards_models.card9,
 
-]
+  ]
 
-for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
 
-  let rnd = Math.floor(Math.random() * variations.length)
-  const card = new Entity()
-  card.addComponentOrReplace(new GLTFShape(models[code_key[i]]))
-  card.addComponentOrReplace(cards_transforms[variations[rnd]])
-  engine.addEntity(card)
-  log(variations[rnd])
-  variations.splice(variations[rnd], 1)
-}
+    let rnd = Math.floor(Math.random() * variations.length)
+    const card = new Entity()
+    card.addComponentOrReplace(new GLTFShape(models[code_key[i]]))
+    card.addComponentOrReplace(cards_transforms[variations[rnd]])
+    engine.addEntity(card)
+    log(variations[rnd])
+    variations.splice(variations[rnd], 1)
+  }
 
 }
 
@@ -128,44 +128,50 @@ ground.getComponent(BoxShape).withCollisions = true
 engine.addEntity(ground)
 
 export let pictureFrameDummy = new Entity()
-pictureFrameDummy.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, -10, scene.mansionCenter.z) }))
-pictureFrameDummy.addComponent(picture2Shape)
-engine.addEntity(pictureFrameDummy)
-
 export let pictureFrame = new Entity()
-pictureFrame.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, 10.25, scene.mansionCenter.z) }))
-pictureFrame.addComponent(pictureShape)
-
-
-const transform = pictureFrame.getComponent(Transform)
-
 export const rewardDummy = new Entity()
-rewardDummy.addComponent(new Transform(({ position: transform.position })))
 
-pictureFrame.addComponent(new Shootable(() => {
-  pictureFrame.getComponent(Transform).rotation = Quaternion.Euler(Math.random() * 5, 0, 0)
+export function spawnPicture() {
 
-}, () => {
-
-  pictureFrame.addComponentOrReplace(picture2Shape)
-
-  if (progression.data.egg5) return
+  pictureFrameDummy.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, -10, scene.mansionCenter.z) }))
+  pictureFrameDummy.addComponent(picture2Shape)
+  engine.addEntity(pictureFrameDummy)
 
 
-  engine.addEntity(rewardDummy)
-  const reward = new Reward(rewardDummy, 'egg5', { position: new Vector3(-1, -3.5, 0), scale: new Vector3(2, 2, 2) }, true, () => {
-    executeTask(async () => {
-      if (await updateProgression('egg5')) {
-        progression.data['egg5'] = true
-        // progression.progressionChanged = true
-        reward.getComponent(Transform).position.y = -15
-      }
+  pictureFrame.addComponent(new Transform({ position: new Vector3(scene.mansionCenter.x + 16, 10.25, scene.mansionCenter.z) }))
+  pictureFrame.addComponent(pictureShape)
+
+
+  const transform = pictureFrame.getComponent(Transform)
+
+  const rewardDummy = new Entity()
+  rewardDummy.addComponent(new Transform(({ position: transform.position })))
+
+  pictureFrame.addComponent(new Shootable(() => {
+    pictureFrame.getComponent(Transform).rotation = Quaternion.Euler(Math.random() * 5, 0, 0)
+
+  }, () => {
+
+    pictureFrame.addComponentOrReplace(picture2Shape)
+
+    if (progression.data.egg5) return
+
+
+    engine.addEntity(rewardDummy)
+    const reward = new Reward(rewardDummy, 'egg5', { position: new Vector3(-1, -3.5, 0), scale: new Vector3(2, 2, 2) }, true, () => {
+      executeTask(async () => {
+        if (await updateProgression('egg5')) {
+          progression.data['egg5'] = true
+          // progression.progressionChanged = true
+          reward.getComponent(Transform).position.y = -15
+        }
+      })
     })
-  })
-  reward.spawnSound()
+    reward.spawnSound()
 
-}))
-engine.addEntity(pictureFrame)
+  }))
+  engine.addEntity(pictureFrame)
+}
 
 // let portalMat = new Material()
 // portalMat.roughness = 0.5

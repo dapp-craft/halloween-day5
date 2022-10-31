@@ -4,7 +4,7 @@ import { giveGunToPlayer, setGunActive, setGunInActive } from "./modules/gun";
 import { createNPCs, girlAddToEngine, hunter, hunterAddToEngine } from "./finalHuntdown";
 import { addCreeper } from "./modules/creep";
 import { enableTunnelGrave, setFirstTimeEntryFalse, swapMansion } from "./modules/allowPlayerIn";
-import { createPadlock, openMainDoor } from "./modules/mansion";
+import { createPadlock, openMainDoor, spawnPicture } from "./modules/mansion";
 import { areaEntity } from "./modules/cameraMode";
 
 import {
@@ -45,6 +45,7 @@ function updateSceneByProgression() {
             upperDoor.removeComponent(OnPointerDown)
             openMainDoor()
             enableTunnelGrave()
+            spawnPicture() 
             hunter.currentDialog = hunterAfterBossDeath(
                 () => {
                     hunter.currentDialog = hunterAfterBossDeathShort(
